@@ -1,12 +1,10 @@
 import classes from "./Profile.module.css";
 import {useScreenSize} from "../../common/context/ScreenSizeProvider";
-import {SubmitHandler, useForm} from "react-hook-form";
 import MemoLogoIcon from "../../components/svg/LogoIcon";
 import {useUserData} from "../../common/context/UserProvider";
 import {useEffect, useState} from "react";
-import {UpdateVariables} from "../../types/types";
-import {useUpdateUser} from "../../api/hooks/useUpdateUser";
-import {initInitData} from "@telegram-apps/sdk-react";
+import UpdateProfile from "./update/UpdateProfile";
+import {useFetchForms} from "../../api/hooks/useFetchForms";
 
 // const entities: { companyName: string, description: string, hashTags?: string[] } = {
 //     companyName: "Company name",
@@ -16,18 +14,14 @@ import {initInitData} from "@telegram-apps/sdk-react";
 
 
 function Profile() {
-    const initData = initInitData();
     const {responseFontSize} = useScreenSize();
     const {userData} = useUserData();
 
-    const {mutate} = useUpdateUser();
+    const {data: form} = useFetchForms();
 
     const [hashTags, setHashTags] = useState<string[]>([]);
-    // const [profile, setProfile] = useState<{ type_value: string, values: { id: number, value: string }[] }[]>([]);
+    const [openUpdate, setOpenUpdate] = useState<boolean>(false);
 
-    const {
-        handleSubmit
-    } = useForm();
 
     console.log("userData", userData);
 
@@ -51,65 +45,76 @@ function Profile() {
 
     }, [userData]);
 
-    const onSubmit: SubmitHandler<{ user_types?: string[]; project_stages?: string[]; geography?: string[]; industries?: string[]; business_models?: string[] }> = (data) => {
-        const filteredBody = Object.fromEntries(
-            Object.entries(data).filter(([_, value]) => value)
-        );
-        const body: UpdateVariables = {
-            tg_id: initData?.user?.id.toString() ?? "", ...filteredBody
-        };
-        console.log("datas", filteredBody);
-        mutate(body);
-    };
 
-    // console.log("userData", userData);
+    console.log("hashTags", userData);
+    console.log("hashTags", hashTags?.includes("founder"));
+    console.log("hashTags", hashTags?.includes("founder"));
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)} className={classes.container}>
-            <div className="iconContainer">
-                <MemoLogoIcon fill={"#FFFFFF"} stroke={"#FFFFFF"}/>
-            </div>
-            <div className={classes.scrollContainer}>
-                <div className={classes.name}
-                     style={{fontSize: responseFontSize(48), lineHeight: responseFontSize(45)}}>
-                    {userData?.name}
+        <>
+            <div className={classes.container}>
+                <div className="iconContainer">
+                    <MemoLogoIcon fill={"#FFFFFF"} stroke={"#FFFFFF"}/>
                 </div>
-                <div style={{display: "flex", justifyContent: "center", flexWrap: "wrap", gap: 3}}>
-                    {hashTags.map((item, index) => (
-                        <div key={index} className="hashButton"
-                             style={{backgroundColor: "#286EF2"}}>#{item}</div>
-                    ))}
-                </div>
-                {/*<div style={{display: "flex", flexWrap: "wrap", justifyContent: "center", gap: 5}}>*/}
-                {/*    {profile.map((item, index) => (*/}
-                {/*        <Controller key={index} name={item.type_value} control={control}*/}
-                {/*                    render={({field}) => <HashTagsComponent label={""}*/}
-                {/*                                                            hashTags={item.values}*/}
-                {/*                                                            value={field.value || []} // подключение значений к компоненту*/}
-                {/*                                                            onChange={field.onChange}*/}
-                {/*                    />}/>*/}
-                {/*    ))}*/}
-                {/*</div>*/}
-                <div>
-                    <div style={{
-                        color: "#FFFFFF",
-                        fontSize: responseFontSize(24),
-                        fontWeight: "600",
-                        lineHeight: responseFontSize(31),
-                        letterSpacing: -0.04
-                    }}>Description
+                <div className={classes.scrollContainer}>
+                    <div className={classes.name}
+                         style={{fontSize: responseFontSize(48), lineHeight: responseFontSize(45)}}>
+                        {userData?.name}
                     </div>
-                    <div>{userData?.description}</div>
+                    <div style={{display: "flex", justifyContent: "center", flexWrap: "wrap", gap: 3}}>
+                        {hashTags.map((item, index) => (
+                            <div key={index} className="hashButton"
+                                 style={{backgroundColor: "#286EF2"}}>#{item}</div>
+                        ))}
+                    </div>
+                    {hashTags?.some(tag => tag.toLowerCase() === "founder") && <div>
+                        <div style={{
+                            color: "#FFFFFF",
+                            fontSize: responseFontSize(24),
+                            fontWeight: "600",
+                            lineHeight: responseFontSize(31),
+                            letterSpacing: -0.04
+                        }}>Donats
+                        </div>
+                        <div className={classes.donats}>
+                            <div
+                                style={{
+                                    position: "absolute",
+                                    width: `${Number(userData?.donuts.current_amount) / Number(userData?.donuts.purpose_amount) * 100}%`,
+                                    top: 0,
+                                    left: 0,
+                                    bottom: 0,
+                                    borderRadius: "7px",
+                                    backgroundColor: "#286EF2",
+                                    zIndex: 0
+                                }}/>
+                            <div
+                                className={classes.donatsText}>Collect {Number(userData?.donuts.current_amount).toString()}$
+                                of {Number(userData?.donuts.purpose_amount).toString()}$
+                            </div>
+                        </div>
+                    </div>}
+                    <div>
+                        <div style={{
+                            color: "#FFFFFF",
+                            fontSize: responseFontSize(24),
+                            fontWeight: "600",
+                            lineHeight: responseFontSize(31),
+                            letterSpacing: -0.04
+                        }}>Description
+                        </div>
+                        <div>{userData?.description}</div>
+                    </div>
+                </div>
+                <div className={classes.buttonContainer}>
+                    <button type={"submit"} name={"submit"} onClick={() => setOpenUpdate(true)}
+                            className="footerButton">Change
+                        profile
+                    </button>
                 </div>
             </div>
-            <div className={classes.buttonContainer}>
-                <button type={"submit"} name={"submit"} className="footerButton">Change
-                    profile
-                </button>
-            </div>
-
-        </form>
-
+            <UpdateProfile isOpen={openUpdate} onClose={() => setOpenUpdate(false)} form={form} />
+        </>
     );
 }
 

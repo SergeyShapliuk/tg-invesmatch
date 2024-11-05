@@ -31,18 +31,20 @@ function Navigation() {
             {!userData ? (
                 <Routes>
                     <Route path="/" element={<OnBoarding/>}/>
+                    <Route path="/chat">
+                        <Route path="" element={<Navigate to="create"/>}/>
+                        <Route path="create"
+                               element={<CreateProfile title="Sorry, you don't have any matches or likes"/>}/>
+                    </Route>
+                    <Route path="/main">
+                        <Route path="" element={<Navigate to="create"/>}/>
+                        <Route path="create" element={<CreateProfile title="To start the search, create an account"/>}/>
+                    </Route>
                     <Route path="/profile">
                         <Route path="" element={<Navigate to="create"/>}/>
-                        <Route path="create" element={<CreateProfile/>}/>
+                        <Route path="create" element={<CreateProfile title="You don't have a profile"/>}/>
                         <Route path="save" element={<SaveProfile/>}/>
                     </Route>
-                    {/*<Route path="/tasks" element={<Tasks/>}/>*/}
-                    {/*<Route path="/friends" element={<Friends/>}/>*/}
-                    {/*<Route path="/game/*" element={<GameComponent/>}>*/}
-                    {/*    <Route path="stack" element={<StackApp/>}/>*/}
-                    {/*    <Route path="puzzle" element={<PuzzleApp/>}/>*/}
-                    {/*</Route>*/}
-                    {/*<Route path="/profile" element={<Profile/>}/>*/}
                 </Routes>
             ) : (
                 <Routes>
@@ -103,8 +105,8 @@ function NavBar() {
                 {/*<span style={textStyle}>Home</span>}*/}
             </NavLink>
             <NavLink to="/main">
-                <MemoMainIcon fill={location.pathname === "/main" ? "#000000" : "#00000082"}
-                              opacity={location.pathname === "/main" ? 1 : 0.51}/>
+                <MemoMainIcon fill={location.pathname.startsWith("/main") ? "#000000" : "#00000082"}
+                              opacity={location.pathname.startsWith("/main") ? 1 : 0.51}/>
                 {/*{location.pathname === "/tasks" && <span style={textStyle}>Tasks</span>}*/}
                 {/*{location.pathname !== "/tasks" &&*/}
                 {/*<div style={{*/}

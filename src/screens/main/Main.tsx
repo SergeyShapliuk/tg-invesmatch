@@ -125,7 +125,7 @@ function Main() {
                                      style={{backgroundColor: "#286EF2"}}>#{item}</div>
                             ))}
                         </div>
-                        {hashTags?.includes("founder") || hashTags?.includes("Founder") && <div>
+                        {hashTags?.some(tag => tag.toLowerCase() === "founder") && <div>
                             <div style={{
                                 color: "#FFFFFF",
                                 fontSize: responseFontSize(24),

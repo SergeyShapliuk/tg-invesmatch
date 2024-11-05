@@ -27,10 +27,15 @@ export const UserProvider = ({children}: { children: ReactNode }) => {
     const [userData, setUserData] = useState<User | undefined>();
     const [usersRelevance, setUsersRelevance] = useState<{ relevance: number, user: User }[]>([]);
 
-    const {data: user, refetch: refetchUserData, isSuccess} = useFetchUser(initData?.user?.id.toString() ?? "test");
+    const {
+        data: user,
+        refetch: refetchUserData,
+        isSuccess,
+        isFetching
+    } = useFetchUser(initData?.user?.id.toString() ?? "test");
     const {mutate: mutateRelevance, data: userRelevance} = useFetchUserRelevance();
-    console.log("isFetching", userData);
-    console.log("isSuccess", isSuccess);
+    // console.log("isFetching", isFetching);
+    // console.log("isSuccess", isSuccess);
 
     useEffect(() => {
         if (isSuccess) {
@@ -44,6 +49,14 @@ export const UserProvider = ({children}: { children: ReactNode }) => {
         navigate("/");
 
     }, [isSuccess]);
+
+    useEffect(() => {
+        if (!isFetching) {
+            if (user?.success && user?.user) {
+                setUserData(user?.user);
+            }
+        }
+    }, [isFetching]);
 
     useEffect(() => {
         if (userData) {

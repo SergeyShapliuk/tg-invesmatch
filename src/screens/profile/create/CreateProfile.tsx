@@ -2,13 +2,13 @@ import classes from "./CreateProfile.module.css";
 import {useScreenSize} from "../../../common/context/ScreenSizeProvider";
 import {useNavigate} from "react-router-dom";
 
-function CreateProfile() {
+function CreateProfile({title}: { title: string }) {
     const navigate = useNavigate();
     const {responseFontSize} = useScreenSize();
     return (
         <div className={classes.container}>
             <div className={classes.title} style={{fontSize: responseFontSize(49), lineHeight: responseFontSize(49)}}>
-                You don't have a profile
+                {title}
             </div>
             <div className={classes.subTitle}
                  style={{fontSize: responseFontSize(24), lineHeight: responseFontSize(24)}}>
