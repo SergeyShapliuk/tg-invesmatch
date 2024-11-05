@@ -1,0 +1,38 @@
+.container {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background-color: #000000;
+    padding: 20px 1em;
+}
+
+.titleContainer {
+    /*width: 100vw;*/
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.title {
+    color: white;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    padding-top: 2.5rem;
+}
+
+.subTitle {
+    color: white;
+    letter-spacing: -0.03em;
+    padding: 2.5rem 2.5rem 0 2.5rem;
+}
+
+.buttonContainer {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+}

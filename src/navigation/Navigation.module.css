@@ -1,0 +1,27 @@
+.main {
+    width: 100vw;
+    height: 100vh;
+    /*display: flex;*/
+    /*flex-direction: column;*/
+    /*justify-content: space-between;*/
+    background-color: #FFFFFF;
+    padding: 64px 1em 84px 1em;
+}
+
+.nav {
+    /*position: fixed;*/
+    /*bottom: 26px;*/
+    /*left: 50%;*/
+    /*transform: translate(-50%);*/
+    /*width: 94%;*/
+    height: 84px;
+    /*flex-grow: 1;*/
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    /*background-color: #0E1012;*/
+    /*padding: 24px;*/
+    /*border-radius: 68px;*/
+    /*box-sizing: border-box;*/
+    /*z-index: 999;*/
+}
