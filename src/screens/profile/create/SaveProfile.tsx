@@ -43,13 +43,14 @@ function SaveProfile() {
     } = useForm<any>();
     console.log("initData", initData?.user);
     console.log("isSuccess", isSuccess);
-    console.log("isSuccess", form);
+    console.log("isSuccess", form?.data);
+    console.log("register", register);
     const [fieldsError, setFieldsError] = useState<string[]>([]);
 
     useEffect(() => {
         if (register && register.success) {
             refetchUserData();
-            // console.log("register", register);
+            console.log("registerккккк", register);
         }
     }, [register]);
 
@@ -74,7 +75,7 @@ function SaveProfile() {
                 currency_id: 2
             }
         };
-        console.log("datas", data);
+        // console.log("datas", data);
         mutate(body);
         reset();
     };
@@ -96,7 +97,7 @@ function SaveProfile() {
                         {initData?.user?.username ?? ""}
                     </div>
                     <form onSubmit={handleSubmit(onSubmit)} className={classes.entitiesContainer}>
-                        {form && form?.map((entity, index) => {
+                        {form?.data && form?.data?.map((entity, index) => {
                             switch (entity.type) {
                                 case "input":
                                     return (

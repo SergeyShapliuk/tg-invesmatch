@@ -1,7 +1,7 @@
 import classes from "./UpdateProfile.module.css";
 import {Controller, SubmitHandler, useForm} from "react-hook-form";
 import {Sheet} from "react-modal-sheet";
-import {Donuts, GetForm, UpdateVariables, User} from "../../../types/types";
+import {Donuts, Form, UpdateVariables, User} from "../../../types/types";
 import {useScreenSize} from "../../../common/context/ScreenSizeProvider";
 import TextInput from "../../../components/ui/input/TextInput";
 import TextArea from "../../../components/ui/input/TextArea";
@@ -17,7 +17,7 @@ function UpdateProfile({
                            onClose,
                            form
                        }: {
-    isOpen: boolean, onClose: () => void, form: GetForm[] | undefined
+    isOpen: boolean, onClose: () => void, form: Form[] | undefined
 }) {
     const initData = initInitData();
     const {responseFontSize} = useScreenSize();
@@ -33,6 +33,7 @@ function UpdateProfile({
 
     useEffect(() => {
         if (isSuccess) {
+            console.log("useEffect");
             refetchUserData();
             onClose();
             reset();

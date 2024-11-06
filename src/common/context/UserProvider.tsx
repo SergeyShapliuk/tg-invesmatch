@@ -8,6 +8,7 @@ import {useFetchUserRelevance} from "../../api/hooks/useFetchUserRelevance";
 
 interface UserProviderProps {
     isInitialized: boolean;
+    isLoggedIn: boolean;
     // setInitialized: (value: boolean) => void;
     userData: User | undefined;
     usersRelevance: { relevance: number, user: User }[];
@@ -23,56 +24,78 @@ export const UserProvider = ({children}: { children: ReactNode }) => {
     const initData = initInitData();
     const navigate = useNavigate();
 
+
     const [isInitialized, setInitialized] = useState<boolean>(false);
-    const [userData, setUserData] = useState<User | undefined>();
+    const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+    const [userData, setUserData] = useState<User>();
     const [usersRelevance, setUsersRelevance] = useState<{ relevance: number, user: User }[]>([]);
 
     const {
         data: user,
         refetch: refetchUserData,
-        isSuccess,
+        isFetched,
         isFetching
     } = useFetchUser(initData?.user?.id.toString() ?? "test");
     const {mutate: mutateRelevance, data: userRelevance} = useFetchUserRelevance();
-    // console.log("isFetching", isFetching);
     // console.log("isSuccess", isSuccess);
+    // console.log("isError", isError);
+    // console.log("isInitialized", isInitialized);
+    // console.log("isLoggedIn", isLoggedIn);
+    console.log("isFetched", isFetched);
+    // console.log("user", user);
+    console.log("isFetching", isFetching);
 
     useEffect(() => {
-        if (isSuccess) {
-            if (user?.success && user?.user) {
-                setUserData(user?.user);
+        refetchUserData().then(res => {
+            if (res.data?.success && res.data.user) {
+                setUserData(res.data.user);
+                mutateRelevance({tg_id: initData?.user?.id.toString() ?? "test"});
+            } else {
+                setInitialized(true);
             }
-            setInitialized(true);
-        } else {
-            setInitialized(true);
-        }
+        }).catch(() => setInitialized(true));
+        console.log("navi");
         navigate("/");
-
-    }, [isSuccess]);
+    }, []);
 
     useEffect(() => {
-        if (!isFetching) {
+        if (!isFetching && isFetched) {
             if (user?.success && user?.user) {
-                setUserData(user?.user);
+                setUserData(user.user);
+                mutateRelevance({tg_id: initData?.user?.id.toString() ?? "test"});
             }
         }
-    }, [isFetching]);
+        // console.log("navi");
+    }, [isFetching, isFetched]);
 
-    useEffect(() => {
-        if (userData) {
-            mutateRelevance({tg_id: initData?.user?.id.toString() ?? "test"});
-        }
-    }, [userData]);
+    // useEffect(() => {
+    //     if (!isFetched) {
+    //         if (user?.success && user?.user) {
+    //             setUserData(user?.user);
+    //         }
+    //     }
+    // }, [isFetched]);
+
+    // useEffect(() => {
+    //     if (userData) {
+    //
+    //     }
+    // }, [userData]);
 
     useEffect(() => {
         if (userRelevance) {
             setUsersRelevance(userRelevance.feed);
+            setIsLoggedIn(true);
+            console.log("user");
+            setInitialized(true);
+            navigate("/");
         }
     }, [userRelevance]);
 
     return (
         <UserContext.Provider value={{
             isInitialized,
+            isLoggedIn,
             userData,
             usersRelevance,
             mutateRelevance,

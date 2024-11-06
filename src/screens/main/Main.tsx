@@ -34,22 +34,12 @@ function Main() {
         color: "",
         isActive: false
     });
-    const [hashTags, setHashTags] = useState<string[]>([]);
     const [isOpenFilter, setOpenFilter] = useState<boolean>(false);
     const [currentIndex, setCurrentIndex] = useState<number>(0);
 
     const {data: form} = useFetchForms();
 
     const currentItem: { relevance: number; user: User } | undefined = usersRelevance?.[currentIndex];
-
-
-    useEffect(() => {
-        if (currentItem && userData) {
-            const hashTagsConcat = [...userData.business_models, ...userData.geography, ...userData.industries, ...userData.project_stages, ...userData.user_types];
-            setHashTags(hashTagsConcat);
-        }
-
-    }, [currentItem]);
 
 
     useEffect(() => {
@@ -114,18 +104,18 @@ function Main() {
                     <div className="iconContainer">
                         <MemoLogoIcon fill={"#FFFFFF"} stroke={"#FFFFFF"}/>
                     </div>
-                    {usersRelevance.length > 0 ? <div className={classes.scrollContainer}>
+                    {currentItem && <div className={classes.scrollContainer}>
                         <div className={classes.name}
                              style={{fontSize: responseFontSize(48), lineHeight: responseFontSize(45)}}>
                             {currentItem?.user.name}
                         </div>
                         <div style={{display: "flex", justifyContent: "center", flexWrap: "wrap", gap: 3}}>
-                            {hashTags.map((item, index) => (
+                            {Object.values(userData?.hashtags ?? {}).flat().map((item, index) => (
                                 <div key={index} className="hashButton"
                                      style={{backgroundColor: "#286EF2"}}>#{item}</div>
                             ))}
                         </div>
-                        {hashTags?.some(tag => tag.toLowerCase() === "founder") && <div>
+                        {userData?.user_types.some(tag => tag.toLowerCase() === "founder") && <div>
                             <div style={{
                                 color: "#FFFFFF",
                                 fontSize: responseFontSize(24),
@@ -138,7 +128,7 @@ function Main() {
                                 <div
                                     style={{
                                         position: "absolute",
-                                        width: `${Number(currentItem?.user.donuts.current_amount) / Number(currentItem?.user.donuts.purpose_amount) * 100}%`,
+                                        width: Number(currentItem?.user.donuts.current_amount) <= Number(currentItem?.user.donuts.purpose_amount) ? `${Number(currentItem?.user.donuts.current_amount) / Number(currentItem?.user.donuts.purpose_amount) * 100}%` : "100%",
                                         top: 0,
                                         left: 0,
                                         bottom: 0,
@@ -163,13 +153,14 @@ function Main() {
                             </div>
                             <div>{currentItem?.user.description}</div>
                         </div>
-                    </div> : <div style={{
-                        width: "100%",
-                        height: "100%",
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center"
-                    }}>Nothing was found</div>}
+                    </div>}
+                    {/*: <div style={{*/}
+                    {/*    width: "100%",*/}
+                    {/*    height: "100%",*/}
+                    {/*    display: "flex",*/}
+                    {/*    justifyContent: "center",*/}
+                    {/*    alignItems: "center"*/}
+                    {/*}}>Nothing was found</div>}*/}
                 </div>
                 <div style={{position: "absolute", width: "100%", bottom: 19}}>
                     {open.isActive && <Tooltip title={open.title} text={open.text}
@@ -196,7 +187,7 @@ function Main() {
                                  onSetLike={handleSetLike}/>}
                 </div>
             </div>
-            <Filter isOpen={isOpenFilter} onClose={() => setOpenFilter(false)} form={form}
+            <Filter isOpen={isOpenFilter} onClose={() => setOpenFilter(false)} form={form?.data}
                     apply={data => {
                         mutateRelevance({tg_id: initData?.user?.id.toString() ?? "test", ...data});
                         setOpenFilter(false);

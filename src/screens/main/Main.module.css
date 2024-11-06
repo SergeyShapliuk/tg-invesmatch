@@ -11,7 +11,7 @@
 
 }
 
-.blurContainer{
+.blurContainer {
     /*position: relative;*/
     width: 100%;
     height: 100%;
@@ -51,6 +51,7 @@
 /*}*/
 
 .name {
+    width: 100%;
     color: white;
     font-weight: 500;
     /*font-size: 48px;*/
@@ -58,6 +59,8 @@
     letter-spacing: -0.03em;
     padding: 10px 36px 0 36px;
     text-align: center;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
 .donats {

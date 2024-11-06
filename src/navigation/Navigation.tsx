@@ -18,19 +18,19 @@ import {override} from "../App";
 
 function Navigation() {
     const location = useLocation();
-    const {isInitialized, userData} = useUserData();
+    const {isInitialized, isLoggedIn} = useUserData();
     const isShowNavBar = ["/"].includes(location.pathname);
 
     const includeStyle = ["/chat/menu", "/chat/likes"].includes(location.pathname);
-
+    console.log("isLoggedIn", isLoggedIn);
+    console.log("isInitialized", isInitialized);
     if (!isInitialized) return <FadeLoader color={"rgb(49,125,148)"} cssOverride={override} loading={!isInitialized}/>;
     return (
         <div className={!isShowNavBar ? classes.main : undefined}
              style={includeStyle ? {paddingTop: "1em"} : undefined}>
-
-            {!userData ? (
+            {!isLoggedIn ? (
                 <Routes>
-                    <Route path="/" element={<OnBoarding/>}/>
+                    <Route index element={<OnBoarding/>}/>
                     <Route path="/chat">
                         <Route path="" element={<Navigate to="create"/>}/>
                         <Route path="create"
@@ -48,7 +48,7 @@ function Navigation() {
                 </Routes>
             ) : (
                 <Routes>
-                    <Route path="/" element={<Navigate to="/main"/>}/>
+                    <Route index element={<Navigate to="/main"/>}/>
                     <Route path="/chat">
                         <Route path="" element={<Navigate to="search"/>}/>
                         <Route path="search" element={<SearchMatches/>}/>

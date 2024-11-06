@@ -10,6 +10,7 @@ export const useFetchUser = (tg_id: string): QueryObserverResult<UserData, any> 
             return data;
         },
         queryKey: ["get-user"],
-        retry: 2
+        retry: 2,
+        enabled: false
     });
 };

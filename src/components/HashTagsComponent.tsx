@@ -10,12 +10,16 @@ interface HashTagsComponentProps {
 
 function HashTagsComponent({label, hashTags, value, onChange}: HashTagsComponentProps) {
     const {responseFontSize} = useScreenSize();
-
     const handleTagClick = (tag: string) => {
-        if (value && value.includes(tag)) {
-            onChange(value.filter(item => item !== tag)); // Убираем тег, если он уже выбран
+        const lowercaseTag = tag.toLowerCase();
+        if (lowercaseTag === "founder" || lowercaseTag === "investor") {
+            onChange(value.includes(tag) ? [] : [tag]);
         } else {
-            onChange([...value, tag]); // Добавляем тег
+            if (value.includes(tag)) {
+                onChange(value.filter(item => item !== tag));
+            } else {
+                onChange([...value, tag]);
+            }
         }
     };
     // console.log('hashhhhhh',hashTags);

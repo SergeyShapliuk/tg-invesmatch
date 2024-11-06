@@ -2,9 +2,10 @@ import classes from "./Profile.module.css";
 import {useScreenSize} from "../../common/context/ScreenSizeProvider";
 import MemoLogoIcon from "../../components/svg/LogoIcon";
 import {useUserData} from "../../common/context/UserProvider";
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import UpdateProfile from "./update/UpdateProfile";
 import {useFetchForms} from "../../api/hooks/useFetchForms";
+
 
 // const entities: { companyName: string, description: string, hashTags?: string[] } = {
 //     companyName: "Company name",
@@ -19,7 +20,6 @@ function Profile() {
 
     const {data: form} = useFetchForms();
 
-    const [hashTags, setHashTags] = useState<string[]>([]);
     const [openUpdate, setOpenUpdate] = useState<boolean>(false);
 
 
@@ -37,18 +37,7 @@ function Profile() {
     //     }
     //
     // }, [userData]);
-    useEffect(() => {
-        if (userData) {
-            const hashTagsConcat = [...userData.business_models, ...userData.geography, ...userData.industries, ...userData.project_stages, ...userData.user_types];
-            setHashTags(hashTagsConcat);
-        }
 
-    }, [userData]);
-
-
-    console.log("hashTags", userData);
-    console.log("hashTags", hashTags?.includes("founder"));
-    console.log("hashTags", hashTags?.includes("founder"));
 
     return (
         <>
@@ -56,18 +45,18 @@ function Profile() {
                 <div className="iconContainer">
                     <MemoLogoIcon fill={"#FFFFFF"} stroke={"#FFFFFF"}/>
                 </div>
-                <div className={classes.scrollContainer}>
+                {userData && <div className={classes.scrollContainer}>
                     <div className={classes.name}
                          style={{fontSize: responseFontSize(48), lineHeight: responseFontSize(45)}}>
                         {userData?.name}
                     </div>
                     <div style={{display: "flex", justifyContent: "center", flexWrap: "wrap", gap: 3}}>
-                        {hashTags.map((item, index) => (
+                        {Object.values(userData.hashtags ?? {}).flat().map((item, index) => (
                             <div key={index} className="hashButton"
                                  style={{backgroundColor: "#286EF2"}}>#{item}</div>
                         ))}
                     </div>
-                    {hashTags?.some(tag => tag.toLowerCase() === "founder") && <div>
+                    {userData?.user_types.some(tag => tag.toLowerCase() === "founder") && <div>
                         <div style={{
                             color: "#FFFFFF",
                             fontSize: responseFontSize(24),
@@ -105,7 +94,7 @@ function Profile() {
                         </div>
                         <div>{userData?.description}</div>
                     </div>
-                </div>
+                </div>}
                 <div className={classes.buttonContainer}>
                     <button type={"submit"} name={"submit"} onClick={() => setOpenUpdate(true)}
                             className="footerButton">Change
@@ -113,7 +102,7 @@ function Profile() {
                     </button>
                 </div>
             </div>
-            <UpdateProfile isOpen={openUpdate} onClose={() => setOpenUpdate(false)} form={form} />
+            <UpdateProfile isOpen={openUpdate} onClose={() => setOpenUpdate(false)} form={form?.data}/>
         </>
     );
 }

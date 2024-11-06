@@ -1,4 +1,10 @@
-export type GetForm = {
+export type GetFormData = {
+    success: boolean;
+    message: string;
+    data: Form[];
+}
+
+export type Form = {
     custom_values: [],
     type: string,
     type_id: number,
@@ -75,6 +81,7 @@ export type User = {
     description: string;
     photos: any[];
     donuts: Donuts;
+    hashtags?: string[];
 }
 
 export type UserWithRelevance = {

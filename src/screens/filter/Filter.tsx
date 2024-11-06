@@ -2,7 +2,7 @@ import classes from "./Filter.module.css";
 import {useScreenSize} from "../../common/context/ScreenSizeProvider";
 import {Controller, SubmitHandler, useForm} from "react-hook-form";
 import {Sheet} from "react-modal-sheet";
-import {GetForm} from "../../types/types";
+import {Form} from "../../types/types";
 import HashTagsComponent from "../../components/HashTagsComponent";
 
 
@@ -12,7 +12,7 @@ function Filter({
                     form,
                     apply
                 }: {
-    isOpen: boolean, onClose: () => void, form: GetForm[] | undefined, apply: (data: {
+    isOpen: boolean, onClose: () => void, form: Form[] | undefined, apply: (data: {
         business_models?: string[];
         description?: string;
         geography?: string[];
@@ -33,7 +33,7 @@ function Filter({
 
     const onSubmit: SubmitHandler<{ user_types: string[]; project_stages: string[]; geography: string[]; industries: string[]; business_models: string[] }> = (data) => apply(data);
 
-    // console.log(form);
+    console.log('filter',form);
     return (
 
         <Sheet isOpen={isOpen} onClose={onClose} disableDrag style={{}}>

@@ -1,9 +1,9 @@
 import {QueryObserverResult, useQuery} from "@tanstack/react-query";
 import {api} from "../api";
-import {GetForm} from "../../types/types";
+import {GetFormData} from "../../types/types";
 
 
-export const useFetchForms = (): QueryObserverResult<GetForm[], any> => {
+export const useFetchForms = (): QueryObserverResult<GetFormData, any> => {
     return useQuery({
         queryFn: async () => {
             const {data} = await api.getForms();

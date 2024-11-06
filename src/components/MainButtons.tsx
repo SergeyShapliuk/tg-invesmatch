@@ -35,7 +35,7 @@ function MainButtons({onPrevious, onLogo, logoPercent, onCoin, onSetDislike, onS
                 alignItems: "center"
             }}>
                 <MemoLogoIcon fill={"#286EF2"} stroke={"#286EF2"}/>
-                <div style={{position: "absolute", color: "black"}}>{logoPercent}%</div>
+                <div style={{position: "absolute", color: "black"}}>{parseInt(logoPercent)}%</div>
 
             </div>
             <div onClick={onCoin} style={{
