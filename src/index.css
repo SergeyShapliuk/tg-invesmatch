@@ -169,3 +169,20 @@ button {
     filter: blur(5px); /* Размытие */
     /*z-index: 2; !* Поместить под контентом *!*/
 }
+
+select {
+    color: #FFFFFF;
+    background-color: transparent;
+    border: none;
+    outline: none;
+}
+
+option {
+    color: #FFFFFF; /* Цвет текста для опций */
+    background-color: #000000; /* Цвет фона для опций */
+}
+
+/*option:root {*/
+/*    background-color: #555555; !* Фон для выбранного элемента *!*/
+/*    color: #00FF00; !* Цвет текста для выбранного элемента *!*/
+/*}*/

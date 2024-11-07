@@ -6,6 +6,7 @@ import {initInitData} from "@telegram-apps/sdk-react";
 import {useState} from "react";
 import {User} from "../../types/types";
 import LikeCard from "./LikeCard";
+import {useNavigate} from "react-router-dom";
 
 // const list = [
 //     {title: "Tap-Table", nick: "@kjkljlk"},
@@ -21,6 +22,7 @@ import LikeCard from "./LikeCard";
 
 function ListLikes() {
     const initData = initInitData();
+    const navigate = useNavigate();
     const {responseFontSize} = useScreenSize();
 
     const [cardData, setCardData] = useState<User | null>(null);
@@ -31,6 +33,20 @@ function ListLikes() {
     return (
         <>
             <div className={classes.container}>
+                <div onClick={() => navigate(-1)} style={{
+                    width: 29,
+                    height: 29,
+                    minHeight: 29,
+                    minWidth: 29,
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    backgroundColor: "rgba(255,255,255,0.3)",
+                    borderRadius: 50,
+                    boxSizing: "border-box"
+                }}>
+                    <MemoArrowIcon stroke={"#FFFFFF"}/>
+                </div>
                 <div className={classes.title}
                      style={{fontSize: responseFontSize(49), lineHeight: responseFontSize(49)}}>
                     Likes

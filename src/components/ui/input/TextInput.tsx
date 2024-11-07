@@ -1,24 +1,32 @@
+import * as React from "react";
 import {forwardRef} from "react";
 import {useScreenSize} from "../../../common/context/ScreenSizeProvider";
 import {ControllerRenderProps} from "react-hook-form";
 
 
+
 interface TextInputProps extends ControllerRenderProps {
     name: string;
     label: string;
-    fieldsError: string[];
+    // fieldsError: string[];
 }
 
 const TextInput = forwardRef<HTMLInputElement, TextInputProps>(({
-                                                                    name,
+                                                                    // name,
                                                                     label,
                                                                     value,
                                                                     onChange,
                                                                     onBlur,
-                                                                    fieldsError
+                                                                    // fieldsError
                                                                 }, ref) => {
     const {responseFontSize} = useScreenSize();
 
+    const handleFocus = (e:React.FocusEvent<HTMLInputElement>) => {
+        const target = e.target;  // Элемент, на который был произведен клик или фокус
+        setTimeout(() => {
+            target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 500);
+    };
     // console.log("TextInputPropserror", fieldsError);
     // console.log("TextInputPropserror2", label, valid);
 
@@ -31,13 +39,14 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>(({
                 lineHeight: responseFontSize(31),
                 letterSpacing: -0.04
             }}>{label}</label>
-            {fieldsError.length === 0 || fieldsError.find(f => f === name) ?
+            {/*{fieldsError.length === 0 || fieldsError.find(f => f === name) ?*/}
                 <input
                     ref={ref}
                     placeholder="Enter the text"
                     value={value}          // Передается через Controller
                     onChange={onChange}    // Передается через Controller
                     onBlur={onBlur}
+                    onFocus={handleFocus}
                     style={{
                         width: "100%",
                         color: "#FFFFFF",
@@ -51,12 +60,13 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>(({
                         borderRadius: "7px",
                         padding: "10px",
                         outline: "none"
-                    }}/> :
-                <div style={{
-                    width: "100%",
-                    color: "#FFFFFF",
-                    padding: "10px"
-                }}>{value}</div>}
+                    }}/>
+            {/*:*/}
+            {/*    <div style={{*/}
+            {/*        width: "100%",*/}
+            {/*        color: "#FFFFFF",*/}
+            {/*        padding: "10px"*/}
+            {/*    }}>{value}</div>}*/}
         </div>
     );
 });

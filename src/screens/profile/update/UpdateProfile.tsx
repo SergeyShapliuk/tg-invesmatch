@@ -1,7 +1,7 @@
 import classes from "./UpdateProfile.module.css";
 import {Controller, SubmitHandler, useForm} from "react-hook-form";
 import {Sheet} from "react-modal-sheet";
-import {Donuts, Form, UpdateVariables, User} from "../../../types/types";
+import {Form, UpdateVariables, User} from "../../../types/types";
 import {useScreenSize} from "../../../common/context/ScreenSizeProvider";
 import TextInput from "../../../components/ui/input/TextInput";
 import TextArea from "../../../components/ui/input/TextArea";
@@ -10,6 +10,8 @@ import {useUpdateUser} from "../../../api/hooks/useUpdateUser";
 import {initInitData} from "@telegram-apps/sdk-react";
 import {useUserData} from "../../../common/context/UserProvider";
 import {useEffect} from "react";
+import {useFetchCurrency} from "../../../api/hooks/useFetchCurrency";
+import Donuts from "../../../components/ui/donuts/Donuts";
 
 
 function UpdateProfile({
@@ -24,6 +26,7 @@ function UpdateProfile({
     const {refetchUserData} = useUserData();
     const {userData} = useUserData();
     const {mutate, isSuccess} = useUpdateUser();
+    const {data: currency} = useFetchCurrency();
 
     const {
         handleSubmit,
@@ -40,7 +43,13 @@ function UpdateProfile({
         }
     }, [isSuccess]);
 
-    const onSubmit: SubmitHandler<{ user_types?: string[]; project_stages?: string[]; geography?: string[]; industries?: string[]; business_models?: string[]; donuts?: Donuts }> = (data) => {
+    const onSubmit: SubmitHandler<{
+        user_types?: string[]; project_stages?: string[]; geography?: string[]; industries?: string[]; business_models?: string[]; donuts?: {
+            current_amount: string;
+            purpose_amount: string;
+            currency_id: string;
+        }
+    }> = (data) => {
         const filteredBody = Object.fromEntries(
             Object.entries(data).filter(([_, value]) => value)
         );
@@ -98,20 +107,18 @@ function UpdateProfile({
                                 case "input":
                                     return (
                                         <Controller key={index} name={entity.type_value} control={control}
-                                                    defaultValue={""}
+                                                    defaultValue={(userData && userData[entity.type_value as keyof User]) || ""}
                                                     render={({field: {name, ...restField}}) => <TextInput
                                                         name={name}
                                                         label={entity.type_title}
-                                                        fieldsError={[]}
                                                         {...restField}/>}/>);
                                 case "textarea":
                                     return (
                                         <Controller key={index} name={entity.type_value} control={control}
-                                                    defaultValue={""}
+                                                    defaultValue={(userData && userData[entity.type_value as keyof User]) || ""}
                                                     render={({field: {name, ...restField}}) => <TextArea
                                                         name={name}
                                                         label={entity.type_title}
-                                                        fieldsError={[]}
                                                         {...restField}/>}/>);
                                 case "hashtag":
                                     return (
@@ -122,6 +129,16 @@ function UpdateProfile({
                                                         value={field.value || (userData && userData[entity.type_value as keyof User]) || []} // подключение значений к компоненту
                                                         onChange={field.onChange}
                                                     />}/>);
+                                case "donuts":
+                                    return (
+                                        <Controller key={index} name={entity.type_value} control={control}
+                                                    render={({field: {name, ...restField}}) => <Donuts
+                                                        name={name}
+                                                        label={entity.type_title}
+                                                        currency={currency?.data}
+                                                        purposeValue={(userData && parseInt(userData.donuts["purpose_amount"]).toString(0))}
+                                                        currencyValue={(userData && userData.donuts["currency_id"])}
+                                                        {...restField}/>}/>);
                                 default:
                                     return null;
                             }

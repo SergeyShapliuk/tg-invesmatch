@@ -1,11 +1,27 @@
 import {axiosInstanceApi} from "./instanceApi";
 import {AxiosResponse} from "axios";
-import {GetFormData, Likes, Matches, RegisterVariables, UpdateVariables, UserData} from "../types/types";
+import {
+    GetCurrencyData,
+    GetFormData,
+    Likes,
+    Matches,
+    RegisterVariables,
+    UpdateVariables,
+    UserData
+} from "../types/types";
 
 
 export const api = {
     async getForms() {
         const response = await axiosInstanceApi.get<AxiosResponse<GetFormData>>("getHashTagsAndInputs", {
+            headers: {
+                "Content-Type": "application/json"
+            }
+        });
+        return response;
+    },
+    async getCurrency() {
+        const response = await axiosInstanceApi.get<AxiosResponse<GetCurrencyData>>("getCurrencies", {
             headers: {
                 "Content-Type": "application/json"
             }

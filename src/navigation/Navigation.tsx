@@ -14,12 +14,15 @@ import Main from "../screens/main/Main";
 import {useUserData} from "../common/context/UserProvider";
 import {FadeLoader} from "react-spinners";
 import {override} from "../App";
+import {useKeyboardStatus} from "../common/hooks/useKeyboardStatus";
 
 
 function Navigation() {
     const location = useLocation();
+    const isKeyboardOpen = useKeyboardStatus();
     const {isInitialized, isLoggedIn} = useUserData();
     const isShowNavBar = ["/"].includes(location.pathname);
+
 
     const includeStyle = ["/chat/menu", "/chat/likes"].includes(location.pathname);
     console.log("isLoggedIn", isLoggedIn);
@@ -27,7 +30,7 @@ function Navigation() {
     if (!isInitialized) return <FadeLoader color={"rgb(49,125,148)"} cssOverride={override} loading={!isInitialized}/>;
     return (
         <div className={!isShowNavBar ? classes.main : undefined}
-             style={includeStyle ? {paddingTop: "1em"} : undefined}>
+             style={{paddingTop: includeStyle ? "1em" : undefined, paddingBottom: isKeyboardOpen ? 0 : undefined}}>
             {!isLoggedIn ? (
                 <Routes>
                     <Route index element={<OnBoarding/>}/>

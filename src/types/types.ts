@@ -14,6 +14,19 @@ export type Form = {
 
 }
 
+export type GetCurrencyData = {
+    success: boolean;
+    message: string;
+    data: Currency[];
+}
+
+export type Currency = {
+    created_at: string;
+    currency: string;
+    id: number;
+    updated_at: string;
+}
+
 export type RegisterVariables = {
     tg_id: string;
     tg_nick: string;
@@ -28,10 +41,10 @@ export type RegisterVariables = {
     project_stages: string[];
     user_types: string[];
     wallet: string;
-    founder_donuts: {
-        current_amount: number,
-        purpose_amount: number,
-        currency_id: number
+    donuts: {
+        current_amount: number;
+        purpose_amount: string;
+        currency_id: string;
     }
 }
 
@@ -93,7 +106,7 @@ export type UserWithRelevance = {
 export type Donuts = {
     current_amount: string;
     purpose_amount: string;
-    currency: string;
+    currency_id: string;
 }
 
 export type Matches = {

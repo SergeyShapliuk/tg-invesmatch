@@ -12,6 +12,9 @@ import {FadeLoader} from "react-spinners";
 import {override} from "../../../App";
 import {RegisterVariables} from "../../../types/types";
 import {useUserData} from "../../../common/context/UserProvider";
+import Donuts from "../../../components/ui/donuts/Donuts";
+import {useFetchCurrency} from "../../../api/hooks/useFetchCurrency";
+
 
 
 // const entities: { action: string, label: string, hashTags?: string[] }[] = [
@@ -34,17 +37,24 @@ function SaveProfile() {
     const initData = initInitData();
     const {refetchUserData} = useUserData();
     const {data: form, isSuccess} = useFetchForms();
+    const {data: currency, isSuccess: isSuccessCurrency} = useFetchCurrency();
     const {mutate, data: register} = useRegister();
     const {
         handleSubmit,
         control,
         reset,
+        watch,
         formState: {errors, isSubmitted}
     } = useForm<any>();
     console.log("initData", initData?.user);
     console.log("isSuccess", isSuccess);
     console.log("isSuccess", form?.data);
     console.log("register", register);
+    console.log("currency", watch());
+    console.log("errors", errors);
+    // const w = watch("user_types" as any);
+    // console.log("watch", w.includes("Founder" | "founder"));
+
     const [fieldsError, setFieldsError] = useState<string[]>([]);
 
     useEffect(() => {
@@ -54,7 +64,16 @@ function SaveProfile() {
         }
     }, [register]);
 
-    const onSubmit: SubmitHandler<{ wallet: string; user_types: string[]; description: string; project_stages: string[]; geography: string[]; industries: string[]; name: string; business_models: string[]; founder_donuts: { current_amount: number; purpose_amount: number; currency_id: number } }> = (data) => {
+    useEffect(() => {
+        if (Object.keys(errors).length > 0) {
+            setFieldsError(Object.keys(errors))
+        }
+    }, [errors]);
+
+    console.log("fieldsError", fieldsError);
+
+
+    const onSubmit: SubmitHandler<{ wallet: string; user_types: string[]; description: string; project_stages: string[]; geography: string[]; industries: string[]; name: string; business_models: string[]; donuts: { purpose_amount: string; currency_id: string } }> = (data) => {
         const body: RegisterVariables = {
             tg_id: initData?.user?.id.toString() ?? "",
             tg_nick: initData?.user?.username ?? "",
@@ -69,45 +88,47 @@ function SaveProfile() {
             project_stages: data.project_stages,
             user_types: data.user_types,
             wallet: data.wallet,
-            founder_donuts: {
-                current_amount: 45,
-                purpose_amount: 45,
-                currency_id: 2
+            donuts: {
+                current_amount: 0,
+                purpose_amount: data?.donuts?.purpose_amount ?? "",
+                currency_id: data?.donuts?.currency_id ?? "2"
             }
         };
-        // console.log("datas", data);
+        console.log("datas", data);
         mutate(body);
         reset();
     };
     const onClickSubmit = () => setFieldsError(Object.keys(errors));
+
+
     // console.log("errors:", Object.keys(errors).length);
     // console.log("errors2:", Object.keys(errors).find(f => f === "Business model"));
     // console.log("isSubmit:", fieldsError);
     // console.log("getforms:", form);
-    // console.log("errors:", errors);
     // if (isSuccess) return <FadeLoader color={"rgb(49,125,148)"} cssOverride={override} loading={isSuccess}/>;
     return (
         <div className={classes.container}>
             <div className="iconContainer">
                 <MemoLogoIcon fill={"#FFFFFF"} stroke={"#FFFFFF"}/>
             </div>
-            {!isSuccess ? <FadeLoader color={"rgb(49,125,148)"} cssOverride={override} loading={!isSuccess}/> :
+            {!isSuccess && !isSuccessCurrency ?
+                <FadeLoader color={"rgb(49,125,148)"} cssOverride={override} loading={!isSuccess}/> :
                 <>
                     <div className={classes.nick}>
                         {initData?.user?.username ?? ""}
                     </div>
-                    <form onSubmit={handleSubmit(onSubmit)} className={classes.entitiesContainer}>
+                    <form id="form" onSubmit={handleSubmit(onSubmit)} className={classes.entitiesContainer}>
                         {form?.data && form?.data?.map((entity, index) => {
                             switch (entity.type) {
                                 case "input":
                                     return (
                                         <Controller key={index} name={entity.type_value} control={control}
                                                     defaultValue={""}
-                                                    rules={{required: true}}
+                                                    rules={{required: entity.type_value !== "wallet"}}
                                                     render={({field: {name, ...restField}}) => <TextInput
                                                         name={name}
                                                         label={entity.type_title}
-                                                        fieldsError={fieldsError}
+                                                        // fieldsError={fieldsError}
                                                         {...restField}/>}/>);
                                 case "textarea":
                                     return (
@@ -117,7 +138,7 @@ function SaveProfile() {
                                                     render={({field: {name, ...restField}}) => <TextArea
                                                         name={name}
                                                         label={entity.type_title}
-                                                        fieldsError={fieldsError}
+                                                        // fieldsError={fieldsError}
                                                         {...restField}/>}/>);
                                 case "hashtag":
                                     return (
@@ -128,6 +149,14 @@ function SaveProfile() {
                                                                                             value={field.value || []} // подключение значений к компоненту
                                                                                             onChange={field.onChange}
                                                     />}/>);
+                                case "donuts":
+                                    return (
+                                        <Controller key={index} name={entity.type_value} control={control}
+                                                    render={({field: {name, ...restField}}) => <Donuts
+                                                        name={name}
+                                                        label={entity.type_title}
+                                                        currency={currency?.data}
+                                                        {...restField}/>}/>);
                                 default:
                                     return null;
                             }
