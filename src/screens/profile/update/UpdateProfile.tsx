@@ -136,7 +136,7 @@ function UpdateProfile({
                                                         name={name}
                                                         label={entity.type_title}
                                                         currency={currency?.data}
-                                                        purposeValue={(userData && parseInt(userData.donuts["purpose_amount"]).toString(0))}
+                                                        purposeValue={(userData && parseInt(userData.donuts["purpose_amount"]).toString())}
                                                         currencyValue={(userData && userData.donuts["currency_id"])}
                                                         {...restField}/>}/>);
                                 default:
