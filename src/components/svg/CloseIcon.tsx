@@ -1,13 +1,17 @@
 import {SVGProps, memo} from "react";
 
-const CloseIcon = (props: SVGProps<SVGSVGElement>) => (
+interface CloseIconProps extends SVGProps<SVGSVGElement> {
+    backgroundColor?: string;
+}
+
+const CloseIcon = ({backgroundColor, ...props}: CloseIconProps) => (
     <div style={{
         width: "52px",
         height: "52px",
         display: "inline-flex",
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: "#FFFFFF",
+        backgroundColor: backgroundColor,
         borderRadius: 50
     }}>
         <svg

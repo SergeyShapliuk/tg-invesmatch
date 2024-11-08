@@ -71,6 +71,7 @@ button {
     border-style: solid;
     border-color: #FFFFFF;
     background-color: black;
+    z-index: 1;
 }
 
 .footerButton {

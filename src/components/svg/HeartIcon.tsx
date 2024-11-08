@@ -7,7 +7,7 @@ const HeartIcon = (props: SVGProps<SVGSVGElement>) => (
         display: "inline-flex",
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: "#FFFFFF",
+        backgroundColor: props.stroke,
         borderRadius: 50
     }}>
         <svg
@@ -17,7 +17,7 @@ const HeartIcon = (props: SVGProps<SVGSVGElement>) => (
             fill="none"
             {...props}
         >
-            <path fill="#fff" d="M.184 0h27.943v27.943H.184z"/>
+            {/*<path fill="#fff" d="M.184 0h27.943v27.943H.184z"/>*/}
             <path
                 stroke="#1B1F26"
                 strokeLinecap="round"

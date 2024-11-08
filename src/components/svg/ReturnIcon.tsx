@@ -1,13 +1,17 @@
 import {SVGProps, memo} from "react";
 
-const ReturnIcon = (props: SVGProps<SVGSVGElement>) => (
+interface ReturnIconProps extends SVGProps<SVGSVGElement> {
+    backgroundColor?: string;
+}
+
+const ReturnIcon = ({backgroundColor, ...props}: ReturnIconProps) => (
     <div style={{
         width: "46px",
         height: "46px",
         display: "inline-flex",
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: "#FFFFFF",
+        backgroundColor: backgroundColor,
         borderRadius: 50
     }}>
         <svg

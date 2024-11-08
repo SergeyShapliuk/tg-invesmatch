@@ -1,13 +1,17 @@
 import {SVGProps, memo} from "react";
 
-const CoinIcon = (props: SVGProps<SVGSVGElement>) => (
+interface CoinIconProps extends SVGProps<SVGSVGElement> {
+    backgroundColor?: string;
+}
+
+const CoinIcon = ({backgroundColor, ...props}: CoinIconProps) => (
     <div style={{
         width: "52px",
         height: "52px",
         display: "inline-flex",
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: "#FFFFFF",
+        backgroundColor: backgroundColor,
         borderRadius: 50
     }}>
         <svg
