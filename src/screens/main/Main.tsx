@@ -125,7 +125,7 @@ function Main() {
                                 borderRadius: 7,
                                 backgroundColor: "black",
                                 padding: 7,
-                                textDecoration: "none",
+                                textDecoration: "none"
                             }}>
                         <MemoFilterIcon style={{marginTop: 3}}/>
                     </button>
@@ -133,26 +133,34 @@ function Main() {
                         <MemoLogoIcon fill={"#FFFFFF"} stroke={"#FFFFFF"}/>
                     </div>
                     <AnimatePresence initial={false} custom={direction}>
-                        {currentItem && <motion.div  key={currentIndex}
-                                                     custom={direction}
-                                                     variants={variants}
-                                                     initial="enter"
-                                                     animate="center"
-                                                     exit="exit"
-                                                     transition={{ x: { type: "spring", stiffness: 300, damping: 30 }, opacity: { duration: 0.2 } }}
-                                                     drag="x"
-                                                     dragConstraints={{ left: 0, right: 0 }}
-                                                     dragElastic={1}
-                                                     onDragEnd={(_, { offset, velocity }) => {
-                                                         const swipe = swipePower(offset.x, velocity.x);
+                        {currentItem && <motion.div key={currentIndex}
+                                                    custom={direction}
+                                                    variants={variants}
+                                                    initial="enter"
+                                                    animate="center"
+                                                    exit="exit"
+                                                    transition={{
+                                                        x: {type: "spring", stiffness: 300, damping: 30},
+                                                        opacity: {duration: 0.2}
+                                                    }}
+                                                    drag="x"
+                                                    dragConstraints={{left: 0, right: 0}}
+                                                    dragElastic={1}
+                                                    onDragEnd={(_, {offset, velocity}) => {
+                                                        const swipe = swipePower(offset.x, velocity.x);
 
-                                                         if (swipe < -swipeConfidenceThreshold) {
-                                                             handleNext();
-                                                         } else if (swipe > swipeConfidenceThreshold) {
-                                                             handlePrevious();
-                                                         }
-                                                     }}
-                                                     className={classes.scrollContainer}>
+                                                        if (swipe < -swipeConfidenceThreshold) {
+                                                            handleSetLike();
+                                                        } else if (swipe > swipeConfidenceThreshold) {
+                                                            setDislike({
+                                                                tg_id: initData?.user?.id.toString() ?? "test",
+                                                                tg_id_what_i_liked: currentItem?.user?.tg_id ?? "test"
+                                                            });
+                                                            setDirection(-1);
+                                                            setCurrentIndex((prevIndex) => prevIndex + 1);
+                                                        }
+                                                    }}
+                                                    className={classes.scrollContainer}>
                             <div className={classes.name}
                                  style={{fontSize: responseFontSize(48), lineHeight: responseFontSize(45)}}>
                                 {currentItem?.user.name}
