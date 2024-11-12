@@ -40,11 +40,11 @@ export type RegisterVariables = {
     name: string;
     project_stages: string[];
     user_types: string[];
-    wallet: string;
-    donuts: {
+    wallet?: string;
+    donuts?: {
         current_amount: number;
         purpose_amount: string;
-        currency_id: string;
+        currency: string;
     }
 }
 
@@ -106,7 +106,7 @@ export type UserWithRelevance = {
 export type Donuts = {
     current_amount: string;
     purpose_amount: string;
-    currency_id: string;
+    currency: string;
 }
 
 export type Matches = {

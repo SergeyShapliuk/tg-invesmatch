@@ -31,8 +31,14 @@ function UpdateProfile({
     const {
         handleSubmit,
         control,
-        reset
+        reset,
+        watch
     } = useForm<any>();
+    console.log("watch", watch());
+
+    const isUserDataFounder = !watch("user_types" as any) && userData?.user_types?.some(tag => tag.toLowerCase() === "founder");
+    const isWatchUserTypesFounder = watch("user_types" as any)?.length > 0 &&
+        (watch("user_types" as any) as string[]).some(tag => tag.toLowerCase() === "founder");
 
     useEffect(() => {
         if (isSuccess) {
@@ -47,12 +53,16 @@ function UpdateProfile({
         user_types?: string[]; project_stages?: string[]; geography?: string[]; industries?: string[]; business_models?: string[]; donuts?: {
             current_amount: string;
             purpose_amount: string;
-            currency_id: string;
+            currency: string;
         }
     }> = (data) => {
         const filteredBody = Object.fromEntries(
             Object.entries(data).filter(([_, value]) => value)
         );
+        // const hasFounder = data.user_types?.some(type => type.toLowerCase() === "founder");
+        // console.log("hasFounder", hasFounder);
+        // console.log("data.user_types", data.user_types);
+        // console.log("filteredBody", filteredBody);
         const body: UpdateVariables = {
             tg_id: initData?.user?.id.toString() ?? "", ...filteredBody
         };
@@ -131,14 +141,15 @@ function UpdateProfile({
                                                     />}/>);
                                 case "donuts":
                                     return (
-                                        <Controller key={index} name={entity.type_value} control={control}
-                                                    render={({field: {name, ...restField}}) => <Donuts
-                                                        name={name}
-                                                        label={entity.type_title}
-                                                        currency={currency?.data}
-                                                        purposeValue={(userData && parseInt(userData.donuts["purpose_amount"]).toString())}
-                                                        currencyValue={(userData && userData.donuts["currency_id"])}
-                                                        {...restField}/>}/>);
+                                        isUserDataFounder || isWatchUserTypesFounder ?
+                                            <Controller key={index} name={entity.type_value} control={control}
+                                                        render={({field: {name, ...restField}}) => <Donuts
+                                                            name={name}
+                                                            label={entity.type_title}
+                                                            currency={currency?.data}
+                                                            purposeValue={(userData && parseInt(userData.donuts["purpose_amount"]).toString())}
+                                                            currencyValue={(userData && userData.donuts["currency"])}
+                                                            {...restField}/>}/> : null);
                                 default:
                                     return null;
                             }

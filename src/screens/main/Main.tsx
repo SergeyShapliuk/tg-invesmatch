@@ -44,6 +44,10 @@ function Main() {
     const currentItem: { relevance: number; user: User } | undefined = usersRelevance?.[currentIndex];
 
 
+    // useEffect(() => {
+    //     mutateRelevance({tg_id: initData?.user?.id.toString() ?? "test"});
+    // }, [isSuccessLike, isSuccessDisLike]);
+
     useEffect(() => {
         return onCloseTooltip();
     }, []);
@@ -68,6 +72,7 @@ function Main() {
             tg_id: initData?.user?.id.toString() ?? "test",
             tg_id_what_i_liked: currentItem?.user?.tg_id ?? "test"
         });
+        mutateRelevance({tg_id: initData?.user?.id.toString() ?? "test"});
         handleNext();
     };
 
@@ -76,6 +81,7 @@ function Main() {
             tg_id: initData?.user?.id.toString() ?? "test",
             tg_id_what_i_liked: currentItem?.user?.tg_id ?? "test"
         });
+        mutateRelevance({tg_id: initData?.user?.id.toString() ?? "test"});
         handleNext();
     };
 
@@ -92,7 +98,7 @@ function Main() {
     const variants = {
         enter: (direction: number) => {
             return {
-                x: direction > 0 ? 1000 : -1000,
+                x: direction > 0 ? 500 : -500,
                 opacity: 0
             };
         },
@@ -104,7 +110,7 @@ function Main() {
         exit: (direction: number) => {
             return {
                 // zIndex: 0,
-                x: direction < 0 ? 1000 : -1000,
+                x: direction < 0 ? 500 : -500,
                 opacity: 0
             };
         }
@@ -156,6 +162,7 @@ function Main() {
                                                                 tg_id: initData?.user?.id.toString() ?? "test",
                                                                 tg_id_what_i_liked: currentItem?.user?.tg_id ?? "test"
                                                             });
+                                                            mutateRelevance({tg_id: initData?.user?.id.toString() ?? "test"});
                                                             setDirection(-1);
                                                             setCurrentIndex((prevIndex) => prevIndex + 1);
                                                         }

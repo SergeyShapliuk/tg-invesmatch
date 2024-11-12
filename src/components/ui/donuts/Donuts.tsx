@@ -1,5 +1,5 @@
 import * as React from "react";
-import {forwardRef, useState} from "react";
+import {forwardRef, useEffect, useState} from "react";
 import {useScreenSize} from "../../../common/context/ScreenSizeProvider";
 import {ControllerRenderProps} from "react-hook-form";
 import {Currency} from "../../../types/types";
@@ -25,13 +25,20 @@ const Donuts = forwardRef<HTMLInputElement, CurrencyProps>(({
     const [amount, setAmount] = useState<string | undefined>(purposeValue);
     const [onCurrency, setOnCurrency] = useState<string | undefined>(currencyValue);
 
+    useEffect(() => {
+        if (!currencyValue && currency && currency?.length > 0) {
+            // setOnCurrency(currency[1].id.toString());
+            onChange({purpose_amount: undefined, currency: currency[0]?.currency});
+        }
+    }, [currency]);
+
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const inputValue = e.target.value;
-        console.log("eeeeee", e);
+        const inputValue = e.target.value.replace(/\D/g, "");
+        // console.log("eeeeee", e);
         // Проверяем, чтобы количество символов не превышало 7
         if (inputValue.length <= 10) {
-            setAmount(e.target.value);
-            onChange({purpose_amount: e.target.value, currency_id: onCurrency}); // Обновляем значение только если длина допустима
+            setAmount(inputValue);
+            onChange({purpose_amount: inputValue, currency: onCurrency}); // Обновляем значение только если длина допустима
         }
     };
 
@@ -44,9 +51,10 @@ const Donuts = forwardRef<HTMLInputElement, CurrencyProps>(({
 
     const handleCurrencyChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         setOnCurrency(e.target.value);
-        onChange({purpose_amount: amount, currency_id: e.target.value});
+        onChange({purpose_amount: amount, currency: e.target.value});
     };
-    // console.log("TextInputPropserror", fieldsError);
+    console.log("currency", currency);
+    console.log("onCurrency", onCurrency);
     // console.log("TextInputPropserror2", label, valid);
 
     return (
@@ -61,7 +69,8 @@ const Donuts = forwardRef<HTMLInputElement, CurrencyProps>(({
             <div style={{display: "flex", flexDirection: "row"}}>
                 <input
                     ref={ref}
-                    type="number"
+                    type="text"
+                    inputMode="numeric"
                     placeholder="Enter donuts"
                     value={amount}          // Передается через Controller
                     onChange={handleInputChange}    // Передается через Controller
@@ -84,7 +93,7 @@ const Donuts = forwardRef<HTMLInputElement, CurrencyProps>(({
 
                 <select value={onCurrency} onChange={handleCurrencyChange}>
                     {currency?.map((item, index) => (
-                        <option key={index} value={item.id}>{item.currency}</option>
+                        <option key={index} value={item.currency}>{item.currency}</option>
                     ))}
                 </select>
             </div>

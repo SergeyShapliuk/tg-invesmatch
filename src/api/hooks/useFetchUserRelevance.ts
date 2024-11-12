@@ -11,7 +11,7 @@ export const useFetchUserRelevance = (): UseMutationResult<any, any, UpdateVaria
         },
         mutationKey: ["get-user-relevance"],
         // enabled: false,
-        retry: 2
+        retry: 2,
         // onError: (error) => {
         //     console.error("Ошибка при запуске таймера:", error);
         // },

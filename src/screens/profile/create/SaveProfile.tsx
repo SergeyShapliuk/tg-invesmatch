@@ -16,7 +16,6 @@ import Donuts from "../../../components/ui/donuts/Donuts";
 import {useFetchCurrency} from "../../../api/hooks/useFetchCurrency";
 
 
-
 // const entities: { action: string, label: string, hashTags?: string[] }[] = [
 //     {action: "input", label: "Name / Сompany names"},
 //     {action: "button", label: "Who are you?", hashTags: ["Founder", "Investor"]},
@@ -50,8 +49,10 @@ function SaveProfile() {
     console.log("isSuccess", isSuccess);
     console.log("isSuccess", form?.data);
     console.log("register", register);
-    console.log("currency", watch());
+    console.log("watch()", watch());
     console.log("errors", errors);
+    console.log("currency", currency);
+    console.log("watch(\"user_types\")", watch("user_types"));
     // const w = watch("user_types" as any);
     // console.log("watch", w.includes("Founder" | "founder"));
 
@@ -66,14 +67,14 @@ function SaveProfile() {
 
     useEffect(() => {
         if (Object.keys(errors).length > 0) {
-            setFieldsError(Object.keys(errors))
+            setFieldsError(Object.keys(errors));
         }
     }, [errors]);
 
     console.log("fieldsError", fieldsError);
 
 
-    const onSubmit: SubmitHandler<{ wallet: string; user_types: string[]; description: string; project_stages: string[]; geography: string[]; industries: string[]; name: string; business_models: string[]; donuts: { purpose_amount: string; currency_id: string } }> = (data) => {
+    const onSubmit: SubmitHandler<{ user_types: string[]; description: string; project_stages: string[]; geography: string[]; industries: string[]; name: string; business_models: string[]; donuts?: { purpose_amount: string; currency: string }; wallet?: string; }> = (data) => {
         const body: RegisterVariables = {
             tg_id: initData?.user?.id.toString() ?? "",
             tg_nick: initData?.user?.username ?? "",
@@ -87,12 +88,16 @@ function SaveProfile() {
             name: data.name,
             project_stages: data.project_stages,
             user_types: data.user_types,
-            wallet: data.wallet,
-            donuts: {
-                current_amount: 0,
-                purpose_amount: data?.donuts?.purpose_amount ?? "",
-                currency_id: data?.donuts?.currency_id ?? "2"
-            }
+            ...(data?.donuts?.purpose_amount && {
+                donuts: {
+                    current_amount: 0,
+                    purpose_amount: data.donuts.purpose_amount,
+                    currency: data.donuts.currency ?? "USD"
+                }
+            }),
+            ...(data?.wallet && {
+                wallet: data.wallet
+            })
         };
         console.log("datas", data);
         mutate(body);
@@ -151,12 +156,13 @@ function SaveProfile() {
                                                     />}/>);
                                 case "donuts":
                                     return (
-                                        <Controller key={index} name={entity.type_value} control={control}
-                                                    render={({field: {name, ...restField}}) => <Donuts
-                                                        name={name}
-                                                        label={entity.type_title}
-                                                        currency={currency?.data}
-                                                        {...restField}/>}/>);
+                                        watch("user_types" as any)?.length > 0 && (watch("user_types" as any) as string[]).some(tag => tag.toLowerCase() === "founder") ?
+                                            <Controller key={index} name={entity.type_value} control={control}
+                                                        render={({field: {name, ...restField}}) => <Donuts
+                                                            name={name}
+                                                            label={entity.type_title}
+                                                            currency={currency?.data}
+                                                            {...restField}/>}/> : null);
                                 default:
                                     return null;
                             }

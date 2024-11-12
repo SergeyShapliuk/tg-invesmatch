@@ -42,6 +42,8 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>(({
             {/*{fieldsError.length === 0 || fieldsError.find(f => f === name) ?*/}
                 <input
                     ref={ref}
+                    type="text"
+                    inputMode="text"
                     placeholder="Enter the text"
                     value={value}          // Передается через Controller
                     onChange={onChange}    // Передается через Controller
