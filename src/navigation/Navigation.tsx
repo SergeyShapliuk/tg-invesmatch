@@ -2,7 +2,6 @@ import {Routes, Route, NavLink, useLocation, Navigate} from "react-router-dom";
 import classes from "./Navigation.module.css";
 import OnBoarding from "../screens/onBoarding/OnBoarding";
 import CreateProfile from "../screens/profile/create/CreateProfile";
-import MemoChatIcon from "../components/svg/ChatIcon";
 import MemoMainIcon from "../components/svg/MainIcon";
 import MemoUserIcon from "../components/svg/UserIcon";
 import SaveProfile from "../screens/profile/create/SaveProfile";
@@ -15,6 +14,9 @@ import {useUserData} from "../common/context/UserProvider";
 import {FadeLoader} from "react-spinners";
 import {override} from "../App";
 import {useKeyboardStatus} from "../common/hooks/useKeyboardStatus";
+import Wallet from "../screens/wallet/Wallet";
+import MemoBellIcon from "../components/svg/BellIcon";
+import MemoWalletIcon from "../components/svg/WalletIcon";
 
 
 function Navigation() {
@@ -48,6 +50,7 @@ function Navigation() {
                         <Route path="create" element={<CreateProfile title="You don't have a profile"/>}/>
                         <Route path="save" element={<SaveProfile/>}/>
                     </Route>
+                    <Route path="/wallet" element={<Wallet/>}/>
                 </Routes>
             ) : (
                 <Routes>
@@ -60,6 +63,7 @@ function Navigation() {
                     </Route>
                     <Route path="/main" element={<Main/>}/>
                     <Route path="/profile" element={<Profile/>}/>
+                    <Route path="/wallet" element={<Wallet/>}/>
                     {/*<Route path="/tasks" element={<Tasks/>}/>*/}
                     {/*<Route path="/friends" element={<Friends/>}/>*/}
                     {/*<Route path="/game/*" element={<GameComponent/>}>*/}
@@ -102,7 +106,7 @@ function NavBar() {
     return (
         <nav className={classes.nav}>
             <NavLink to="/chat">
-                <MemoChatIcon stroke={location.pathname.startsWith("/chat") ? "#000000" : "#00000082"}
+                <MemoBellIcon stroke={location.pathname.startsWith("/chat") ? "#000000" : "#00000082"}
                               opacity={location.pathname.startsWith("/chat") ? 1 : 0.51}/>
                 {/*{location.pathname === "/" &&*/}
                 {/*<span style={textStyle}>Home</span>}*/}
@@ -131,14 +135,11 @@ function NavBar() {
                               opacity={location.pathname.startsWith("/profile") ? 1 : 0.51}/>
                 {/*{location.pathname === "/friends" && <span style={textStyle}>Friends</span>}*/}
             </NavLink>
-            {/*<NavLink to="game" style={({isActive}) => activeStyle(isActive)}>*/}
-            {/*    /!*<MemoGameIcon fill={location.pathname === "/game" ? "#0E1012" : "#434343"}/>*!/*/}
-            {/*    {location.pathname === "/game" && <span style={textStyle}>Game</span>}*/}
-            {/*</NavLink>*/}
-            {/*<NavLink to="profile" style={({isActive}) => activeStyle(isActive)}>*/}
-            {/*    /!*<MemoWalletIcon fill={location.pathname === "/friends" ? "#0E1012" : "#434343"}/>*!/*/}
-            {/*    {location.pathname === "/profile" && <span style={textStyle}>Wallet</span>}*/}
-            {/*</NavLink>*/}
+            <NavLink to="/wallet">
+                <MemoWalletIcon stroke={location.pathname.startsWith("/wallet") ? "#000000" : "#00000082"}
+                              opacity={location.pathname.startsWith("/wallet") ? 1 : 0.51}/>
+                {/*{location.pathname === "/friends" && <span style={textStyle}>Friends</span>}*/}
+            </NavLink>
         </nav>
     );
 }

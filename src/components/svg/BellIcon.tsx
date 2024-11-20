@@ -1,6 +1,6 @@
 import {SVGProps, memo} from "react";
 
-const UserIcon = (props: SVGProps<SVGSVGElement>) => (
+const BellIcon = (props: SVGProps<SVGSVGElement>) => (
     <svg
         xmlns="http://www.w3.org/2000/svg"
         width={37}
@@ -13,9 +13,9 @@ const UserIcon = (props: SVGProps<SVGSVGElement>) => (
             strokeLinecap="round"
             strokeLinejoin="round"
             strokeWidth={3}
-            d="M18.5 16.5a6 6 0 1 0 0-12 6 6 0 0 0 0 12ZM30.5 31.5v-3a6 6 0 0 0-6-6h-12a6 6 0 0 0-6 6v3"
+            d="M27.5 12a9 9 0 1 0-18 0C9.5 22.5 5 25.5 5 25.5h27s-4.5-3-4.5-13.5ZM21.095 31.5a3 3 0 0 1-5.19 0"
         />
     </svg>
 );
-const MemoUserIcon = memo(UserIcon);
-export default MemoUserIcon;
+const MemoBellIcon = memo(BellIcon);
+export default MemoBellIcon;

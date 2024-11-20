@@ -1,14 +1,15 @@
 import MemoReturnIcon from "./svg/ReturnIcon";
 import MemoCloseIcon from "./svg/CloseIcon";
-import MemoLogoIcon from "./svg/LogoIcon";
 import MemoCoinIcon from "./svg/CoinIcon";
 import MemoHeartIcon from "./svg/HeartIcon";
 import {motion} from "framer-motion";
 import {useState} from "react";
+// import {useScreenSize} from "../common/context/ScreenSizeProvider";
 
 type ButtonNames = "coin" | "heart" | "previous" | "dislike";
 
-function MainButtons({onPrevious, onLogo, logoPercent, onCoin, onSetDislike, onSetLike}: any) {
+function MainButtons({onPrevious, onLogo, logoPercent, onCoin, onSetDislike, onSetLike, userType}: any) {
+    // const {responseFontSize} = useScreenSize();
 
     const [isClicked, setIsClicked] = useState<Partial<Record<ButtonNames, boolean>>>({});
 
@@ -19,21 +20,29 @@ function MainButtons({onPrevious, onLogo, logoPercent, onCoin, onSetDislike, onS
     };
     return (
         <div style={{
+            position: "relative",
             width: "100%",
-            // height:'200px',
+            // height:'100%',
             display: "flex",
-            justifyContent: "space-around",
+            justifyContent: "space-between",
             alignItems: "center",
-            // backgroundColor: "#000000",
-            padding: "15px 14px 0 14px"
+            // flexWrap:'wrap',
+            // backgroundColor:'red',
+            borderBottomLeftRadius: "32px",
+            borderBottomRightRadius: "32px",
+            background: "linear-gradient(to bottom, rgba(9, 9, 9, 0), rgba(9, 9, 9, 0.8), rgba(9, 9, 9, 1) 70%)",
+            padding: "150px 14px 24px 14px",
+            pointerEvents: "none",
+            gap: 10,
+            zIndex: 3
         }}>
             <motion.div initial={{opacity: 1, scale: 1}}
                         animate={isClicked["previous"] ? {opacity: .5, scale: .5} : {opacity: 1, scale: 1}}
                         transition={{duration: 0.5}} onClick={() => {
                 handleClick("previous");
                 onPrevious();
-            }}>
-                <MemoReturnIcon backgroundColor={isClicked["previous"] ? "#286EF2" : "#FFFFFF"}/>
+            }} style={{width: "20%", display: "flex", justifyContent: "center", alignItems: "center"}}>
+                <MemoReturnIcon backgroundColor={isClicked["previous"] ? "#286EF2" : "#FFFFFF1F"}/>
             </motion.div>
 
             <motion.div initial={{opacity: 1, scale: 1}}
@@ -41,34 +50,35 @@ function MainButtons({onPrevious, onLogo, logoPercent, onCoin, onSetDislike, onS
                         transition={{duration: 0.5}} onClick={() => {
                 handleClick("dislike");
                 onSetDislike();
-            }}>
-                <MemoCloseIcon backgroundColor={isClicked["dislike"] ? "#286EF2" : "#FFFFFF"}/>
+            }} style={{width: "20%", display: "flex", justifyContent: "center", alignItems: "center"}}>
+                <MemoCloseIcon backgroundColor={isClicked["dislike"] ? "#286EF2" : "#FFFFFF1F"}/>
             </motion.div>
-
-            <div onClick={() => {
-                onLogo();
-            }} style={{
-                position: "relative",
-                display: "inline-flex",
-                justifyContent: "center",
-                alignItems: "center"
-            }}>
-                <MemoLogoIcon fill={"#286EF2"} stroke={"#286EF2"}/>
-                <div style={{position: "absolute", color: "black"}}>{parseInt(logoPercent)}%</div>
-
+            <div style={{width: "20%", display: "flex", justifyContent: "center", alignItems: "center"}}>
+                <div onClick={() => {
+                    onLogo();
+                }} style={{
+                    minWidth: 68,
+                    height: 68,
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    color: "white",
+                    fontSize: 21,
+                    fontWeight: "600",
+                    lineHeight: 41,
+                    borderRadius: "50%",
+                    backgroundColor: "#0062FF"
+                    // padding:responseFontSize(20)
+                }}>{parseInt(logoPercent)}%
+                </div>
             </div>
-            <motion.div initial={{opacity: 1, scale: 1}}
-                        animate={isClicked["coin"] ? {opacity: .5, scale: .5} : {opacity: 1, scale: 1}}
-                        transition={{duration: 0.5}} onClick={() => {
+
+            {userType && <motion.div initial={{opacity: 1, scale: 1}}
+                                     animate={isClicked["coin"] ? {opacity: .5, scale: .5} : {opacity: 1, scale: 1}}
+                                     transition={{duration: 0.5}} onClick={() => {
                 handleClick("coin");
                 onCoin();
-            }} style={{
-                position: "relative",
-                display: "inline-flex",
-                justifyContent: "center",
-                alignItems: "center",
-                zIndex: 2
-            }}>
+            }} style={{width: "20%",display: "flex", justifyContent: "center", alignItems: "center"}}>
                 {/*<Tooltip anchorRef={iconRef} />*/}
                 {/*{true && <div style={{*/}
                 {/*    position: "absolute",*/}
@@ -95,15 +105,20 @@ function MainButtons({onPrevious, onLogo, logoPercent, onCoin, onSetDislike, onS
                 {/*        borderTop: "10px solid #286EF2"*/}
                 {/*    }}/>*/}
                 {/*</div>}*/}
-                <MemoCoinIcon backgroundColor={isClicked["coin"] ? "#286EF2" : "#FFFFFF"}/>
-            </motion.div>
+                <MemoCoinIcon backgroundColor={isClicked["coin"] ? "#286EF2" : "#FFFFFF1F"}/>
+            </motion.div>}
             <motion.div initial={{opacity: 1, scale: 1}}
                         animate={isClicked["heart"] ? {opacity: .5, scale: .5} : {opacity: 1, scale: 1}}
                         transition={{duration: 0.5}} onClick={() => {
                 handleClick("heart");
                 onSetLike();
+            }} style={{
+                width: !userType ? "42.5%" : "20%",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
             }}>
-                <MemoHeartIcon stroke={isClicked["heart"] ? "#286EF2" : "#FFFFFF"}/>
+                <MemoHeartIcon userType={userType} stroke={isClicked["heart"] ? "#286EF2" : "#FFFFFF1F"}/>
             </motion.div>
 
         </div>

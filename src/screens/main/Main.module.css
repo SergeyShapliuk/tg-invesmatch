@@ -4,8 +4,8 @@
     height: 100%;
     /*display: flex;*/
     /*flex-direction: column;*/
-    /*background-color: #000000;*/
-    /*border-radius: 7px;*/
+    background-color: #090909;
+    border-radius: 32px;
     /*padding: 0 0 19px 0;*/
     /*z-index: 0;*/
 
@@ -17,76 +17,77 @@
     height: 100%;
     display: flex;
     flex-direction: column;
-    /*background-color: #000000;*/
-    /*border-radius: 7px;*/
-    padding: 73px 0 0 0;
+    background-image: url("../../assets/main-image.png");
+    background-repeat: no-repeat;
+    background-size: auto;
+
+    /*padding: 20px 24px 0 24px;*/
     /*z-index: 0;*/
 
 }
 
 .scrollContainer {
-    position: absolute;
+    /*position: absolute;*/
     width: 100%;
-    height: 100%;
+    /*height: 100%;*/
     display: flex;
-    bottom: 0;
+    /*bottom: 0;*/
     flex-direction: column;
-    padding-top: 73px;
-    padding-right: 25px;
-    padding-left: 25px;
-    padding-bottom: 100px;
-    background-color: #000000;
-    border-radius: 7px;
+    padding: 20px 24px 200px 24px;
+    /*background-color: #090909;*/
+    /*border-radius: 32px;*/
     /*padding: 0 0 19px 0;*/
-    overflow-x: hidden;
-    overflow-y: auto;
-    gap: 24px;
-    z-index: 0;
+    /*overflow-x: hidden;*/
+    /*overflow-y: auto;*/
+    /*-webkit-overflow-scrolling: touch;*/
+    gap: 20px;
+    /*z-index: 0;*/
 }
 
-/*.iconContainer {*/
-/*    position: absolute;*/
-/*    width: 88px;*/
-/*    height: 88px;*/
-/*    top: -20px;*/
-/*    align-self: center;*/
-/*    border-radius: 7px;*/
-/*    border-width: 3px;*/
-/*    border-style: solid;*/
-/*    border-color: #FFFFFF;*/
-/*    background-color: black;*/
-/*}*/
+.filterContainer {
+    position: absolute;
+    display: flex;
+    top: 12px;
+    right: 12px;
+    gap: 8px;
+}
 
 .name {
-    width: 100%;
+    width: 60%;
     color: white;
-    font-weight: 500;
-    /*font-size: 48px;*/
+    font-weight: 600;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2; /* Показываем максимум две строки */
+    min-height: calc(2 * 1em); /* Минимальная высота для двух строк */
+    /*line-height: 1em; !* Межстрочное расстояние *!*/
+    /*font-size: 38px;*/
     /*line-height: 44px;*/
-    letter-spacing: -0.03em;
-    padding: 10px 36px 0 36px;
-    text-align: center;
+    /*letter-spacing: -0.03em;*/
+    /*padding: 10px 36px 0 36px;*/
+    /*text-align: center;*/
     word-wrap: break-word;
     overflow-wrap: break-word;
+    white-space: pre-wrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .donats {
     position: relative;
     width: 100%;
-    height: 25px;
+    height: 12px;
     display: flex;
     justify-content: center;
     align-items: center;
-    border-radius: 7px;
-    background-color: #FFFFFF;
+    border-radius: 100px;
+    background-color: #1A1A1B;
 }
 
 .donatsText {
-    color: black;
-    font-size: 12px;
-    line-height: 15px;
-    letter-spacing: -0.04em;
-    z-index: 1;
+    color: #EFEFEF;
+    /*letter-spacing: -0.04em;*/
+    /*z-index: 1;*/
 }
 
 .title {
@@ -111,3 +112,4 @@
     justify-content: center;
     align-items: flex-end;
 }
+

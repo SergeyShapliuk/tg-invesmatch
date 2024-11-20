@@ -6,8 +6,8 @@ interface CloseIconProps extends SVGProps<SVGSVGElement> {
 
 const CloseIcon = ({backgroundColor, ...props}: CloseIconProps) => (
     <div style={{
-        width: "52px",
-        height: "52px",
+        width: 52,
+        height: 52,
         display: "inline-flex",
         justifyContent: "center",
         alignItems: "center",
@@ -16,18 +16,17 @@ const CloseIcon = ({backgroundColor, ...props}: CloseIconProps) => (
     }}>
         <svg
             xmlns="http://www.w3.org/2000/svg"
-            width={24}
-            height={24}
+            width={29}
+            height={28}
             fill="none"
             {...props}
         >
             <path
-                stroke="#1B1F26"
+                stroke="#EFEFEF"
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                strokeOpacity={0.72}
-                strokeWidth={2.328}
-                d="m20.366 20.366-8.729-8.728m0 0L2.91 2.909m8.729 8.729 8.728-8.729m-8.729 8.729L2.91 20.366"
+                strokeWidth={2.3}
+                d="m21.5 7-14 14M7.5 7l14 14"
             />
         </svg>
     </div>

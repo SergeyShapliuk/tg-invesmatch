@@ -6,8 +6,8 @@ interface ReturnIconProps extends SVGProps<SVGSVGElement> {
 
 const ReturnIcon = ({backgroundColor, ...props}: ReturnIconProps) => (
     <div style={{
-        width: "46px",
-        height: "46px",
+        width: 52,
+        height: 52,
         display: "inline-flex",
         justifyContent: "center",
         alignItems: "center",
@@ -16,17 +16,24 @@ const ReturnIcon = ({backgroundColor, ...props}: ReturnIconProps) => (
     }}>
         <svg
             xmlns="http://www.w3.org/2000/svg"
-            width={22}
-            height={15}
+            width={28}
+            height={28}
             fill="none"
             {...props}
         >
             <path
-                stroke="#5B5E63"
+                stroke="#EFEFEF"
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                strokeWidth={2}
-                d="M12.111 8.09 6.556 14m0 0L1 8.09M6.556 14V4.782c0-1.324 0-1.986.242-2.492.213-.444.553-.806.97-1.032C8.245 1 8.868 1 10.113 1H21"
+                strokeWidth={2.2}
+                d="M10.5 16.334 4.667 10.5 10.5 4.667"
+            />
+            <path
+                stroke="#EFEFEF"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2.2}
+                d="M23.333 23.333v-8.166a4.667 4.667 0 0 0-4.666-4.667h-14"
             />
         </svg>
     </div>

@@ -94,7 +94,7 @@ export type User = {
     description: string;
     photos: any[];
     donuts: Donuts;
-    hashtags?: string[];
+    hashtags?: { [key: string]: string[] };
 }
 
 export type UserWithRelevance = {

@@ -14,6 +14,8 @@ interface UserProviderProps {
     usersRelevance: { relevance: number, user: User }[];
     mutateRelevance: (variables: UpdateVariables) => void;
     refetchUserData: () => void;
+    currentIndex: number;
+    setCurrentIndex: (value: (prevIndex: number) => number) => void;
 }
 
 
@@ -29,6 +31,7 @@ export const UserProvider = ({children}: { children: ReactNode }) => {
     const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
     const [userData, setUserData] = useState<User>();
     const [usersRelevance, setUsersRelevance] = useState<{ relevance: number, user: User }[]>([]);
+    const [currentIndex, setCurrentIndex] = useState<number>(0);
 
     const {
         data: user,
@@ -99,7 +102,9 @@ export const UserProvider = ({children}: { children: ReactNode }) => {
             userData,
             usersRelevance,
             mutateRelevance,
-            refetchUserData
+            refetchUserData,
+            currentIndex,
+            setCurrentIndex
         }}>
             {children}
         </UserContext.Provider>

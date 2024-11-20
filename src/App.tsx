@@ -31,6 +31,8 @@ function App() {
     const [error, setError] = useState<{ isOpen: boolean, message: string }>({isOpen: false, message: ""});
 
     console.log("errorApp", error);
+    // console.log("miniApp", miniApp);
+
 
     const [queryClient] = useState(
         () =>
@@ -79,6 +81,7 @@ function App() {
             if (!vp.isExpanded) {
                 vp.expand();
             }
+            miniApp.setHeaderColor("#1A1A1B");
             await swipeBehavior.disableVerticalSwipe();
         };
         // const localVersion = localStorage.getItem("appVersion");

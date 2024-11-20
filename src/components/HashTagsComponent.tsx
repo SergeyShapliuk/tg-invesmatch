@@ -29,10 +29,10 @@ function HashTagsComponent({label, hashTags, value, onChange}: HashTagsComponent
                 color: "#FFFFFF",
                 fontSize: responseFontSize(24),
                 fontWeight: "600",
-                lineHeight: responseFontSize(31),
-                letterSpacing: -0.04
+                lineHeight: responseFontSize(32)
+                // letterSpacing: -0.04
             }}>{label}</label>
-            <div style={{display: "flex", flexWrap: "wrap", gap: 5}}>
+            <div style={{display: "flex", flexWrap: "wrap", marginTop: 8, gap: 8}}>
                 {hashTags.map((hashTag, index) => (
                     <HashButton key={index} label={hashTag.value} isSelected={value.includes(hashTag.value)}
                                 onClick={() => handleTagClick(hashTag.value)}/>
