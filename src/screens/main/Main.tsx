@@ -163,6 +163,7 @@ function Main() {
                             }}
                             // onSlideChange={handleSlideChange}
                             modules={[EffectCube, Pagination, Navigation]}
+                            onTouchMove={(e) => e.preventDefault()}
                             className="my-swiper"
                         >
 
