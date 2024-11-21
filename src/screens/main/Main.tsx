@@ -10,14 +10,13 @@ import {initInitData} from "@telegram-apps/sdk-react";
 import {User} from "../../types/types";
 // import {useSetLike} from "../../api/hooks/useSetLike";
 import {useSetDislike} from "../../api/hooks/useSetDislike";
-import {EffectCoverflow, Navigation, Pagination} from "swiper/modules";
+import {EffectCube , Navigation, Pagination} from "swiper/modules";
 import {Swiper, SwiperSlide} from "swiper/react";
 import SwiperCore from "swiper";
 // Import Swiper styles
 // import "swiper/css";
-import "swiper/swiper-bundle.css";
-
-import "swiper/css/effect-coverflow";
+import 'swiper/css';
+import 'swiper/css/effect-cube';
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 
@@ -25,7 +24,6 @@ import MemoShareIcon from "../../components/svg/ShareIcon";
 import Filter from "../filter/Filter";
 import Collapsible from "react-collapsible";
 // import TinderCard from "react-tinder-card";
-SwiperCore.use([Pagination]);
 
 // const entities: { companyName: string, description: string, hashTags?: string[] } = {
 //     companyName: "Company name",
@@ -161,7 +159,7 @@ function Main() {
     //     }
     // };
     return (
-        usersRelevance?.length > 0 && <>
+        <>
             <div className={classes.container}>
                 {!isOpenFilter ? (<>
                     <div className={classes.blurContainer} style={{filter: open.isActive ? "blur(5px)" : undefined}}>
@@ -177,26 +175,25 @@ function Main() {
                             pointerEvents: "none"
                         }}/>
                         <Swiper
-                            effect={"coverflow"}
+                            effect={"cube"}
                             grabCursor={true}
                             // direction={'vertical'}
                             // pagination={true}
                             // navigation={true}
                             spaceBetween={0}
                             slidesPerView={1}
-                            coverflowEffect={{
-                                rotate: 10,
-                                stretch: 100,
-                                depth: 50,
-                                modifier: 1,
-                                slideShadows: false
+                            cubeEffect={{
+                                shadow: true,
+                                slideShadows: true,
+                                // shadowOffset: 20,
+                                // shadowScale: 0.94,
                             }}
                             // onSlideChange={handleSlideChange}
-                            modules={[EffectCoverflow, Pagination, Navigation]}
+                            modules={[EffectCube, Pagination, Navigation]}
                             className="my-swiper"
                         >
 
-                            {usersRelevance?.length > 0 && usersRelevance?.map((item, index) => (
+                            {usersRelevance?.map((item, index) => (
                                 <SwiperSlide key={index}>
                                     {/*// <TinderCard  ref={childRefs[index]} onSwipe={onSwipe} swipeRequirementType={"position"}*/}
                                     {/*//             onSwipeRequirementFulfilled={onSwipeRequirementFulfilled}*/}
