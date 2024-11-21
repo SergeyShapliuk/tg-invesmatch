@@ -196,7 +196,7 @@ function Main() {
                             className="my-swiper"
                         >
 
-                            {usersRelevance?.map((item, index) => (
+                            {usersRelevance?.length > 0 && usersRelevance?.map((item, index) => (
                                 <SwiperSlide key={index}>
                                     {/*// <TinderCard  ref={childRefs[index]} onSwipe={onSwipe} swipeRequirementType={"position"}*/}
                                     {/*//             onSwipeRequirementFulfilled={onSwipeRequirementFulfilled}*/}
