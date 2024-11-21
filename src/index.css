@@ -208,6 +208,7 @@ option {
     bottom: 0;
     overflow-x: hidden;
     overflow-y: auto !important;
+    touch-action: auto;
     /*pointer-events: none;*/
     /*padding: 50px;*/
 }

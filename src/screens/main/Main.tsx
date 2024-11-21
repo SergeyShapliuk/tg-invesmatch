@@ -152,6 +152,7 @@ function Main() {
                         <Swiper
                             effect={"cube"}
                             grabCursor={true}
+                            // direction={'vertical'}
                             // pagination={true}
                             // navigation={true}
                             cubeEffect={{
