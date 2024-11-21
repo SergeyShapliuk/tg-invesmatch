@@ -1,15 +1,15 @@
 import classes from "./Main.module.css";
 import {useScreenSize} from "../../common/context/ScreenSizeProvider";
-import MainButtons from "../../components/MainButtons";
-import Tooltip from "../../components/ui/tooltip/Tooltip";
+// import MainButtons from "../../components/MainButtons";
+// import Tooltip from "../../components/ui/tooltip/Tooltip";
 import {useEffect, useState} from "react";
 import {useUserData} from "../../common/context/UserProvider";
 import MemoFilterIcon from "../../components/svg/FilterIcon";
 import {useFetchForms} from "../../api/hooks/useFetchForms";
 import {initInitData} from "@telegram-apps/sdk-react";
-import {User} from "../../types/types";
+// import {User} from "../../types/types";
 // import {useSetLike} from "../../api/hooks/useSetLike";
-import {useSetDislike} from "../../api/hooks/useSetDislike";
+// import {useSetDislike} from "../../api/hooks/useSetDislike";
 import {Swiper, SwiperSlide} from "swiper/react";
 
 // Import Swiper styles
@@ -34,9 +34,9 @@ import Collapsible from "react-collapsible";
 function Main() {
     const initData = initInitData();
     const {responseFontSize} = useScreenSize();
-    const {userData, usersRelevance, mutateRelevance, currentIndex, setCurrentIndex} = useUserData();
+    const {userData, usersRelevance, mutateRelevance} = useUserData();
     // const {mutate: setLike} = useSetLike();
-    const {mutate: setDislike} = useSetDislike();
+    // const {mutate: setDislike} = useSetDislike();
 
     const [open, setOpen] = useState<{ title: string, text: string, percent: string, color: string, isActive: boolean }>({
         title: "",
@@ -47,13 +47,13 @@ function Main() {
     });
     const [isOpenFilter, setOpenFilter] = useState<boolean>(false);
     const [isOpenText, setIsOpenText] = useState<boolean>(false);
-    const [direction, setDirection] = useState(1);
+    // const [direction, setDirection] = useState(1);
 
     const {data: form} = useFetchForms();
 
-    const currentItem: { relevance: number; user: User } | undefined = usersRelevance?.[currentIndex];
+    // const currentItem: { relevance: number; user: User } | undefined = usersRelevance?.[currentIndex];
 
-    console.log("openMain", direction);
+    // console.log("openMain", direction);
     // useEffect(() => {
     //     mutateRelevance({tg_id: initData?.user?.id.toString() ?? "test"});
     // }, [isSuccessLike, isSuccessDisLike]);
@@ -63,35 +63,35 @@ function Main() {
     }, []);
 
 
-    const handleNext = () => {
-        if (currentIndex < usersRelevance.length - 1) {
-            setDirection(1);
-            setCurrentIndex((prevIndex) => prevIndex + 1);
-        }
-    };
+    // const handleNext = () => {
+    //     if (currentIndex < usersRelevance.length - 1) {
+    //         setDirection(1);
+    //         setCurrentIndex((prevIndex) => prevIndex + 1);
+    //     }
+    // };
 
-    const handlePrevious = () => {
-        if (currentIndex > 0) {
-            setDirection(-1);
-            setCurrentIndex((prevIndex) => prevIndex - 1);
-        }
-    };
+    // const handlePrevious = () => {
+    //     if (currentIndex > 0) {
+    //         setDirection(-1);
+    //         setCurrentIndex((prevIndex) => prevIndex - 1);
+    //     }
+    // };
+    //
+    // const handleSetDislike = () => {
+    //     setDislike({
+    //         tg_id: initData?.user?.id.toString() ?? "test",
+    //         tg_id_what_i_liked: currentItem?.user?.tg_id ?? "test"
+    //     });
+    //     handleNext();
+    // };
 
-    const handleSetDislike = () => {
-        setDislike({
-            tg_id: initData?.user?.id.toString() ?? "test",
-            tg_id_what_i_liked: currentItem?.user?.tg_id ?? "test"
-        });
-        handleNext();
-    };
-
-    const handleSetLike = () => {
-        // setLike({
-        //     tg_id: initData?.user?.id.toString() ?? "test",
-        //     tg_id_what_i_liked: currentItem?.user?.tg_id ?? "test"
-        // });
-        handleNext();
-    };
+    // const handleSetLike = () => {
+    //     // setLike({
+    //     //     tg_id: initData?.user?.id.toString() ?? "test",
+    //     //     tg_id_what_i_liked: currentItem?.user?.tg_id ?? "test"
+    //     // });
+    //     handleNext();
+    // };
 
     const onCloseTooltip = () => {
         setOpen({
@@ -352,31 +352,31 @@ function Main() {
                         {/*    alignItems: "center"*/}
                         {/*}}>Nothing was found</div>}*/}
                     </div>
-                    <div style={{position: "absolute", width: "100%", bottom: 0, zIndex: 3, pointerEvents: "none"}}>
-                        {open.isActive && <Tooltip title={open.title} text={open.text}
-                                                   close={onCloseTooltip}
-                                                   percent={open.percent}
-                                                   color={open.color}/>}
-                        {usersRelevance.length > 0 &&
-                        <MainButtons onPrevious={handlePrevious} onSetDislike={handleSetDislike} onLogo={() => setOpen({
-                            title: "Your compatibility",
-                            text: "",
-                            percent: "50%",
-                            color: "#286EF2",
-                            isActive: true
-                        })}
-                                     logoPercent={currentItem?.relevance}
-                                     onCoin={() => setOpen({
-                                         title: "Wallet",
-                                         text: currentItem?.user.wallet ?? "No wallet",
-                                         percent: "72.5%",
-                                         color: "#FFFFFF",
-                                         isActive: true
-                                     })}
+                    {/*<div style={{position: "absolute", width: "100%", bottom: 0, zIndex: 3, pointerEvents: "none"}}>*/}
+                    {/*    {open.isActive && <Tooltip title={open.title} text={open.text}*/}
+                    {/*                               close={onCloseTooltip}*/}
+                    {/*                               percent={open.percent}*/}
+                    {/*                               color={open.color}/>}*/}
+                    {/*    {usersRelevance.length > 0 &&*/}
+                    {/*    <MainButtons onPrevious={handlePrevious} onSetDislike={handleSetDislike} onLogo={() => setOpen({*/}
+                    {/*        title: "Your compatibility",*/}
+                    {/*        text: "",*/}
+                    {/*        percent: "50%",*/}
+                    {/*        color: "#286EF2",*/}
+                    {/*        isActive: true*/}
+                    {/*    })}*/}
+                    {/*                 logoPercent={currentItem?.relevance}*/}
+                    {/*                 onCoin={() => setOpen({*/}
+                    {/*                     title: "Wallet",*/}
+                    {/*                     text: currentItem?.user.wallet ?? "No wallet",*/}
+                    {/*                     percent: "72.5%",*/}
+                    {/*                     color: "#FFFFFF",*/}
+                    {/*                     isActive: true*/}
+                    {/*                 })}*/}
 
-                                     onSetLike={handleSetLike}
-                                     userType={userData?.user_types.some(tag => tag.toLowerCase() === "founder")}/>}
-                    </div>
+                    {/*                 onSetLike={handleSetLike}*/}
+                    {/*                 userType={userData?.user_types.some(tag => tag.toLowerCase() === "founder")}/>}*/}
+                    {/*</div>*/}
                 </>) : (
                     <Filter onClose={() => setOpenFilter(false)} form={form?.data}
                             apply={data => {
