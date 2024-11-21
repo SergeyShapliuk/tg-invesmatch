@@ -10,15 +10,15 @@ import {initInitData} from "@telegram-apps/sdk-react";
 import {User} from "../../types/types";
 // import {useSetLike} from "../../api/hooks/useSetLike";
 import {useSetDislike} from "../../api/hooks/useSetDislike";
-import {Swiper, SwiperSlide, useSwiper} from "swiper/react";
+import {Swiper, SwiperSlide} from "swiper/react";
 
 // Import Swiper styles
 import "swiper/css";
-import "swiper/css/effect-cube";
+import "swiper/css/effect-coverflow";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 
-import {EffectCube, Pagination, Navigation} from "swiper/modules";
+import {EffectCoverflow, Pagination, Navigation} from "swiper/modules";
 import MemoShareIcon from "../../components/svg/ShareIcon";
 import Filter from "../filter/Filter";
 import Collapsible from "react-collapsible";
@@ -37,7 +37,6 @@ function Main() {
     const {userData, usersRelevance, mutateRelevance, currentIndex, setCurrentIndex} = useUserData();
     // const {mutate: setLike} = useSetLike();
     const {mutate: setDislike} = useSetDislike();
-    const swiper = useSwiper();
 
     const [open, setOpen] = useState<{ title: string, text: string, percent: string, color: string, isActive: boolean }>({
         title: "",
@@ -69,7 +68,6 @@ function Main() {
             setDirection(1);
             setCurrentIndex((prevIndex) => prevIndex + 1);
         }
-        swiper.slideNext;
     };
 
     const handlePrevious = () => {
@@ -157,14 +155,8 @@ function Main() {
                             // navigation={true}
                             spaceBetween={0}
                             slidesPerView={1}
-                            cubeEffect={{
-                                shadow: false,
-                                slideShadows: true
-                                // shadowOffset: 20,
-                                // shadowScale: 0.94
-                            }}
                             // onSlideChange={handleSlideChange}
-                            modules={[EffectCube, Pagination, Navigation]}
+                            modules={[EffectCoverflow , Pagination, Navigation]}
                             className="my-swiper"
                         >
 
