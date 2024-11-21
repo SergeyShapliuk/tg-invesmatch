@@ -12,9 +12,11 @@ import {User} from "../../types/types";
 import {useSetDislike} from "../../api/hooks/useSetDislike";
 import {EffectCoverflow, Navigation, Pagination} from "swiper/modules";
 import {Swiper, SwiperSlide} from "swiper/react";
-
+import SwiperCore from "swiper";
 // Import Swiper styles
-import "swiper/css";
+// import "swiper/css";
+import "swiper/swiper-bundle.css";
+
 import "swiper/css/effect-coverflow";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
@@ -23,7 +25,7 @@ import MemoShareIcon from "../../components/svg/ShareIcon";
 import Filter from "../filter/Filter";
 import Collapsible from "react-collapsible";
 // import TinderCard from "react-tinder-card";
-
+SwiperCore.use([Pagination]);
 
 // const entities: { companyName: string, description: string, hashTags?: string[] } = {
 //     companyName: "Company name",
@@ -132,6 +134,32 @@ function Main() {
     // const swipePower = (offset: number, velocity: number) => {
     //     return Math.abs(offset) * velocity;
     // };
+    // const onSwipe = (direction) => {
+    //     console.log("You swiped: " + direction);
+    // };
+
+    // const onCardLeftScreen = (myIdentifier) => {
+    //     console.log(myIdentifier + " left the screen");
+    // };
+    //
+    // const onSwipeRequirementFulfilled = (myIdentifier) => {
+    //     console.log(myIdentifier + " left the onSwipeRequirementFulfilled");
+    // };
+    // const currentIndexRef = useRef(currentIndex);
+    // const childRefs = useMemo(
+    //     () =>
+    //         Array(usersRelevance.length)
+    //             .fill(0)
+    //             .map((i) => React.createRef()),
+    //     []
+    // );
+    //
+    // const canSwipe = currentIndex >= 0;
+    // const swipe = async (dir) => {
+    //     if (canSwipe && currentIndex < usersRelevance.length) {
+    //         await childRefs[currentIndex].current.swipe(dir); // Swipe the card!
+    //     }
+    // };
     return (
         <>
             <div className={classes.container}>
@@ -151,7 +179,7 @@ function Main() {
                         <Swiper
                             effect={"coverflow"}
                             grabCursor={true}
-                            direction={'horizontal'}
+                            // direction={'vertical'}
                             // pagination={true}
                             // navigation={true}
                             spaceBetween={0}
@@ -163,83 +191,86 @@ function Main() {
                                 modifier: 1,
                                 slideShadows: false
                             }}
-
                             // onSlideChange={handleSlideChange}
                             modules={[EffectCoverflow, Pagination, Navigation]}
                             className="my-swiper"
                         >
 
-                        {usersRelevance?.map((item, index) => (
-                            <SwiperSlide key={index}>
-
-                                <div className={classes.scrollContainer}>
-                                    <div className={classes.name}
-                                         style={{fontSize: responseFontSize(38), lineHeight: responseFontSize(40)}}>
-                                        {item?.user.name}
-                                    </div>
-                                    <div className={classes.filterContainer}>
-                                        <button onClick={() => {
-                                        }}
-                                                className="icon-style">
-                                            <MemoShareIcon style={{marginTop: 3}}/>
-                                        </button>
-                                        <button onClick={() => setOpenFilter(true)}
-                                                className="icon-style">
-                                            <MemoFilterIcon style={{marginTop: 3}}/>
-                                        </button>
-                                    </div>
-
-                                    <div style={{
-                                        display: "flex",
-                                        justifyContent: "start",
-                                        flexWrap: "wrap",
-                                        gap: 8
-                                    }}>
-                                        {Object.values(item?.user?.hashtags ?? {}).flat().map((item, index) => (
-                                            <div key={index} className="hashButton"
-                                                 style={{backgroundColor: "#0062FF"}}>{item}</div>
-                                        ))}
-                                    </div>
-                                    {userData?.user_types.some(tag => tag.toLowerCase() === "founder") &&
-                                    <div style={{display: "flex", flexDirection: "column", gap: 8}}>
+                            {usersRelevance?.map((item, index) => (
+                                <SwiperSlide key={index}>
+                                    {/*// <TinderCard  ref={childRefs[index]} onSwipe={onSwipe} swipeRequirementType={"position"}*/}
+                                    {/*//             onSwipeRequirementFulfilled={onSwipeRequirementFulfilled}*/}
+                                    {/*//             onCardLeftScreen={() => onCardLeftScreen("fooBar")}*/}
+                                    {/*//             // swipeThreshold={'position'}*/}
+                                    {/*//             preventSwipe={["up", "down"]}>*/}
+                                    <div className={classes.scrollContainer}>
+                                        <div className={classes.name}
+                                             style={{fontSize: responseFontSize(38), lineHeight: responseFontSize(40)}}>
+                                            {item?.user.name}
+                                        </div>
+                                        <div className={classes.filterContainer}>
+                                            <button onClick={() => {
+                                            }}
+                                                    className="icon-style">
+                                                <MemoShareIcon style={{marginTop: 3}}/>
+                                            </button>
+                                            <button onClick={() => setOpenFilter(true)}
+                                                    className="icon-style">
+                                                <MemoFilterIcon style={{marginTop: 3}}/>
+                                            </button>
+                                        </div>
 
                                         <div style={{
-                                            color: "#FFFFFF",
-                                            fontSize: responseFontSize(24),
-                                            fontWeight: "600",
-                                            lineHeight: responseFontSize(32)
-                                            // letterSpacing: -0.04
-                                        }}>Donats
+                                            display: "flex",
+                                            justifyContent: "start",
+                                            flexWrap: "wrap",
+                                            gap: 8
+                                        }}>
+                                            {Object.values(item?.user?.hashtags ?? {}).flat().map((item, index) => (
+                                                <div key={index} className="hashButton"
+                                                     style={{backgroundColor: "#0062FF"}}>{item}</div>
+                                            ))}
                                         </div>
-                                        <div className={classes.donats}>
-                                            <div
-                                                style={{
-                                                    position: "absolute",
-                                                    width: Number(item?.user.donuts.current_amount) <= Number(item?.user.donuts.purpose_amount) ? `${Number(item?.user.donuts.current_amount) / Number(item?.user.donuts.purpose_amount) * 100}%` : "100%",
-                                                    // width: "50%",
-                                                    top: 0,
-                                                    left: 0,
-                                                    bottom: 0,
-                                                    borderRadius: "100px",
-                                                    border: "#0062FF 1.2px solid",
-                                                    backgroundColor: "transparent",
-                                                    zIndex: 0
-                                                }}/>
+                                        {userData?.user_types.some(tag => tag.toLowerCase() === "founder") &&
+                                        <div style={{display: "flex", flexDirection: "column", gap: 8}}>
 
-                                        </div>
-                                        <div
-                                            className={classes.donatsText}>Collected {Number(item?.user.donuts.current_amount).toString()}$
-                                            out of {Number(item?.user.donuts.purpose_amount).toString()}$
-                                        </div>
-                                    </div>}
-                                    <div>
-                                        <Collapsible trigger={
                                             <div style={{
-                                                display: "flex",
-                                                justifyContent: "space-between",
-                                                alignItems: "center"
-                                                // cursor: "pointer"
-                                            }}>
+                                                color: "#FFFFFF",
+                                                fontSize: responseFontSize(24),
+                                                fontWeight: "600",
+                                                lineHeight: responseFontSize(32)
+                                                // letterSpacing: -0.04
+                                            }}>Donats
+                                            </div>
+                                            <div className={classes.donats}>
+                                                <div
+                                                    style={{
+                                                        position: "absolute",
+                                                        width: Number(item?.user.donuts.current_amount) <= Number(item?.user.donuts.purpose_amount) ? `${Number(item?.user.donuts.current_amount) / Number(item?.user.donuts.purpose_amount) * 100}%` : "100%",
+                                                        // width: "50%",
+                                                        top: 0,
+                                                        left: 0,
+                                                        bottom: 0,
+                                                        borderRadius: "100px",
+                                                        border: "#0062FF 1.2px solid",
+                                                        backgroundColor: "transparent",
+                                                        zIndex: 0
+                                                    }}/>
+
+                                            </div>
+                                            <div
+                                                className={classes.donatsText}>Collected {Number(item?.user.donuts.current_amount).toString()}$
+                                                out of {Number(item?.user.donuts.purpose_amount).toString()}$
+                                            </div>
+                                        </div>}
+                                        <div>
+                                            <Collapsible trigger={
+                                                <div style={{
+                                                    display: "flex",
+                                                    justifyContent: "space-between",
+                                                    alignItems: "center"
+                                                    // cursor: "pointer"
+                                                }}>
 
                                                     <span style={{
                                                         color: "#FFFFFF",
@@ -247,32 +278,33 @@ function Main() {
                                                         fontWeight: "600",
                                                         lineHeight: responseFontSize(32)
                                                     }}>About</span>
-                                                <span style={{marginRight: "10px"}}>
+                                                    <span style={{marginRight: "10px"}}>
                                                         <span>{isOpenText ? "▲" : "▼"} </span>
             </span>
-                                            </div>
-                                        }
-                                                     onOpening={handleToggle}
-                                                     onClosing={handleToggle}>
-                                            <div style={{marginTop: 6}}>
-                                                {item?.user.description}
-                                            </div>
-                                        </Collapsible>
-                                        {/*<div style={{*/}
-                                        {/*    color: "#FFFFFF",*/}
-                                        {/*    fontSize: responseFontSize(24),*/}
-                                        {/*    fontWeight: "600",*/}
-                                        {/*    lineHeight: responseFontSize(32)*/}
-                                        {/*    // letterSpacing: -0.04*/}
-                                        {/*}}>About*/}
-                                        {/*</div>*/}
-                                        {/*<div>{item?.user.description}</div>*/}
+                                                </div>
+                                            }
+                                                         onOpening={handleToggle}
+                                                         onClosing={handleToggle}>
+                                                <div style={{marginTop: 6}}>
+                                                    {item?.user.description}
+                                                </div>
+                                            </Collapsible>
+                                            {/*<div style={{*/}
+                                            {/*    color: "#FFFFFF",*/}
+                                            {/*    fontSize: responseFontSize(24),*/}
+                                            {/*    fontWeight: "600",*/}
+                                            {/*    lineHeight: responseFontSize(32)*/}
+                                            {/*    // letterSpacing: -0.04*/}
+                                            {/*}}>About*/}
+                                            {/*</div>*/}
+                                            {/*<div>{item?.user.description}</div>*/}
+                                        </div>
                                     </div>
-                                </div>
-                            </SwiperSlide>
-                        ))}
+                                    {/*// </TinderCard>*/}
+                                </SwiperSlide>
+                            ))}
 
-                                    </Swiper>
+                        </Swiper>
 
                         {/*<AnimatePresence initial={false} custom={direction}>*/}
                         {/*    {currentItem && <motion.div key={currentIndex}*/}
