@@ -208,17 +208,15 @@ option {
     bottom: 0;
     overflow-x: hidden;
     overflow-y: auto !important;
-    touch-action: pan-x !important;
     /*pointer-events: none;*/
     /*padding: 50px;*/
 }
 
 .swiper-slide {
-    touch-action: pan-x !important;
+
 }
 
 .swiper-slide div {
-    touch-action: pan-x !important;
     /*display: block;*/
     /*width: 100%;*/
     /*background-color: black;*/
