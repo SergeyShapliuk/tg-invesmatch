@@ -1,0 +1,32 @@
+.container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-image: url("../../assets/arrow-image.png");
+    background-position: top 8% left 100%;
+    background-repeat: no-repeat;
+    background-size: auto;
+    background-color: #090909;
+    border-radius: 32px;
+    padding: 0 30px;
+}
+
+.backgroundImage {
+
+}
+
+.title {
+    /*font-size: 38px;*/
+    /*font-weight: 600;*/
+    color: #FFFFFF;
+    line-height: 40px;
+    text-align: center;
+}
+
+.text {
+    color: #FFFFFF;
+    text-align: center;
+}

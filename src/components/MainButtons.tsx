@@ -1,3 +1,4 @@
+import classes from "./MainButtons.module.css";
 import MemoReturnIcon from "./svg/ReturnIcon";
 import MemoCloseIcon from "./svg/CloseIcon";
 import MemoCoinIcon from "./svg/CoinIcon";
@@ -14,6 +15,7 @@ function MainButtons({onPrevious, onLogo, logoPercent, onCoin, onSetDislike, onS
     const [isClicked, setIsClicked] = useState<Partial<Record<ButtonNames, boolean>>>({});
 
     const handleClick = (buttonName: ButtonNames) => {
+        console.log("MainButtons", isClicked);
         setIsClicked((prev) => ({...prev, [buttonName]: true}));
         // Добавляем небольшую задержку, чтобы анимация могла запуститься заново
         setTimeout(() => setIsClicked((prev) => ({...prev, [buttonName]: false})), 100);
@@ -28,21 +30,22 @@ function MainButtons({onPrevious, onLogo, logoPercent, onCoin, onSetDislike, onS
             alignItems: "center",
             // flexWrap:'wrap',
             // backgroundColor:'red',
-            borderBottomLeftRadius: "32px",
-            borderBottomRightRadius: "32px",
-            background: "linear-gradient(to bottom, rgba(9, 9, 9, 0), rgba(9, 9, 9, 0.8), rgba(9, 9, 9, 1) 70%)",
             padding: "150px 14px 24px 14px",
-            pointerEvents: "none",
+            // pointerEvents: "none",
             gap: 10,
-            zIndex: 3
+            zIndex: 0
         }}>
             <motion.div initial={{opacity: 1, scale: 1}}
                         animate={isClicked["previous"] ? {opacity: .5, scale: .5} : {opacity: 1, scale: 1}}
                         transition={{duration: 0.5}} onClick={() => {
                 handleClick("previous");
                 onPrevious();
-            }} style={{width: "20%", display: "flex", justifyContent: "center", alignItems: "center"}}>
-                <MemoReturnIcon backgroundColor={isClicked["previous"] ? "#286EF2" : "#FFFFFF1F"}/>
+            }} className={classes.buttonContainer}>
+                <div className={classes.button} style={{
+                    backgroundColor: isClicked["previous"] ? "#286EF2" : "#272727",
+                }}>
+                    <MemoReturnIcon/>
+                </div>
             </motion.div>
 
             <motion.div initial={{opacity: 1, scale: 1}}
@@ -50,10 +53,14 @@ function MainButtons({onPrevious, onLogo, logoPercent, onCoin, onSetDislike, onS
                         transition={{duration: 0.5}} onClick={() => {
                 handleClick("dislike");
                 onSetDislike();
-            }} style={{width: "20%", display: "flex", justifyContent: "center", alignItems: "center"}}>
-                <MemoCloseIcon backgroundColor={isClicked["dislike"] ? "#286EF2" : "#FFFFFF1F"}/>
+            }} className={classes.buttonContainer}>
+                <div className={classes.button} style={{
+                    backgroundColor: isClicked["dislike"] ? "#286EF2" : "#272727",
+                }}>
+                    <MemoCloseIcon/>
+                </div>
             </motion.div>
-            <div style={{width: "20%", display: "flex", justifyContent: "center", alignItems: "center"}}>
+            <div className={classes.buttonContainer}>
                 <div onClick={() => {
                     onLogo();
                 }} style={{
@@ -78,7 +85,7 @@ function MainButtons({onPrevious, onLogo, logoPercent, onCoin, onSetDislike, onS
                                      transition={{duration: 0.5}} onClick={() => {
                 handleClick("coin");
                 onCoin();
-            }} style={{width: "20%",display: "flex", justifyContent: "center", alignItems: "center"}}>
+            }} className={classes.buttonContainer}>
                 {/*<Tooltip anchorRef={iconRef} />*/}
                 {/*{true && <div style={{*/}
                 {/*    position: "absolute",*/}
@@ -105,20 +112,24 @@ function MainButtons({onPrevious, onLogo, logoPercent, onCoin, onSetDislike, onS
                 {/*        borderTop: "10px solid #286EF2"*/}
                 {/*    }}/>*/}
                 {/*</div>}*/}
-                <MemoCoinIcon backgroundColor={isClicked["coin"] ? "#286EF2" : "#FFFFFF1F"}/>
+                <div className={classes.button} style={{
+                    backgroundColor: isClicked["coin"] ? "#286EF2" : "#272727",
+                }}>
+                    <MemoCoinIcon/>
+                </div>
             </motion.div>}
             <motion.div initial={{opacity: 1, scale: 1}}
                         animate={isClicked["heart"] ? {opacity: .5, scale: .5} : {opacity: 1, scale: 1}}
                         transition={{duration: 0.5}} onClick={() => {
                 handleClick("heart");
                 onSetLike();
-            }} style={{
-                width: !userType ? "42.5%" : "20%",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-            }}>
-                <MemoHeartIcon userType={userType} stroke={isClicked["heart"] ? "#286EF2" : "#FFFFFF1F"}/>
+            }} className={classes.buttonContainer} style={{width: !userType ? "42.5%" : "20%"}}>
+                <div className={classes.button} style={{
+                    flex: !userType ? 1 : undefined,
+                    backgroundColor: isClicked["heart"] ? "#286EF2" : "#272727",
+                }}>
+                    <MemoHeartIcon/>
+                </div>
             </motion.div>
 
         </div>

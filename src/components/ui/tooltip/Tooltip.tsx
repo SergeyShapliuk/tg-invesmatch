@@ -34,7 +34,7 @@ export default Tooltip;
 
 function CloseIcon({close, color}: { close: () => void, color: string }) {
     return (
-        <div onClick={close} style={{position: "absolute", top: 5, right: 10, zIndex: 1}}>
+        <div onClick={close} style={{position: "absolute", top: 5, right: 10, zIndex: 1,pointerEvents:"auto"}}>
             <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width={14}

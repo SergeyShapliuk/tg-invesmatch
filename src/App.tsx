@@ -81,7 +81,7 @@ function App() {
             if (!vp.isExpanded) {
                 vp.expand();
             }
-            miniApp.setHeaderColor("#1A1A1B");
+    miniApp.setHeaderColor("#1A1A1B");
             await swipeBehavior.disableVerticalSwipe();
         };
         // const localVersion = localStorage.getItem("appVersion");

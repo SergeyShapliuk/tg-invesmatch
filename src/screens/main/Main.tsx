@@ -10,7 +10,7 @@ import {initInitData} from "@telegram-apps/sdk-react";
 import {User} from "../../types/types";
 // import {useSetLike} from "../../api/hooks/useSetLike";
 import {useSetDislike} from "../../api/hooks/useSetDislike";
-import {Swiper, SwiperSlide} from "swiper/react";
+import {Swiper, SwiperSlide, useSwiper} from "swiper/react";
 
 // Import Swiper styles
 import "swiper/css";
@@ -21,6 +21,7 @@ import "swiper/css/navigation";
 import {EffectCube, Pagination, Navigation} from "swiper/modules";
 import MemoShareIcon from "../../components/svg/ShareIcon";
 import Filter from "../filter/Filter";
+import Collapsible from "react-collapsible";
 
 
 // const entities: { companyName: string, description: string, hashTags?: string[] } = {
@@ -36,6 +37,7 @@ function Main() {
     const {userData, usersRelevance, mutateRelevance, currentIndex, setCurrentIndex} = useUserData();
     // const {mutate: setLike} = useSetLike();
     const {mutate: setDislike} = useSetDislike();
+    const swiper = useSwiper();
 
     const [open, setOpen] = useState<{ title: string, text: string, percent: string, color: string, isActive: boolean }>({
         title: "",
@@ -45,14 +47,14 @@ function Main() {
         isActive: false
     });
     const [isOpenFilter, setOpenFilter] = useState<boolean>(false);
-
+    const [isOpenText, setIsOpenText] = useState<boolean>(false);
     const [direction, setDirection] = useState(1);
 
     const {data: form} = useFetchForms();
 
     const currentItem: { relevance: number; user: User } | undefined = usersRelevance?.[currentIndex];
 
-    console.log(direction);
+    console.log("openMain", direction);
     // useEffect(() => {
     //     mutateRelevance({tg_id: initData?.user?.id.toString() ?? "test"});
     // }, [isSuccessLike, isSuccessDisLike]);
@@ -67,6 +69,7 @@ function Main() {
             setDirection(1);
             setCurrentIndex((prevIndex) => prevIndex + 1);
         }
+        swiper.slideNext;
     };
 
     const handlePrevious = () => {
@@ -101,6 +104,10 @@ function Main() {
             isActive: false
         });
     };
+
+    const handleToggle = () => {
+        setIsOpenText(!isOpenText);
+    };
     console.log("relevance", usersRelevance);
     // const variants = {
     //     enter: (direction: number) => {
@@ -131,9 +138,17 @@ function Main() {
             <div className={classes.container}>
                 {!isOpenFilter ? (<>
                     <div className={classes.blurContainer} style={{filter: open.isActive ? "blur(5px)" : undefined}}>
-                        {/*<div className="iconContainer">*/}
-                        {/*    <MemoLogoIcon fill={"#FFFFFF"} stroke={"#FFFFFF"}/>*/}
-                        {/*</div>*/}
+                        <div style={{
+                            width: "100%",
+                            height: "50%",
+                            position: "absolute",
+                            background: "linear-gradient(to bottom, rgba(9, 9, 9, 0), rgba(9, 9, 9, 0.8), rgba(9, 9, 9, 1) 100%)",
+                            bottom: 0,
+                            borderBottomLeftRadius: "32px",
+                            borderBottomRightRadius: "32px",
+                            zIndex: 3,
+                            pointerEvents: "none"
+                        }}/>
                         <Swiper
                             effect={"cube"}
                             grabCursor={true}
@@ -147,7 +162,7 @@ function Main() {
                             }}
                             // onSlideChange={handleSlideChange}
                             modules={[EffectCube, Pagination, Navigation]}
-                            // className="my-swiper"
+                            className="my-swiper"
                         >
 
                             {usersRelevance?.map((item, index) => (
@@ -213,21 +228,47 @@ function Main() {
                                             </div>
                                         </div>}
                                         <div>
-                                            <div style={{
-                                                color: "#FFFFFF",
-                                                fontSize: responseFontSize(24),
-                                                fontWeight: "600",
-                                                lineHeight: responseFontSize(32)
-                                                // letterSpacing: -0.04
-                                            }}>About
-                                            </div>
-                                            <div>{item?.user.description}</div>
+                                            <Collapsible trigger={
+                                                <div style={{
+                                                    display: "flex",
+                                                    justifyContent: "space-between",
+                                                    alignItems: "center"
+                                                    // cursor: "pointer"
+                                                }}>
+
+                                                    <span style={{
+                                                        color: "#FFFFFF",
+                                                        fontSize: responseFontSize(24),
+                                                        fontWeight: "600",
+                                                        lineHeight: responseFontSize(32)
+                                                    }}>About</span>
+                                                    <span style={{marginRight: "10px"}}>
+                                                        <span>{isOpenText ? "▲" : "▼"} </span>
+            </span>
+                                                </div>
+                                            }
+                                                         onOpening={handleToggle}
+                                                         onClosing={handleToggle}>
+                                                <div style={{marginTop: 6}}>
+                                                    {item?.user.description}
+                                                </div>
+                                            </Collapsible>
+                                            {/*<div style={{*/}
+                                            {/*    color: "#FFFFFF",*/}
+                                            {/*    fontSize: responseFontSize(24),*/}
+                                            {/*    fontWeight: "600",*/}
+                                            {/*    lineHeight: responseFontSize(32)*/}
+                                            {/*    // letterSpacing: -0.04*/}
+                                            {/*}}>About*/}
+                                            {/*</div>*/}
+                                            {/*<div>{item?.user.description}</div>*/}
                                         </div>
                                     </div>
                                 </SwiperSlide>
                             ))}
 
                         </Swiper>
+
                         {/*<AnimatePresence initial={false} custom={direction}>*/}
                         {/*    {currentItem && <motion.div key={currentIndex}*/}
                         {/*                                custom={direction}*/}
@@ -316,7 +357,7 @@ function Main() {
                         {/*    alignItems: "center"*/}
                         {/*}}>Nothing was found</div>}*/}
                     </div>
-                    <div style={{position: "absolute", width: "100%", bottom: 0}}>
+                    <div style={{position: "absolute", width: "100%", bottom: 0, zIndex: 3, pointerEvents: "none"}}>
                         {open.isActive && <Tooltip title={open.title} text={open.text}
                                                    close={onCloseTooltip}
                                                    percent={open.percent}

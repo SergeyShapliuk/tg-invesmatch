@@ -12,16 +12,7 @@ function Filter({
                     form,
                     apply
                 }: {
-    onClose: () => void, form: Form[] | undefined, apply: (data: {
-        business_models?: string[];
-        description?: string;
-        geography?: string[];
-        industries?: string[];
-        name?: string;
-        project_stages?: string[];
-        user_types?: string[];
-        wallet?: string;
-    }) => void
+    onClose: () => void, form: Form[] | undefined, apply: (data: { [p: string]: string[] }) => void
 }) {
     const {responseFontSize} = useScreenSize();
     // const {userData} = useUserData();
@@ -44,7 +35,14 @@ function Filter({
         setIsButton(hasValues);
     }, [watchedValues]);
 
-    const onSubmit: SubmitHandler<{ user_types: string[]; project_stages: string[]; geography: string[]; industries: string[]; business_models: string[] }> = (data) => apply(data);
+    const onSubmit: SubmitHandler<{ user_types?: string[]; project_stages?: string[]; geography?: string[]; industries?: string[]; business_models?: string[] }> = (data) => {
+        const filteredBody = Object.fromEntries(
+            Object.entries(data).filter(([_, value]) => value)
+        );
+        console.log(data);
+        console.log(filteredBody);
+        apply(filteredBody);
+    };
 
     // console.log("filter", Object.keys(watch()).length > 0);
     return (
