@@ -14,9 +14,11 @@ import {Swiper, SwiperSlide, useSwiper} from "swiper/react";
 
 // Import Swiper styles
 import "swiper/css";
+import "swiper/css/bundle";
 import "swiper/css/effect-cube";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
+import 'swiper/css/scrollbar';
 
 import {EffectCube, Pagination, Navigation} from "swiper/modules";
 import MemoShareIcon from "../../components/svg/ShareIcon";
@@ -155,6 +157,8 @@ function Main() {
                             // direction={'vertical'}
                             // pagination={true}
                             // navigation={true}
+                            spaceBetween={0}
+                            slidesPerView={1}
                             cubeEffect={{
                                 shadow: false,
                                 slideShadows: true
@@ -163,7 +167,6 @@ function Main() {
                             }}
                             // onSlideChange={handleSlideChange}
                             modules={[EffectCube, Pagination, Navigation]}
-                            onTouchMove={(e) => e.preventDefault()}
                             className="my-swiper"
                         >
 
