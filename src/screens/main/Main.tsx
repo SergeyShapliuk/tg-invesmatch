@@ -14,11 +14,9 @@ import {Swiper, SwiperSlide, useSwiper} from "swiper/react";
 
 // Import Swiper styles
 import "swiper/css";
-import "swiper/css/bundle";
 import "swiper/css/effect-cube";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
-import 'swiper/css/scrollbar';
 
 import {EffectCube, Pagination, Navigation} from "swiper/modules";
 import MemoShareIcon from "../../components/svg/ShareIcon";
