@@ -3,11 +3,11 @@ import "./App.module.css";
 import Navigation from "./navigation/Navigation";
 import {MutationCache, QueryCache, QueryClient, QueryClientProvider} from "@tanstack/react-query";
 import {UserProvider} from "./common/context/UserProvider";
-import {setupMockTelegramEnv} from "../telegramEnvConfig";
+// import {setupMockTelegramEnv} from "../telegramEnvConfig";
 import {initMiniApp, initSwipeBehavior, initViewport} from "@telegram-apps/sdk-react";
 
 
-setupMockTelegramEnv();
+// setupMockTelegramEnv();
 
 
 export const override: CSSProperties = {
@@ -81,7 +81,7 @@ function App() {
             if (!vp.isExpanded) {
                 vp.expand();
             }
-    miniApp.setHeaderColor("#1A1A1B");
+            miniApp.setHeaderColor("#1A1A1B");
             await swipeBehavior.disableVerticalSwipe();
         };
         // const localVersion = localStorage.getItem("appVersion");
