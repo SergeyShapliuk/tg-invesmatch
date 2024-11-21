@@ -41,6 +41,7 @@
     /*overflow-y: auto;*/
     /*-webkit-overflow-scrolling: touch;*/
     gap: 20px;
+    touch-action: pan-x;
     /*z-index: 0;*/
 }
 

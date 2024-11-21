@@ -163,6 +163,7 @@ function Main() {
                                 modifier: 1,
                                 slideShadows: false
                             }}
+
                             // onSlideChange={handleSlideChange}
                             modules={[EffectCoverflow, Pagination, Navigation]}
                             className="my-swiper"
