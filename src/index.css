@@ -208,17 +208,17 @@ option {
     bottom: 0;
     overflow-x: hidden;
     overflow-y: auto !important;
-    touch-action: none
+    touch-action: auto !important;
     /*pointer-events: none;*/
     /*padding: 50px;*/
 }
 
 .swiper-slide {
-    touch-action: none
+    touch-action: auto !important;
 }
 
 .swiper-slide div {
-    touch-action: none
+    touch-action: auto !important;
     /*display: block;*/
     /*width: 100%;*/
     /*background-color: black;*/
