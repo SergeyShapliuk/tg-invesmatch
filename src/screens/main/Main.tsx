@@ -12,7 +12,6 @@ import {User} from "../../types/types";
 import {useSetDislike} from "../../api/hooks/useSetDislike";
 import {EffectCube , Navigation, Pagination} from "swiper/modules";
 import {Swiper, SwiperSlide} from "swiper/react";
-import SwiperCore from "swiper";
 // Import Swiper styles
 // import "swiper/css";
 import 'swiper/css';
