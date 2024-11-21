@@ -183,7 +183,7 @@ function Main() {
                             // pagination={true}
                             // navigation={true}
                             spaceBetween={0}
-                            slidesPerView={3}
+                            slidesPerView={1}
                             coverflowEffect={{
                                 rotate: 10,
                                 stretch: 100,
