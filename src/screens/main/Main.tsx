@@ -161,7 +161,7 @@ function Main() {
     //     }
     // };
     return (
-        <>
+        usersRelevance?.length > 0 && <>
             <div className={classes.container}>
                 {!isOpenFilter ? (<>
                     <div className={classes.blurContainer} style={{filter: open.isActive ? "blur(5px)" : undefined}}>
