@@ -4,21 +4,46 @@ import MemoCloseIcon from "./svg/CloseIcon";
 import MemoCoinIcon from "./svg/CoinIcon";
 import MemoHeartIcon from "./svg/HeartIcon";
 import {motion} from "framer-motion";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 // import {useScreenSize} from "../common/context/ScreenSizeProvider";
 
 type ButtonNames = "coin" | "heart" | "previous" | "dislike";
 
-function MainButtons({onPrevious, onLogo, logoPercent, onCoin, onSetDislike, onSetLike, userType}: any) {
+function MainButtons({
+                         onPrevious,
+                         onLogo,
+                         logoPercent,
+                         onCoin,
+                         onSetDislike,
+                         onSetLike,
+                         userType,
+                         currentIndex,
+                         direction
+                     }: any) {
     // const {responseFontSize} = useScreenSize();
 
     const [isClicked, setIsClicked] = useState<Partial<Record<ButtonNames, boolean>>>({});
+    console.log("currentIndex", currentIndex);
+    useEffect(() => {
+            let timeout: any;
+            if (currentIndex > 0) {
+                timeout = setTimeout(() => {
+                    if (direction < 0) {
+                        handleClick("heart");
+                    } else if (direction > 0) {
+                        handleClick("dislike");
+                    }
+                }, 100);
+            }
+            return () => clearTimeout(timeout);
+        }, [currentIndex, direction]
+    );
 
     const handleClick = (buttonName: ButtonNames) => {
         console.log("MainButtons", isClicked);
         setIsClicked((prev) => ({...prev, [buttonName]: true}));
         // Добавляем небольшую задержку, чтобы анимация могла запуститься заново
-        setTimeout(() => setIsClicked((prev) => ({...prev, [buttonName]: false})), 100);
+        setTimeout(() => setIsClicked((prev) => ({...prev, [buttonName]: false})), 300);
     };
     return (
         <div style={{
@@ -42,7 +67,7 @@ function MainButtons({onPrevious, onLogo, logoPercent, onCoin, onSetDislike, onS
                 onPrevious();
             }} className={classes.buttonContainer}>
                 <div className={classes.button} style={{
-                    backgroundColor: isClicked["previous"] ? "#286EF2" : "#272727",
+                    backgroundColor: isClicked["previous"] ? "#286EF2" : "#272727"
                 }}>
                     <MemoReturnIcon/>
                 </div>
@@ -55,7 +80,7 @@ function MainButtons({onPrevious, onLogo, logoPercent, onCoin, onSetDislike, onS
                 onSetDislike();
             }} className={classes.buttonContainer}>
                 <div className={classes.button} style={{
-                    backgroundColor: isClicked["dislike"] ? "#286EF2" : "#272727",
+                    backgroundColor: isClicked["dislike"] ? "#286EF2" : "#272727"
                 }}>
                     <MemoCloseIcon/>
                 </div>
@@ -66,13 +91,13 @@ function MainButtons({onPrevious, onLogo, logoPercent, onCoin, onSetDislike, onS
                 }} style={{
                     minWidth: 68,
                     height: 68,
-                    display: "flex",
+                    display: "inline-flex",
                     justifyContent: "center",
                     alignItems: "center",
                     color: "white",
                     fontSize: 21,
                     fontWeight: "600",
-                    lineHeight: 41,
+                    // lineHeight: 41,
                     borderRadius: "50%",
                     backgroundColor: "#0062FF"
                     // padding:responseFontSize(20)
@@ -113,7 +138,7 @@ function MainButtons({onPrevious, onLogo, logoPercent, onCoin, onSetDislike, onS
                 {/*    }}/>*/}
                 {/*</div>}*/}
                 <div className={classes.button} style={{
-                    backgroundColor: isClicked["coin"] ? "#286EF2" : "#272727",
+                    backgroundColor: isClicked["coin"] ? "#286EF2" : "#272727"
                 }}>
                     <MemoCoinIcon/>
                 </div>
@@ -126,7 +151,7 @@ function MainButtons({onPrevious, onLogo, logoPercent, onCoin, onSetDislike, onS
             }} className={classes.buttonContainer} style={{width: !userType ? "42.5%" : "20%"}}>
                 <div className={classes.button} style={{
                     flex: !userType ? 1 : undefined,
-                    backgroundColor: isClicked["heart"] ? "#286EF2" : "#272727",
+                    backgroundColor: isClicked["heart"] ? "#286EF2" : "#272727"
                 }}>
                     <MemoHeartIcon/>
                 </div>
