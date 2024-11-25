@@ -4,14 +4,14 @@
     display: flex;
     flex-direction: column;
     background-color: #000000;
-    border-radius: 7px;
-    padding: 29px 25px 19px 25px;
+    border-radius: 32px;
+    padding: 24px;
 }
 
 .title {
     color: white;
-    font-weight: 700;
-    line-height: 49px;
+    font-weight: 600;
+    /*line-height: 49px;*/
     letter-spacing: -0.04em;
 }
 

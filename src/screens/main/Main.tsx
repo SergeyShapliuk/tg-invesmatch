@@ -20,6 +20,7 @@ import {User} from "../../types/types";
 import {motion, AnimatePresence} from "framer-motion";
 import ItemMain from "../../components/main/ItemMain";
 import Filter from "../filter/Filter";
+import ProfilesAreOver from "./ProfilesAreOver";
 
 // const entities: { companyName: string, description: string, hashTags?: string[] } = {
 //     companyName: "Company name",
@@ -49,7 +50,7 @@ function Main() {
     const [isOpenFilter, setOpenFilter] = useState<boolean>(false);
     // const [isOpenText, setIsOpenText] = useState<boolean>(false);
     const [direction, setDirection] = useState(1);
-    // const [pointerEvents, sePointerEvents] = useState<boolean>(false);
+    const [buttonName, setButtonName] = useState<"heart" | "dislike">();
 
     const {data: form} = useFetchForms();
 
@@ -76,6 +77,7 @@ function Main() {
         if (currentIndex > 0) {
             setDirection(-1);
             setCurrentIndex((prevIndex) => prevIndex - 1);
+            setButtonName(undefined);
         }
     };
 
@@ -89,6 +91,7 @@ function Main() {
             setCurrentIndex((prevIndex) => prevIndex + 1);
         }
         // handleNext();
+        setButtonName("dislike");
     };
 
     const handleSetLike = () => {
@@ -101,6 +104,7 @@ function Main() {
             setCurrentIndex((prevIndex) => prevIndex + 1);
         }
         // handleNext();
+        setButtonName("heart");
     };
 
     const onCloseTooltip = () => {
@@ -287,7 +291,7 @@ function Main() {
                     {/*</Swiper>*/}
 
                     <AnimatePresence initial={false} custom={direction}>
-                        {currentItem && <motion.div key={currentIndex}
+                        {currentItem ? (<motion.div key={currentItem.user.id}
                                                     custom={direction}
                                                     variants={variants}
                                                     initial="enter"
@@ -301,10 +305,15 @@ function Main() {
                                                     dragConstraints={{left: 0, right: 0}}
                                                     dragElastic={1}
                             // onDrag={(event, {offset, velocity}) => {
-                            //     const swipe = swipePower(offset.x, velocity.x);
-                            //     pointerEventsRef.current = true;
-                            //     sePointerEvents(true)
-                            //     console.log("sdsdsd",  pointerEventsRef.current);
+                            //     const swipe = swipePower(offset.y, velocity.y);
+                            //     console.log("Vertical swipe detected, ignoring.",swipe);
+                            //     // if (Math.abs(velocity.y) > verticalSwipeThreshold) {
+                            //     //     console.log("Vertical swipe detected, ignoring.");
+                            //     //    event.preventDefault();
+                            //     // }
+                            //     // pointerEventsRef.current = true;
+                            //     // sePointerEvents(true)
+                            //     // console.log("sdsdsd",  pointerEventsRef.current);
                             //     // if (swipe !== 0) {
                             //     //     console.log("event", swipe);
                             //     //     pointerEventsRef.current = true;
@@ -316,31 +325,40 @@ function Main() {
                                                         // pointerEventsRef.current = false;
                                                         // sePointerEvents(false)
                                                         // pointerEventsRef.current?.style.pointerEvents = 'none';
-                                                        if (swipe > -swipeConfidenceThreshold) {
-                                                            handleSetLike();
-                                                        } else if (swipe < swipeConfidenceThreshold) {
+                                                        if (swipe < -swipeConfidenceThreshold) {
+                                                            handleSetDislike();
+
+                                                            // console.log("handleSetDislike");
+                                                        } else if (swipe > swipeConfidenceThreshold) {
                                                             // setDislike({
                                                             //     tg_id: initData?.user?.id.toString() ?? "test",
                                                             //     tg_id_what_i_liked: currentItem?.user?.tg_id ?? "test"
                                                             // });
-                                                            handleSetDislike();
+                                                            // console.log("handleSetDislike");
+
+                                                            handleSetLike();
+
                                                             // setDirection(-1);
                                                             // setCurrentIndex((prevIndex) => prevIndex + 1);
                                                         }
                                                     }}
                                                     className={classes.scrollContainer}>
-                            {/*<div style={{*/}
-                            {/*    position: "absolute",*/}
-                            {/*    width: "100%",*/}
-                            {/*    height: "50%",*/}
-                            {/*    background: "linear-gradient(to bottom, rgba(9, 9, 9, 0), rgba(9, 9, 9, 0.8), rgba(9, 9, 9, 1) 100%)",*/}
-                            {/*    bottom: 0,*/}
-                            {/*    borderBottomLeftRadius: "32px",*/}
-                            {/*    borderBottomRightRadius: "32px",*/}
-                            {/*    zIndex: 3,*/}
-                            {/*    // pointerEvents: "none"*/}
-                            {/*}}/>*/}
-                            <ItemMain item={currentItem} setOpenFilter={() => setOpenFilter(true)}/>
+                            <div style={{
+                                position: "absolute",
+                                width: "100%",
+                                height: "50%",
+                                background: "linear-gradient(to bottom, rgba(9, 9, 9, 0), rgba(9, 9, 9, 0.8), rgba(9, 9, 9, 1) 100%)",
+                                bottom: 0,
+                                borderBottomLeftRadius: "32px",
+                                borderBottomRightRadius: "32px",
+                                zIndex: 3,
+                                pointerEvents: "none"
+                            }}/>
+                            <ItemMain item={currentItem} setOpenFilter={() => {
+                                setOpenFilter(true);
+                                setButtonName(undefined);
+                            }}
+                                      blur={open.isActive}/>
                             <div className={classes.buttonsContainer}
                                 // style={{pointerEvents:  "none"}}
                             >
@@ -357,7 +375,7 @@ function Main() {
                                                  color: "#286EF2",
                                                  isActive: true
                                              })}
-                                             logoPercent={currentItem?.relevance}
+                                             logoPercent={currentItem?.relevance?.toString()}
                                              onCoin={() => setOpen({
                                                  title: "Wallet",
                                                  text: currentItem?.user.wallet ?? "No wallet",
@@ -368,11 +386,10 @@ function Main() {
 
                                              onSetLike={handleSetLike}
                                              userType={currentItem?.user?.user_types?.some(tag => tag.toLowerCase() === "founder")}
-                                             currentIndex={currentIndex}
-                                             direction={direction}/>}
+                                             buttonName={buttonName}/>}
 
                             </div>
-                        </motion.div>}
+                        </motion.div>) : (<ProfilesAreOver/>)}
 
                     </AnimatePresence>
                     {/*: <div style={{*/}

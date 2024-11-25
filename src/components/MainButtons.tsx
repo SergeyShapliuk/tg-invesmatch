@@ -7,6 +7,16 @@ import {motion} from "framer-motion";
 import {useEffect, useState} from "react";
 // import {useScreenSize} from "../common/context/ScreenSizeProvider";
 
+type MainButtonsProps = {
+    onPrevious: () => void;
+    onLogo: () => void;
+    logoPercent: string;
+    onCoin: () => void;
+    onSetDislike: () => void;
+    onSetLike: () => void;
+    userType: boolean;
+    buttonName: "heart" | "dislike" | undefined;
+}
 type ButtonNames = "coin" | "heart" | "previous" | "dislike";
 
 function MainButtons({
@@ -17,26 +27,35 @@ function MainButtons({
                          onSetDislike,
                          onSetLike,
                          userType,
-                         currentIndex,
-                         direction
-                     }: any) {
+                         buttonName
+                     }: MainButtonsProps) {
     // const {responseFontSize} = useScreenSize();
 
     const [isClicked, setIsClicked] = useState<Partial<Record<ButtonNames, boolean>>>({});
-    console.log("currentIndex", currentIndex);
+    // console.log("currentIndex", currentIndex);
+    // useEffect(() => {
+    //         let timeout: any;
+    //         if (currentIndex > 0) {
+    //             timeout = setTimeout(() => {
+    //                 if (direction < 0) {
+    //                     handleClick("heart");
+    //                 } else if (direction > 0) {
+    //                     handleClick("dislike");
+    //                 }
+    //             }, 100);
+    //         }
+    //         return () => clearTimeout(timeout);
+    //     }, [currentIndex, direction]
+    // );
     useEffect(() => {
             let timeout: any;
-            if (currentIndex > 0) {
+            if (buttonName) {
                 timeout = setTimeout(() => {
-                    if (direction < 0) {
-                        handleClick("heart");
-                    } else if (direction > 0) {
-                        handleClick("dislike");
-                    }
+                    handleClick(buttonName);
                 }, 100);
             }
             return () => clearTimeout(timeout);
-        }, [currentIndex, direction]
+        }, [buttonName]
     );
 
     const handleClick = (buttonName: ButtonNames) => {
@@ -47,7 +66,7 @@ function MainButtons({
     };
     return (
         <div style={{
-            position: "relative",
+            // position: "relative",
             width: "100%",
             // height:'100%',
             display: "flex",
@@ -55,10 +74,11 @@ function MainButtons({
             alignItems: "center",
             // flexWrap:'wrap',
             // backgroundColor:'red',
-            padding: "150px 14px 24px 14px",
+            // padding: "150px 14px 24px 14px",
+            padding: "0 14px 24px 14px",
             // pointerEvents: "none",
-            gap: 10,
-            zIndex: 0
+            gap: 10
+            // zIndex: 10
         }}>
             <motion.div initial={{opacity: 1, scale: 1}}
                         animate={isClicked["previous"] ? {opacity: .5, scale: .5} : {opacity: 1, scale: 1}}
@@ -67,7 +87,7 @@ function MainButtons({
                 onPrevious();
             }} className={classes.buttonContainer}>
                 <div className={classes.button} style={{
-                    backgroundColor: isClicked["previous"] ? "#286EF2" : "#272727"
+                    backgroundColor: isClicked["previous"] ? "#0062FF" : "#272727"
                 }}>
                     <MemoReturnIcon/>
                 </div>
@@ -80,7 +100,7 @@ function MainButtons({
                 onSetDislike();
             }} className={classes.buttonContainer}>
                 <div className={classes.button} style={{
-                    backgroundColor: isClicked["dislike"] ? "#286EF2" : "#272727"
+                    backgroundColor: isClicked["dislike"] ? "#0062FF" : "#272727"
                 }}>
                     <MemoCloseIcon/>
                 </div>
@@ -138,7 +158,7 @@ function MainButtons({
                 {/*    }}/>*/}
                 {/*</div>}*/}
                 <div className={classes.button} style={{
-                    backgroundColor: isClicked["coin"] ? "#286EF2" : "#272727"
+                    backgroundColor: isClicked["coin"] ? "#0062FF" : "#272727"
                 }}>
                     <MemoCoinIcon/>
                 </div>
@@ -151,7 +171,7 @@ function MainButtons({
             }} className={classes.buttonContainer} style={{width: !userType ? "42.5%" : "20%"}}>
                 <div className={classes.button} style={{
                     flex: !userType ? 1 : undefined,
-                    backgroundColor: isClicked["heart"] ? "#286EF2" : "#272727"
+                    backgroundColor: isClicked["heart"] ? "#0062FF" : "#272727"
                 }}>
                     <MemoHeartIcon/>
                 </div>

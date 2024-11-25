@@ -4,10 +4,10 @@ import {useScreenSize} from "../../../common/context/ScreenSizeProvider";
 import {ControllerRenderProps} from "react-hook-form";
 
 
-
 interface TextInputProps extends ControllerRenderProps {
     name: string;
     label: string;
+    placeholder?: string;
     // fieldsError: string[];
 }
 
@@ -17,14 +17,15 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>(({
                                                                     value,
                                                                     onChange,
                                                                     onBlur,
+                                                                    placeholder
                                                                     // fieldsError
                                                                 }, ref) => {
     const {responseFontSize} = useScreenSize();
 
-    const handleFocus = (e:React.FocusEvent<HTMLInputElement>) => {
+    const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
         const target = e.target;  // Элемент, на который был произведен клик или фокус
         setTimeout(() => {
-            target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            target.scrollIntoView({behavior: "smooth", block: "center"});
         }, 500);
     };
     // console.log("TextInputPropserror", fieldsError);
@@ -40,29 +41,29 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>(({
                 letterSpacing: -0.04
             }}>{label}</label>
             {/*{fieldsError.length === 0 || fieldsError.find(f => f === name) ?*/}
-                <input
-                    ref={ref}
-                    type="text"
-                    inputMode="text"
-                    placeholder="Enter the text"
-                    value={value}          // Передается через Controller
-                    onChange={onChange}    // Передается через Controller
-                    onBlur={onBlur}
-                    onFocus={handleFocus}
-                    style={{
-                        width: "100%",
-                        color: "#FFFFFF",
-                        fontFamily: "Onest",
-                        fontSize: "16px",
-                        lineHeight: "21px",
-                        backgroundColor: "transparent",
-                        borderWidth: "1px",
-                        borderStyle: "solid",
-                        borderColor: "rgba(255,255,255,0.4)",
-                        borderRadius: "7px",
-                        padding: "10px",
-                        outline: "none"
-                    }}/>
+            <input
+                ref={ref}
+                type="text"
+                inputMode="text"
+                placeholder={placeholder}
+                value={value}          // Передается через Controller
+                onChange={onChange}    // Передается через Controller
+                onBlur={onBlur}
+                onFocus={handleFocus}
+                style={{
+                    width: "100%",
+                    color: "#FFFFFF",
+                    fontFamily: "Onest",
+                    fontSize: "16px",
+                    lineHeight: "21px",
+                    backgroundColor: "transparent",
+                    borderWidth: "1px",
+                    borderStyle: "solid",
+                    borderColor: "rgba(255,255,255,0.4)",
+                    borderRadius: "7px",
+                    padding: "10px",
+                    outline: "none"
+                }}/>
             {/*:*/}
             {/*    <div style={{*/}
             {/*        width: "100%",*/}

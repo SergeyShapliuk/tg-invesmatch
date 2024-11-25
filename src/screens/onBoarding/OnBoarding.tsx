@@ -9,19 +9,18 @@ function OnBoarding() {
     return (
         <div className={classes.container}>
             <div className={classes.titleContainer}>
-                <div style={{color: "#fff"}}>
-                    Icon
-                </div>
+                {/*<div style={{color: "#FFFFFF"}}>*/}
+                {/*    Icon*/}
+                {/*</div>*/}
                 <div className={classes.title}
-                     style={{fontSize: responseFontSize(72), lineHeight: responseFontSize(77)}}>
-                    Invest.
-                    Founder.
-                    Chettam.
+                     style={{fontSize: responseFontSize(60), lineHeight: responseFontSize(58)}}>
+                    Match
+                    Connect
+                    Build
                 </div>
                 <div className={classes.subTitle}
-                     style={{fontSize: responseFontSize(16), lineHeight: responseFontSize(19)}}>
-                    A platform that connects investors and funders so that everyone can find their ideal project or
-                    partner.
+                     style={{fontSize: responseFontSize(16), lineHeight: responseFontSize(22)}}>
+                    Swipe to Connect Founders and Investors: Discover the perfect match to bring your vision to life
                 </div>
             </div>
 

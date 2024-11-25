@@ -9,9 +9,10 @@ import {User} from "../../types/types";
 type ItemMainProps = {
     item: { relevance: number; user: User } | undefined;
     setOpenFilter: () => void;
+    blur: boolean;
 }
 
-function ItemMain({item, setOpenFilter}: ItemMainProps) {
+function ItemMain({item, setOpenFilter, blur}: ItemMainProps) {
     const {responseFontSize} = useScreenSize();
 
     const [isOpenText, setIsOpenText] = useState<boolean>(false);
@@ -26,8 +27,10 @@ function ItemMain({item, setOpenFilter}: ItemMainProps) {
             display: "flex",
             flexDirection: "column",
             gap: 20,
-            padding: "20px 24px 200px 24px"
-            // overflow: "auto"
+            padding: "20px 24px 200px 24px",
+            touchAction: "pan-y",
+            overflowY: "auto",
+            filter: blur ? "blur(5px)" : undefined
         }}>
             <div className={classes.name}
                  style={{fontSize: responseFontSize(38), lineHeight: responseFontSize(40)}}>

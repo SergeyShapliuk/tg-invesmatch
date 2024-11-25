@@ -46,7 +46,7 @@
     /*-webkit-overflow-scrolling: touch;*/
     /*gap: 20px;*/
     z-index: 0;
-/*pointer-events: auto;*/
+    /*pointer-events: auto;*/
 }
 
 .buttonsContainer {
@@ -69,6 +69,7 @@
     top: 12px;
     right: 12px;
     gap: 8px;
+    z-index: 3;
 }
 
 .name {

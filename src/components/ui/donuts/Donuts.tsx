@@ -71,13 +71,13 @@ const Donuts = forwardRef<HTMLInputElement, CurrencyProps>(({
                     ref={ref}
                     type="text"
                     inputMode="numeric"
-                    placeholder="Enter donuts"
+                    placeholder="Donation amount"
                     value={amount}          // Передается через Controller
                     onChange={handleInputChange}    // Передается через Controller
                     onBlur={onBlur}
                     onFocus={handleFocus}
                     style={{
-                        width: "50%",
+                        width: "100%",
                         color: "#FFFFFF",
                         fontFamily: "Onest",
                         fontSize: "16px",

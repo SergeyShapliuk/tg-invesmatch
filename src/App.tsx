@@ -5,6 +5,8 @@ import {MutationCache, QueryCache, QueryClient, QueryClientProvider} from "@tans
 import {UserProvider} from "./common/context/UserProvider";
 // import {setupMockTelegramEnv} from "../telegramEnvConfig";
 import {initMiniApp, initSwipeBehavior, initViewport} from "@telegram-apps/sdk-react";
+import useNetworkStatus from "./common/hooks/useNetworkStatus";
+import ModalError from "./components/ui/modal/ModalError";
 
 
 // setupMockTelegramEnv();
@@ -26,11 +28,13 @@ function App() {
     const [miniApp] = initMiniApp();
     const [viewport] = initViewport();
     const [swipeBehavior] = initSwipeBehavior();
+    const network = useNetworkStatus();
 
 
     const [error, setError] = useState<{ isOpen: boolean, message: string }>({isOpen: false, message: ""});
 
     console.log("errorApp", error);
+    console.log("network", network);
     // console.log("miniApp", miniApp);
 
 
@@ -48,7 +52,8 @@ function App() {
                 },
                 queryCache: new QueryCache({
                     onError: (error) =>
-                        setError({isOpen: true, message: error.message}),
+                        console.log('onError',error),
+                        // setError({isOpen: true, message: error.message}),
 
                     onSuccess: () => {
                         setError((prevError) => {
@@ -99,6 +104,9 @@ function App() {
                     <Navigation/>
                 </UserProvider>
             </QueryClientProvider>
+
+            <ModalError error={network.isOnline ? error : {isOpen: true, message: "Connection problem. Check your internet and refresh the mini-app"}}
+                        close={() => setError({isOpen: false, message: ""})}/>
         </>
     );
 }
