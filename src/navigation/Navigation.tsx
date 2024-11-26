@@ -17,6 +17,7 @@ import {useKeyboardStatus} from "../common/hooks/useKeyboardStatus";
 import Wallet from "../screens/wallet/Wallet";
 import MemoBellIcon from "../components/svg/BellIcon";
 import MemoWalletIcon from "../components/svg/WalletIcon";
+import UpdateProfile from "../screens/profile/update/UpdateProfile";
 
 
 function Navigation() {
@@ -62,15 +63,12 @@ function Navigation() {
                         <Route path="likes" element={<ListLikes/>}/>
                     </Route>
                     <Route path="/main" element={<Main/>}/>
-                    <Route path="/profile" element={<Profile/>}/>
-                    <Route path="/wallet" element={<Wallet/>}/>
-                    {/*<Route path="/tasks" element={<Tasks/>}/>*/}
-                    {/*<Route path="/friends" element={<Friends/>}/>*/}
-                    {/*<Route path="/game/*" element={<GameComponent/>}>*/}
-                    {/*    <Route path="stack" element={<StackApp/>}/>*/}
-                    {/*    <Route path="puzzle" element={<PuzzleApp/>}/>*/}
-                    {/*</Route>*/}
                     {/*<Route path="/profile" element={<Profile/>}/>*/}
+                    <Route path="/profile">
+                        <Route path="" element={<Profile/>}/>
+                        <Route path="update" element={<UpdateProfile/>}/>
+                    </Route>
+                    <Route path="/wallet" element={<Wallet/>}/>
                 </Routes>
             )}
             {location.pathname !== "/" && <NavBar/>}
@@ -106,14 +104,13 @@ function NavBar() {
     return (
         <nav className={classes.nav}>
             <NavLink to="/chat">
-                <MemoBellIcon stroke={location.pathname.startsWith("/chat") ? "#000000" : "#00000082"}
+                <MemoBellIcon stroke={location.pathname.startsWith("/chat") ? "#EFEFEF" : "#6F6F72"}
                               opacity={location.pathname.startsWith("/chat") ? 1 : 0.51}/>
                 {/*{location.pathname === "/" &&*/}
                 {/*<span style={textStyle}>Home</span>}*/}
             </NavLink>
             <NavLink to="/main">
-                <MemoMainIcon fill={location.pathname.startsWith("/main") ? "#000000" : "#00000082"}
-                              opacity={location.pathname.startsWith("/main") ? 1 : 0.51}/>
+                <MemoMainIcon opacity={location.pathname.startsWith("/main") ? 1 : 0.51}/>
                 {/*{location.pathname === "/tasks" && <span style={textStyle}>Tasks</span>}*/}
                 {/*{location.pathname !== "/tasks" &&*/}
                 {/*<div style={{*/}
@@ -131,13 +128,13 @@ function NavBar() {
                 {/*}}>{badge !== 0 && badge}</div>}*/}
             </NavLink>
             <NavLink to="/profile">
-                <MemoUserIcon stroke={location.pathname.startsWith("/profile") ? "#000000" : "#00000082"}
+                <MemoUserIcon stroke={location.pathname.startsWith("/profile") ? "#EFEFEF" : "#6F6F72"}
                               opacity={location.pathname.startsWith("/profile") ? 1 : 0.51}/>
                 {/*{location.pathname === "/friends" && <span style={textStyle}>Friends</span>}*/}
             </NavLink>
             <NavLink to="/wallet">
                 <MemoWalletIcon stroke={location.pathname.startsWith("/wallet") ? "#000000" : "#00000082"}
-                              opacity={location.pathname.startsWith("/wallet") ? 1 : 0.51}/>
+                                opacity={location.pathname.startsWith("/wallet") ? 1 : 0.51}/>
                 {/*{location.pathname === "/friends" && <span style={textStyle}>Friends</span>}*/}
             </NavLink>
         </nav>

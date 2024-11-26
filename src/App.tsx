@@ -52,8 +52,7 @@ function App() {
                 },
                 queryCache: new QueryCache({
                     onError: (error) =>
-                        console.log('onError',error),
-                        // setError({isOpen: true, message: error.message}),
+                        setError({isOpen: true, message: error.message}),
 
                     onSuccess: () => {
                         setError((prevError) => {
@@ -105,7 +104,10 @@ function App() {
                 </UserProvider>
             </QueryClientProvider>
 
-            <ModalError error={network.isOnline ? error : {isOpen: true, message: "Connection problem. Check your internet and refresh the mini-app"}}
+            <ModalError error={network.isOnline ? error : {
+                isOpen: true,
+                message: "Connection problem. Check your internet and refresh the mini-app"
+            }}
                         close={() => setError({isOpen: false, message: ""})}/>
         </>
     );

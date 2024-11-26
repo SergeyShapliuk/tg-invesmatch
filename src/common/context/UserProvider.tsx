@@ -86,11 +86,19 @@ export const UserProvider = ({children}: { children: ReactNode }) => {
     // }, [userData]);
 
     useEffect(() => {
-        if (userRelevance) {
+        if (!isInitialized && userRelevance) {
             setUsersRelevance(userRelevance.feed);
             setIsLoggedIn(true);
             console.log("user");
             setInitialized(true);
+            navigate("/");
+        }
+    }, [userRelevance]);
+
+    useEffect(() => {
+        if (isInitialized && !isLoggedIn && userRelevance) {
+            setUsersRelevance(userRelevance.feed);
+            setIsLoggedIn(true);
             navigate("/");
         }
     }, [userRelevance]);

@@ -1,0 +1,69 @@
+.container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    background-image: url("../../assets/main-full-image.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-color: #090909;
+    border-radius: 32px;
+    padding: 24px;
+}
+
+.titleContainer {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.title {
+    color: white;
+    font-weight: 600;
+    /*letter-spacing: -0.03em;*/
+    /*padding-top: 2.5rem;*/
+    text-align: center;
+}
+
+.subTitle {
+    color: white;
+    /*letter-spacing: -0.03em;*/
+    padding: 12px 2.5rem 24px 2.5rem;
+    text-align: center;
+}
+
+.relevance {
+    width: 110px;
+    /*max-width: 110px;*/
+    height: 110px;
+    /*max-height: 110px;*/
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #0062FF;
+    border-radius: 50%;
+    color: #EFEFEF;
+    font-size: 32px;
+    font-weight: 600;
+    line-height: 40px;
+}
+
+.name {
+    color: #FFFFFF;
+    font-weight: 600;
+    margin-top: 24px;
+}
+
+.buttonContainer {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-end;
+    gap: 12px;
+}

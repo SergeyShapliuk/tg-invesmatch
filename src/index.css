@@ -84,7 +84,7 @@ button {
     font-weight: 500;
     font-family: inherit;
     line-height: 24px;
-    letter-spacing: -0.04em;
+    /*letter-spacing: -0.04em;*/
     color: #EFEFEF;
     background-color: #286EF2;
     cursor: pointer;

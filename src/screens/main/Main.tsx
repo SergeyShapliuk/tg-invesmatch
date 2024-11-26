@@ -7,8 +7,8 @@ import {useUserData} from "../../common/context/UserProvider";
 import {useFetchForms} from "../../api/hooks/useFetchForms";
 import {initInitData} from "@telegram-apps/sdk-react";
 import {User} from "../../types/types";
-// import {useSetLike} from "../../api/hooks/useSetLike";
-// import {useSetDislike} from "../../api/hooks/useSetDislike";
+import {useSetLike} from "../../api/hooks/useSetLike";
+import {useSetDislike} from "../../api/hooks/useSetDislike";
 // import {EffectCards, Navigation, Pagination} from "swiper/modules";
 // import {Swiper, SwiperSlide} from "swiper/react";
 // Import Swiper styles
@@ -18,9 +18,11 @@ import {User} from "../../types/types";
 // import "swiper/css/pagination";
 // import "swiper/css/navigation";
 import {motion, AnimatePresence} from "framer-motion";
-import ItemMain from "../../components/main/ItemMain";
+import ItemProfile from "../../components/main/ItemProfile";
 import Filter from "../filter/Filter";
 import ProfilesAreOver from "./ProfilesAreOver";
+import MemoShareIcon from "../../components/svg/ShareIcon";
+import MemoFilterIcon from "../../components/svg/FilterIcon";
 
 // const entities: { companyName: string, description: string, hashTags?: string[] } = {
 //     companyName: "Company name",
@@ -36,14 +38,16 @@ function Main() {
     // const pointerEventsRef = useRef<boolean>(false);
 
 
-    // const {mutate: setLike} = useSetLike();
-    // const {mutate: setDislike} = useSetDislike();
+    const {mutate: setLike,data} = useSetLike();
+    const {mutate: setDislike} = useSetDislike();
 
 
-    const [open, setOpen] = useState<{ title: string, text: string, percent: string, color: string, isActive: boolean }>({
+    const [open, setOpen] = useState<{ title: string, text: string, percent: string, width: string | undefined, bottom: string, color: string, isActive: boolean }>({
         title: "",
         text: "",
         percent: "",
+        width: "",
+        bottom: "",
         color: "",
         isActive: false
     });
@@ -56,7 +60,7 @@ function Main() {
 
     const currentItem: { relevance: number; user: User } | undefined = usersRelevance?.[currentIndex];
 
-    console.log("openMain", direction);
+    console.log("data", data);
     // useEffect(() => {
     //     mutateRelevance({tg_id: initData?.user?.id.toString() ?? "test"});
     // }, [isSuccessLike, isSuccessDisLike]);
@@ -82,10 +86,10 @@ function Main() {
     };
 
     const handleSetDislike = () => {
-        // setDislike({
-        //     tg_id: initData?.user?.id.toString() ?? "test",
-        //     tg_id_what_i_liked: currentItem?.user?.tg_id ?? "test"
-        // });
+        setDislike({
+            tg_id: initData?.user?.id.toString() ?? "test",
+            tg_id_what_i_liked: currentItem?.user?.tg_id ?? "test"
+        });
         if (currentIndex <= usersRelevance.length - 1) {
             setDirection(1);
             setCurrentIndex((prevIndex) => prevIndex + 1);
@@ -95,10 +99,10 @@ function Main() {
     };
 
     const handleSetLike = () => {
-        // setLike({
-        //     tg_id: initData?.user?.id.toString() ?? "test",
-        //     tg_id_what_i_liked: currentItem?.user?.tg_id ?? "test"
-        // });
+        setLike({
+            tg_id: initData?.user?.id.toString() ?? "test",
+            tg_id_what_i_liked: currentItem?.user?.tg_id ?? "test"
+        });
         if (currentIndex <= usersRelevance.length - 1) {
             setDirection(-1);
             setCurrentIndex((prevIndex) => prevIndex + 1);
@@ -107,11 +111,18 @@ function Main() {
         setButtonName("heart");
     };
 
+    const handleOpenFilter = () => {
+        setOpenFilter(true);
+        setButtonName(undefined);
+    };
+
     const onCloseTooltip = () => {
         setOpen({
             title: "",
             text: "",
             percent: "",
+            width: "",
+            bottom: "",
             color: "",
             isActive: false
         });
@@ -343,6 +354,17 @@ function Main() {
                                                         }
                                                     }}
                                                     className={classes.scrollContainer}>
+                            <div className={classes.filterContainer}>
+                                <button onClick={() => {
+                                }}
+                                        className="icon-style">
+                                    <MemoShareIcon style={{marginTop: 3}}/>
+                                </button>
+                                <button onClick={handleOpenFilter}
+                                        className="icon-style">
+                                    <MemoFilterIcon style={{marginTop: 3}}/>
+                                </button>
+                            </div>
                             <div style={{
                                 position: "absolute",
                                 width: "100%",
@@ -354,17 +376,17 @@ function Main() {
                                 zIndex: 3,
                                 pointerEvents: "none"
                             }}/>
-                            <ItemMain item={currentItem} setOpenFilter={() => {
-                                setOpenFilter(true);
-                                setButtonName(undefined);
-                            }}
-                                      blur={open.isActive}/>
+                            <ItemProfile item={currentItem.user}
+                                         blur={open.isActive}
+                                         onCloseToolTip={onCloseTooltip}/>
                             <div className={classes.buttonsContainer}
                                 // style={{pointerEvents:  "none"}}
                             >
                                 {open.isActive && <Tooltip title={open.title} text={open.text}
                                                            close={onCloseTooltip}
                                                            percent={open.percent}
+                                                           width={open.width}
+                                                           bottom={open.bottom}
                                                            color={open.color}/>}
                                 {usersRelevance.length > 0 &&
                                 <MainButtons onPrevious={handlePrevious} onSetDislike={handleSetDislike}
@@ -372,14 +394,18 @@ function Main() {
                                                  title: "Your compatibility",
                                                  text: "",
                                                  percent: "50%",
+                                                 width: undefined,
+                                                 bottom: "120px",
                                                  color: "#286EF2",
                                                  isActive: true
                                              })}
                                              logoPercent={currentItem?.relevance?.toString()}
                                              onCoin={() => setOpen({
-                                                 title: "Wallet",
+                                                 title: "Wallet:",
                                                  text: currentItem?.user.wallet ?? "No wallet",
-                                                 percent: "72.5%",
+                                                 percent: "72%",
+                                                 width: "89%",
+                                                 bottom: "110px",
                                                  color: "#FFFFFF",
                                                  isActive: true
                                              })}

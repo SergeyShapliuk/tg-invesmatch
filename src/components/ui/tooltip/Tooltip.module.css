@@ -1,16 +1,21 @@
 .tooltip {
     position: absolute;
-    width: 89%;
-    display: inline-block;
-    bottom: 110px;
-    font-weight: 500;
-    letter-spacing: -0.04em;
-    padding: 1em;
-    border-radius: 7px;
-    background-color: var(--color);
+    width: var(--width);
     left: 50%; /* Начинаем тултип с левого края экрана */
+    bottom: var(--bottom);
+    display: inline-flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 500;
+    /*letter-spacing: -0.04em;*/
+    padding: 16px 20px;
+    border-radius: 20px;
+    /*background-color: var(--color);*/
+    background-color: #272727;
+    /*box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);*/
     transform: translate(-50%);
-    z-index: 1;
+    z-index: 10;
 }
 
 .tooltip::before,
@@ -18,16 +23,23 @@
     content: "";
     position: absolute;
     top: 100%;
-    height: 1.6em;
-    width: 1.6em;
+    width: 22px;
+    height: 24px;
+
 }
 
 .tooltip::before {
-    left: calc(var(--percent) - 1.59em);
-    background-image: radial-gradient(circle at 0% 100%, transparent 1.6em, var(--color) calc(1.6em + 1px));
+    left: calc(var(--percent) - 22px);
+    /*background-image: radial-gradient(circle at 0% 100%, transparent 24px, var(--color) calc(24px + 1px));*/
+    background-image: radial-gradient(circle at 0% 100%, transparent 22px, #272727 calc(24px + 1px));
 }
 
 .tooltip::after {
     left: var(--percent);
-    background-image: radial-gradient(circle at 100% 100%, transparent 1.6em, var(--color) calc(1.6em + 1px));
+    /*background-image: radial-gradient(circle at 100% 100%, transparent 24px, var(--color) calc(24px + 1px));*/
+    background-image: radial-gradient(circle at 100% 100%, transparent 22px, #272727 calc(24px + 1px));
+}
+
+.copy {
+
 }

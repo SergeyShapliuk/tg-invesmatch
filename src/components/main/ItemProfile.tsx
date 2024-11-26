@@ -1,18 +1,16 @@
 import classes from "../../screens/main/Main.module.css";
-import MemoShareIcon from "../svg/ShareIcon";
-import MemoFilterIcon from "../svg/FilterIcon";
 import Collapsible from "react-collapsible";
 import {useScreenSize} from "../../common/context/ScreenSizeProvider";
 import {useState} from "react";
 import {User} from "../../types/types";
 
 type ItemMainProps = {
-    item: { relevance: number; user: User } | undefined;
-    setOpenFilter: () => void;
-    blur: boolean;
+    item: User | undefined;
+    blur?: boolean;
+    onCloseToolTip?: () => void;
 }
 
-function ItemMain({item, setOpenFilter, blur}: ItemMainProps) {
+function ItemProfile({item, blur, onCloseToolTip}: ItemMainProps) {
     const {responseFontSize} = useScreenSize();
 
     const [isOpenText, setIsOpenText] = useState<boolean>(false);
@@ -21,7 +19,7 @@ function ItemMain({item, setOpenFilter, blur}: ItemMainProps) {
         setIsOpenText(!isOpenText);
     };
     return (
-        <div style={{
+        <div onClick={onCloseToolTip} style={{
             // position: "absolute",
             height: "100%",
             display: "flex",
@@ -34,32 +32,20 @@ function ItemMain({item, setOpenFilter, blur}: ItemMainProps) {
         }}>
             <div className={classes.name}
                  style={{fontSize: responseFontSize(38), lineHeight: responseFontSize(40)}}>
-                {item?.user.name}
+                {item?.name}
             </div>
-            <div className={classes.filterContainer}>
-                <button onClick={() => {
-                }}
-                        className="icon-style">
-                    <MemoShareIcon style={{marginTop: 3}}/>
-                </button>
-                <button onClick={setOpenFilter}
-                        className="icon-style">
-                    <MemoFilterIcon style={{marginTop: 3}}/>
-                </button>
-            </div>
-
             <div style={{
                 display: "flex",
                 justifyContent: "start",
                 flexWrap: "wrap",
                 gap: 8
             }}>
-                {Object.values(item?.user?.hashtags ?? {}).flat().map((item, index) => (
+                {Object.values(item?.hashtags ?? {}).flat().map((item, index) => (
                     <div key={index} className="hashButton"
                          style={{backgroundColor: "#0062FF"}}>{item}</div>
                 ))}
             </div>
-            {item?.user?.user_types?.some(tag => tag.toLowerCase() === "founder") &&
+            {item?.user_types?.some(tag => tag.toLowerCase() === "founder") &&
             <div style={{display: "flex", flexDirection: "column", gap: 8}}>
 
                 <div style={{
@@ -74,7 +60,7 @@ function ItemMain({item, setOpenFilter, blur}: ItemMainProps) {
                     <div
                         style={{
                             position: "absolute",
-                            width: Number(item?.user.donuts.current_amount) <= Number(item?.user.donuts.purpose_amount) ? `${Number(item?.user.donuts.current_amount) / Number(item?.user.donuts.purpose_amount) * 100}%` : "100%",
+                            width: Number(item?.donuts.current_amount) <= Number(item?.donuts.purpose_amount) ? `${Number(item?.donuts.current_amount) / Number(item?.donuts.purpose_amount) * 100}%` : "100%",
                             // width: "50%",
                             top: 0,
                             left: 0,
@@ -87,8 +73,8 @@ function ItemMain({item, setOpenFilter, blur}: ItemMainProps) {
 
                 </div>
                 <div
-                    className={classes.donatsText}>Collected {Number(item?.user.donuts.current_amount).toString()}$
-                    out of {Number(item?.user.donuts.purpose_amount).toString()}$
+                    className={classes.donatsText}>Collected {Number(item?.donuts.current_amount).toString()}$
+                    out of {Number(item?.donuts.purpose_amount).toString()}$
                 </div>
             </div>}
             <div>
@@ -96,7 +82,7 @@ function ItemMain({item, setOpenFilter, blur}: ItemMainProps) {
                     <div style={{
                         display: "flex",
                         justifyContent: "space-between",
-                        alignItems: "center"
+                        alignItems: "center",
                         // cursor: "pointer"
                     }}>
                                                     <span style={{
@@ -112,7 +98,7 @@ function ItemMain({item, setOpenFilter, blur}: ItemMainProps) {
                              onOpening={handleToggle}
                              onClosing={handleToggle}>
                     <div style={{marginTop: 6}}>
-                        {item?.user.description}
+                        {item?.description}
                     </div>
                 </Collapsible>
                 {/*<div style={{*/}
@@ -130,4 +116,4 @@ function ItemMain({item, setOpenFilter, blur}: ItemMainProps) {
     );
 }
 
-export default ItemMain;
+export default ItemProfile;

@@ -52,10 +52,12 @@
 .buttonsContainer {
     position: absolute;
     width: 100%;
-    /*height: 100%;*/
+    max-width: 500px;
+    left: 50%;
     bottom: 0;
-    border-radius: 32px;
-    background: linear-gradient(to bottom, rgba(9, 9, 9, 0), rgba(9, 9, 9, 0.8), rgba(9, 9, 9, 1) 100%);
+    transform: translate(-50%, 0);
+    /*border-radius: 32px;*/
+    /*background: linear-gradient(to bottom, rgba(9, 9, 9, 0), rgba(9, 9, 9, 0.8), rgba(9, 9, 9, 1) 100%);*/
     /*overflow: hidden;*/
     /*overflow-x: hidden;*/
     /*-webkit-overflow-scrolling: touch;*/
@@ -79,7 +81,7 @@
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2; /* Показываем максимум две строки */
-    min-height: calc(2 * 1em); /* Минимальная высота для двух строк */
+    min-height: calc(2 * 1.1em); /* Минимальная высота для двух строк */
     /*line-height: 1em; !* Межстрочное расстояние *!*/
     /*font-size: 38px;*/
     /*line-height: 44px;*/

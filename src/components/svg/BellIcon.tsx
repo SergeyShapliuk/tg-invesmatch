@@ -9,7 +9,7 @@ const BellIcon = (props: SVGProps<SVGSVGElement>) => (
         {...props}
     >
         <path
-            stroke="#6F6F72"
+            stroke="currentFill"
             strokeLinecap="round"
             strokeLinejoin="round"
             strokeWidth={3}
