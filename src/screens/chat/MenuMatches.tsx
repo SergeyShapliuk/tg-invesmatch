@@ -1,10 +1,17 @@
 import classes from "./MenuMatches.module.css";
 import {NavLink} from "react-router-dom";
-import {useScreenSize} from "../../common/context/ScreenSizeProvider";
-import MemoArrowIcon from "../../components/svg/ArrowIcon";
 import {useFetchMatches} from "../../api/hooks/useFetchMatchs";
-// import {useFetchLikes} from "../../api/hooks/useFetchLikes";
+import {useFetchLikes} from "../../api/hooks/useFetchLikes";
 import {initInitData} from "@telegram-apps/sdk-react";
+import MemoArrowSecondaryIcon from "../../components/svg/ArrowSecondaryIcon";
+import MemoHeartIcon from "../../components/svg/HeartIcon";
+import MemoTelegramIcon from "../../components/svg/TelegramIcon";
+import ProfileCard from "./ProfileCard";
+import {useState} from "react";
+import {User} from "../../types/types";
+import {motion} from "framer-motion";
+import {FadeLoader} from "react-spinners";
+import {override} from "../../App";
 
 
 // const list = [
@@ -18,73 +25,135 @@ import {initInitData} from "@telegram-apps/sdk-react";
 
 function MenuMatches() {
     const initData = initInitData();
-    const {responseFontSize} = useScreenSize();
+    // const {responseFontSize} = useScreenSize();
 
-    const {data: matches} = useFetchMatches(initData?.user?.id.toString() ?? "test");
-    // const {data: likes} = useFetchLikes(initData?.user?.id.toString() ?? "test");
+    const {
+        data: matches,
+        isFetched: isFetchedMatches
+    } = useFetchMatches(initData?.user?.id.toString() ?? "test", "always");
+    const {data: likes, isFetched: isFetchedLikes} = useFetchLikes(initData?.user?.id.toString() ?? "test", "always");
 
+    const [cardData, setCardData] = useState<User & { disabled?: boolean } | undefined>();
     // console.log("matches", matches);
-    // console.log("likes", likes);
-    return (
-        <div className={classes.container}>
-            <NavLink to={"/chat/likes"} className={classes.likesContainer}>
-                <div className={classes.likesTitle}
-                     style={{fontSize: responseFontSize(49), lineHeight: responseFontSize(62)}}>
-                    Likes
-                </div>
-                <div style={{
-                    width: 29,
-                    height: 29,
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    backgroundColor: "#4c4c4c",
-                    borderRadius: 50
-                }}>
-                    <MemoArrowIcon stroke={"#FFFFFF73"} style={{transform: "rotate(180deg)"}}/>
-                </div>
+    console.log("likes", likes);
 
-            </NavLink>
-            <div className={classes.matchesContainer}>
-                <div className={classes.title}
-                     style={{fontSize: responseFontSize(49), lineHeight: responseFontSize(49)}}>
-                    Matches
-                </div>
-                <div className={classes.listMatches}>
-                    {matches?.users.map((item, index) => (
-                        <a href={`https://t.me/${item.tg_nick}`} key={index} target="_blank" rel="noopener noreferrer"
-                           style={{
-                               display: "flex",
-                               justifyContent: "space-between",
-                               alignItems: "center",
-                               borderBottomColor: "rgba(255,255,255,0.4)",
-                               borderBottomWidth: "1px",
-                               borderBottomStyle: "solid",
-                               paddingTop: "17px",
-                               paddingBottom: "17px",
-                               textDecoration: "none"
-                           }}>
-                            <div>
-                                <div className={classes.companyName}>{item.name}</div>
-                                <div className={classes.nick}>{item.tg_nick}</div>
-                            </div>
-                            <div style={{
-                                width: 29,
-                                height: 29,
-                                display: "flex",
-                                justifyContent: "center",
-                                alignItems: "center",
-                                backgroundColor: "#286EF2",
-                                borderRadius: 50
-                            }}>
-                                <MemoArrowIcon stroke={"#FFFFFF"} style={{transform: "rotate(180deg)"}}/>
-                            </div>
-                        </a>
-                    ))}
-                </div>
+    if (!isFetchedMatches && !isFetchedLikes) {
+        return (
+            <div className={classes.container}>
+                <FadeLoader color={"rgb(49,125,148)"} cssOverride={override} loading/>
             </div>
-        </div>
+        );
+    }
 
+    return (
+        <>
+            {!cardData ? (<div className={classes.container}>
+                <div className={classes.likesContainer}>
+                    {likes && likes?.users?.length > 0 ? (<NavLink to={"/chat/likes"} className={classes.likesLink}>
+                        <div className={classes.title}>
+                            Liked you
+                        </div>
+                        <MemoArrowSecondaryIcon/>
+                    </NavLink>) : (
+                        <div className={classes.likesLink}>
+                            <div className={classes.title}>
+                                Liked you
+                            </div>
+                        </div>)}
+                    {likes && likes?.users?.length > 0 ? (<div className={classes.likeCardsContainer}>
+                        {likes?.users?.map((card, index) => (
+                            <motion.div key={index} whileTap={{scale: 0.95}} onTap={() => setCardData(card)}
+                                        className={classes.likeCard}>
+                                <div className={classes.name}>{card.name}</div>
+                                <div style={{
+                                    display: "flex",
+                                    justifyContent: "space-between",
+                                    alignItems: "flex-end"
+                                }}>
+                                    <div style={{
+                                        height: "auto",
+                                        display: "grid",
+                                        gridTemplateColumns: "repeat(2, auto)",
+                                        justifyContent: "start",
+                                        paddingRight: 16,
+                                        flexWrap: "wrap",
+                                        gap: 8
+                                    }}>
+                                        {card?.hashtags && ["user_types", "business_models", "industries"].map(field => Object.values(card?.hashtags?.[field] || {})).flat().slice(0, 3).map((item, index) => (
+                                            <div key={index} className="hashButton"
+                                                 style={{backgroundColor: "#FFFFFF1F"}}>{item}</div>
+                                        ))}
+                                    </div>
+                                    <div className={classes.heart}>
+                                        <MemoHeartIcon fill={"#FFFFFF"}/>
+                                    </div>
+                                </div>
+
+                            </motion.div>
+                        ))}
+                    </div>) : (
+                        <div style={{paddingLeft: 24, paddingRight: 24}}>
+                            When your profile gets liked, it will appear here
+                        </div>
+                    )}
+                </div>
+
+                <div className={classes.matchesContainer}>
+                    <div className={classes.title}>
+                        Your matches
+                    </div>
+                    {matches && matches?.users?.length > 0 ? (<div className={classes.listMatches}>
+                        {matches?.users?.map((item, index) => (
+                            <motion.div key={index}
+                                        whileTap={{scale: 0.95}}
+                                        onTap={() => {
+                                            setCardData({...item, disabled: true});
+                                        }}
+                                        style={{
+                                            display: "flex",
+                                            flexDirection: "column",
+                                            backgroundColor: "#FFFFFF1F",
+                                            borderRadius: "24px",
+                                            padding: "12px 16px 16px 16px",
+                                            textDecoration: "none",
+                                            gap: 10
+                                        }}>
+                                <div>
+                                    <div className={classes.name}>{item.name}</div>
+                                </div>
+                                <div style={{
+                                    display: "flex",
+                                    justifyContent: "start",
+                                    flexWrap: "wrap",
+                                    gap: 8
+                                }}>
+                                    {item?.hashtags && ["user_types", "business_models", "industries"].map(field => Object.values(item?.hashtags?.[field] || {})).flat().slice(0, 3).map((item, index) => (
+                                        <div key={index} className="hashButton"
+                                             style={{backgroundColor: "#FFFFFF1F"}}>{item}</div>
+                                    ))}
+                                </div>
+                                <a href={`https://t.me/${item.tg_nick}`} target="_blank"
+                                   rel="noopener noreferrer" className="footerButton"
+                                   style={{
+                                       display: "flex",
+                                       justifyContent: "center",
+                                       alignItems: "center",
+                                       marginTop: 10,
+                                       textDecoration: "none",
+                                       gap: 8
+                                   }}>Start
+                                    conversation <MemoTelegramIcon/></a>
+                            </motion.div>
+                        ))}
+                    </div>) : (
+                        <div style={{paddingTop: 12}}>
+                            When you get matches, it will appear here
+                        </div>
+                    )}
+                </div>
+            </div>) : (
+                <ProfileCard onClose={() => setCardData(undefined)} cardData={cardData} disabled={cardData.disabled}/>)}
+        </>
     );
 }
 

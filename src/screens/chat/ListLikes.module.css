@@ -1,34 +1,36 @@
 .container {
+    position: relative;
     width: 100%;
     height: 100%;
     display: flex;
     flex-direction: column;
-    border-radius: 7px;
-    background-color: black;
-    padding: 25px;
-    overflow: hidden;
+    border-radius: 32px;
+    background-color: #090909;
+    padding: 20px 24px 0 24px;
+    /*overflow: hidden;*/
+}
+
+.listLikes {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    margin-top: 16px;
+    padding-bottom: 16px;
+    overflow-y: auto;
+    gap: 16px;
 }
 
 .title {
-    color: white;
-    font-weight: 700;
-    line-height: 49px;
-    letter-spacing: -0.04em;
-    padding-top: 25px;
-}
-
-.listMatches {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    overflow-y: auto;
-}
-
-.companyName {
-    color: #FFFFFF;
-    font-size: 24px;
+    color: #EFEFEF;
+    font-size: 38px;
     font-weight: 600;
-    line-height: 31px;
-    letter-spacing: -0.04em;
+    line-height: 40px;
+}
+
+.name {
+    color: #EFEFEF;
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 24px;
 }

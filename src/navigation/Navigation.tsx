@@ -6,7 +6,6 @@ import MemoMainIcon from "../components/svg/MainIcon";
 import MemoUserIcon from "../components/svg/UserIcon";
 import SaveProfile from "../screens/profile/create/SaveProfile";
 import Profile from "../screens/profile/Profile";
-import SearchMatches from "../screens/chat/SearchMatches";
 import ListLikes from "../screens/chat/ListLikes";
 import MenuMatches from "../screens/chat/MenuMatches";
 import Main from "../screens/main/Main";
@@ -57,8 +56,8 @@ function Navigation() {
                 <Routes>
                     <Route index element={<Navigate to="/main"/>}/>
                     <Route path="/chat">
-                        <Route path="" element={<Navigate to="search"/>}/>
-                        <Route path="search" element={<SearchMatches/>}/>
+                        <Route path="" element={<Navigate to="menu"/>}/>
+                        {/*<Route path="search" element={<SearchMatches/>}/>*/}
                         <Route path="menu" element={<MenuMatches/>}/>
                         <Route path="likes" element={<ListLikes/>}/>
                     </Route>

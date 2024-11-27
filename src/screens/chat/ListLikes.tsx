@@ -1,12 +1,14 @@
 import classes from "./ListLikes.module.css";
-import MemoArrowIcon from "../../components/svg/ArrowIcon";
-import {useScreenSize} from "../../common/context/ScreenSizeProvider";
 import {useFetchLikes} from "../../api/hooks/useFetchLikes";
 import {initInitData} from "@telegram-apps/sdk-react";
 import {useState} from "react";
 import {User} from "../../types/types";
-import LikeCard from "./LikeCard";
+import ProfileCard from "./ProfileCard";
 import {useNavigate} from "react-router-dom";
+import MemoCloseIcon from "../../components/svg/CloseIcon";
+import MemoHeartIcon from "../../components/svg/HeartIcon";
+import {motion} from "framer-motion";
+import {useSetLike} from "../../api/hooks/useSetLike";
 
 // const list = [
 //     {title: "Tap-Table", nick: "@kjkljlk"},
@@ -23,67 +25,85 @@ import {useNavigate} from "react-router-dom";
 function ListLikes() {
     const initData = initInitData();
     const navigate = useNavigate();
-    const {responseFontSize} = useScreenSize();
 
-    const [cardData, setCardData] = useState<User | null>(null);
-    // const [isOpenCard, setOpenCard] = useState<boolean>(false);
+    const {mutate: setLike} = useSetLike();
 
     const {data: likes} = useFetchLikes(initData?.user?.id.toString() ?? "test");
+    console.log("ListLikes", likes);
+
+    const [cardData, setCardData] = useState<User | undefined>();
+    // const [isOpenCard, setOpenCard] = useState<boolean>(false);
+
+
+    const handleSetLike = (tg_id: string) => {
+        setLike({
+            tg_id: initData?.user?.id.toString() ?? "test",
+            tg_id_what_i_liked: tg_id ?? "test"
+        });
+    };
 
     return (
         <>
-            <div className={classes.container}>
-                <div onClick={() => navigate(-1)} style={{
-                    width: 29,
-                    height: 29,
-                    minHeight: 29,
-                    minWidth: 29,
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    backgroundColor: "rgba(255,255,255,0.3)",
-                    borderRadius: 50,
-                    boxSizing: "border-box"
-                }}>
-                    <MemoArrowIcon stroke={"#FFFFFF"}/>
+            {!cardData ? (<div className={classes.container}>
+                <div className={classes.title}>
+                    Liked you
                 </div>
-                <div className={classes.title}
-                     style={{fontSize: responseFontSize(49), lineHeight: responseFontSize(49)}}>
-                    Likes
+                <div onClick={() => navigate(-1)} className="icon-style"
+                     style={{position: "absolute", top: 12, right: 12}}>
+                    <MemoCloseIcon color={"rgba(255,255,255,0.45)"}/>
                 </div>
-                <div className={classes.listMatches}>
+                <div className={classes.listLikes}>
                     {likes?.users?.map((item, index) => (
-                        <div key={index} onClick={() => setCardData(item)} style={{
-                            display: "flex",
-                            justifyContent: "space-between",
-                            alignItems: "center",
-                            borderBottomColor: "rgba(255,255,255,0.4)",
-                            borderBottomWidth: "1px",
-                            borderBottomStyle: "solid",
-                            paddingTop: "17px",
-                            paddingBottom: "17px",
-                            textDecoration: "none"
-                        }}>
+                        <motion.div key={index}
+                                    whileTap={{scale: 0.95}}
+                                    onTap={event => {
+                                        const target = event.target as Element;
+                                        if (target.closest(".footerButton")) {
+                                            // Если клик произошел по кнопке, игнорируем событие
+                                            return;
+                                        }
+                                        setCardData(item);
+                                    }}
+                                    style={{
+                                        display: "flex",
+                                        flexDirection: "column",
+                                        backgroundColor: "#FFFFFF1F",
+                                        borderRadius: "24px",
+                                        padding: "12px 16px 16px 16px",
+                                        gap: 10
+                                    }}>
                             <div>
-                                <div className={classes.companyName}>{item.name}</div>
-                                {/*<div className={classes.nick}>{item.nick}</div>*/}
+                                <div className={classes.name}>{item.name}</div>
                             </div>
                             <div style={{
-                                width: 29,
-                                height: 29,
                                 display: "flex",
-                                justifyContent: "center",
-                                alignItems: "center",
-                                backgroundColor: "#286EF2",
-                                borderRadius: 50
+                                justifyContent: "start",
+                                flexWrap: "wrap",
+                                gap: 8
                             }}>
-                                <MemoArrowIcon stroke={"#FFFFFF"} style={{transform: "rotate(180deg)"}}/>
+                                {item?.hashtags && ["user_types", "business_models", "industries"].map(field => Object.values(item?.hashtags?.[field] || {})).flat().slice(0, 3).map((item, index) => (
+                                    <div key={index} className="hashButton"
+                                         style={{backgroundColor: "#FFFFFF1F"}}>{item}</div>
+                                ))}
                             </div>
-                        </div>
+                            <motion.div whileTap={{scale: 0.95}}
+                                        onTap={event => {
+                                            event.stopPropagation();
+                                            handleSetLike(item.tg_id);
+                                        }}
+                                        className="footerButton"
+                                        style={{
+                                            display: "flex",
+                                            justifyContent: "center",
+                                            alignItems: "center",
+                                            marginTop: 10,
+                                            gap: 8
+                                        }}>Like back <MemoHeartIcon width={28} fill={"#FFFFFF"}/></motion.div>
+                        </motion.div>
                     ))}
                 </div>
-            </div>
-            {cardData && (<LikeCard onClose={() => setCardData(null)} cardData={cardData}/>)}
+            </div>) : (
+                <ProfileCard onClose={() => setCardData(undefined)} cardData={cardData}/>)}
         </>
     );
 }

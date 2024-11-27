@@ -32,23 +32,24 @@ function SaveProfile() {
         handleSubmit,
         control,
         reset,
-        watch,
-        formState: {errors}
+        watch
+        // formState: {errors}
     } = useForm<any>();
-    console.log("initData", initData?.user);
-    console.log("isSuccess", isSuccess);
-    console.log("isSuccess", form?.data);
-    console.log("register", register);
-    console.log("watch()", watch());
-    console.log("errors", errors);
-    console.log("form", form);
-    console.log("currency", currency);
-    console.log("watch(\"user_types\")", watch());
+    // console.log("initData", initData?.user);
+    // console.log("isSuccess", isSuccess);
+    // console.log("isSuccess", form?.data);
+    // console.log("register", register);
+    // console.log("watch()", watch());
+    // console.log("errors", errors);
+    // console.log("form", form);
+    // console.log("currency", currency);
+    // console.log("watch(\"user_types\")", watch());
     // const w = watch("user_types" as any);
     // console.log("watch", w.includes("Founder" | "founder"));
 
     const [currentIndex, setCurrentIndex] = useState<number>(0);
-    const [fieldsError, setFieldsError] = useState<string[]>([]);
+    // const [fieldsError, setFieldsError] = useState<string[]>([]);
+    const [loading, setLoading] = useState<boolean>(false);
 
     useEffect(() => {
         if (register && register.success) {
@@ -57,14 +58,14 @@ function SaveProfile() {
         }
     }, [register]);
 
-    useEffect(() => {
-        if (Object.keys(errors).length > 0) {
-            setFieldsError(Object.keys(errors));
-        }
-    }, [errors]);
+    // useEffect(() => {
+    //     if (Object.keys(errors).length > 0) {
+    //         setFieldsError(Object.keys(errors));
+    //     }
+    // }, [errors]);
 
-    console.log("fieldsError", fieldsError);
-    console.log("entitiesCurrent", entities[currentIndex]);
+    // console.log("fieldsError", fieldsError);
+    // console.log("entitiesCurrent", entities[currentIndex]);
     const checkAllFields = entities.every(key => key in watch());
     const checkWithoutWallet = entities.filter(key => key !== "wallet").every(key => key in watch());
     const checkFounder = watch("user_types" as any)?.length > 0 && (watch("user_types" as any) as string[]).some(tag => tag.toLowerCase() === "founder");
@@ -82,9 +83,10 @@ function SaveProfile() {
             }
         }
     };
-    console.log("checkAllFields", checkAllFields);
-    console.log("checkWithoutWallet", checkWithoutWallet);
-    console.log("checkCurrentField", checkCurrentField);
+    // console.log("isSuccessRegister", isSuccessRegister);
+    // console.log("checkAllFields", checkAllFields);
+    // console.log("checkWithoutWallet", checkWithoutWallet);
+    // console.log("checkCurrentField", checkCurrentField);
     const onSubmit: SubmitHandler<{ user_types: string[]; description: string; project_stages: string[]; geography: string[]; industries: string[]; name: string; business_models: string[]; donuts?: { purpose_amount: string; currency: string }; wallet?: string; }> = (data) => {
         const body: RegisterVariables = {
             tg_id: initData?.user?.id.toString() ?? "",
@@ -110,7 +112,8 @@ function SaveProfile() {
                 wallet: data.wallet
             })
         };
-        console.log("datas", data);
+        // console.log("datas", data);
+        setLoading(true);
         mutate(body);
         reset();
     };
@@ -127,9 +130,10 @@ function SaveProfile() {
             {/*<div className="iconContainer">*/}
             {/*    <MemoLogoIcon fill={"#FFFFFF"} stroke={"#FFFFFF"}/>*/}
             {/*</div>*/}
-            {!isSuccess && !isSuccessCurrency ?
-                <FadeLoader color={"rgb(49,125,148)"} cssOverride={override} loading={!isSuccess}/> :
+            {(!isSuccess && !isSuccessCurrency) ?
+                <FadeLoader color={"rgb(49,125,148)"} cssOverride={override} loading/> :
                 <>
+                    <FadeLoader color={"rgb(49,125,148)"} cssOverride={override} loading={loading}/>
                     {/*<div className={classes.nick}>*/}
                     {/*    {initData?.user?.username ?? ""}*/}
                     {/*</div>*/}
@@ -206,7 +210,7 @@ function SaveProfile() {
                                             }
                                         }}
                                         className="footerButton">Continue</button>) : null}
-                            {checkAllFields || checkWithoutWallet ? (
+                            {(checkFounder && checkAllFields && checkCurrentField) || (checkWithoutWallet && checkCurrentField) ? (
                                 <button type={"submit"}
                                         name={"submit"}
                                         className="footerButton">Create account

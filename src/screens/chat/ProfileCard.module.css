@@ -1,0 +1,137 @@
+.container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    /*display: flex;*/
+    /*flex-direction: column;*/
+    /*overflow: hidden;*/
+    /*padding: 0 0 19px 0;*/
+    /*z-index: 0;*/
+
+}
+
+.blurContainer {
+    /*position: relative;*/
+    width: 100%;
+    height: 100%;
+    /*display: flex;*/
+    /*flex-direction: column;*/
+    /*background-image: url("../../assets/main-image.png");*/
+    /*background-repeat: no-repeat;*/
+    /*background-size: auto;*/
+    /*background-color: #090909;*/
+    /*border-radius: 32px;*/
+    /*overflow: hidden;*/
+    /*z-index: 0;*/
+
+}
+
+.scrollContainer {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    /*bottom: 0;*/
+    flex-direction: column;
+    /*padding: 20px 24px 200px 24px;*/
+    background-image: url("../../assets/main-image.png");
+    background-repeat: no-repeat;
+    background-size: auto;
+    background-color: #090909;
+    border-radius: 32px;
+    /*padding: 0 0 19px 0;*/
+    /*overflow: hidden;*/
+    /*overflow-x: hidden;*/
+    /*overflow: auto;*/
+    /*-webkit-overflow-scrolling: touch;*/
+    /*gap: 20px;*/
+    z-index: 0;
+    /*pointer-events: auto;*/
+}
+
+.buttonsContainer {
+    position: absolute;
+    width: 100%;
+    max-width: 500px;
+    left: 50%;
+    bottom: 0;
+    transform: translate(-50%, 0);
+    /*border-radius: 32px;*/
+    /*background: linear-gradient(to bottom, rgba(9, 9, 9, 0), rgba(9, 9, 9, 0.8), rgba(9, 9, 9, 1) 100%);*/
+    /*overflow: hidden;*/
+    /*overflow-x: hidden;*/
+    /*-webkit-overflow-scrolling: touch;*/
+    /*gap: 20px;*/
+    z-index: 3;
+}
+
+.filterContainer {
+    position: absolute;
+    display: flex;
+    top: 12px;
+    right: 12px;
+    gap: 8px;
+    z-index: 3;
+}
+
+.name {
+    width: 60%;
+    color: white;
+    font-weight: 600;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2; /* Показываем максимум две строки */
+    min-height: calc(2 * 1.1em); /* Минимальная высота для двух строк */
+    /*line-height: 1em; !* Межстрочное расстояние *!*/
+    /*font-size: 38px;*/
+    /*line-height: 44px;*/
+    /*letter-spacing: -0.03em;*/
+    /*padding: 10px 36px 0 36px;*/
+    /*text-align: center;*/
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: pre-wrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.donats {
+    position: relative;
+    width: 100%;
+    height: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 100px;
+    background-color: #1A1A1B;
+}
+
+.donatsText {
+    color: #EFEFEF;
+    /*letter-spacing: -0.04em;*/
+    /*z-index: 1;*/
+}
+
+.title {
+    color: white;
+    font-weight: 700;
+    line-height: 49px;
+    letter-spacing: -0.04em;
+}
+
+.subTitle {
+    color: #8F8F8F;
+    font-weight: 500;
+    line-height: 24px;
+    letter-spacing: -0.04em;
+    padding-top: 1rem;
+}
+
+.buttonContainer {
+    margin-top: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-end;
+}
+

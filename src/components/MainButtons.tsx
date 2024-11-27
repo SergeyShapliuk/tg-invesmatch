@@ -16,6 +16,7 @@ type MainButtonsProps = {
     onSetLike: () => void;
     userType: boolean;
     buttonName: "heart" | "dislike" | undefined;
+    disabled?: boolean;
 }
 type ButtonNames = "coin" | "heart" | "previous" | "dislike";
 
@@ -27,7 +28,8 @@ function MainButtons({
                          onSetDislike,
                          onSetLike,
                          userType,
-                         buttonName
+                         buttonName,
+                         disabled
                      }: MainButtonsProps) {
     // const {responseFontSize} = useScreenSize();
 
@@ -80,9 +82,12 @@ function MainButtons({
             gap: 10
             // zIndex: 10
         }}>
-            <motion.div initial={{opacity: 1, scale: 1}}
-                        animate={isClicked["previous"] ? {opacity: .5, scale: .5} : {opacity: 1, scale: 1}}
-                        transition={{duration: 0.5}} onClick={() => {
+            <motion.button initial={{opacity: 1, scale: 1}}
+                           animate={isClicked["previous"] ? {opacity: .5, scale: .5} : {
+                               opacity: 1,
+                               scale: 1
+                           }}
+                           transition={{duration: 0.5}} onClick={() => {
                 handleClick("previous");
                 onPrevious();
             }} className={classes.buttonContainer}>
@@ -91,11 +96,11 @@ function MainButtons({
                 }}>
                     <MemoReturnIcon/>
                 </div>
-            </motion.div>
+            </motion.button>
 
-            <motion.div initial={{opacity: 1, scale: 1}}
-                        animate={isClicked["dislike"] ? {opacity: .5, scale: .5} : {opacity: 1, scale: 1}}
-                        transition={{duration: 0.5}} onClick={() => {
+            <motion.button disabled={disabled} initial={{opacity: 1, scale: 1}}
+                           animate={isClicked["dislike"] ? {opacity: .5, scale: .5} : {opacity: 1, scale: 1}}
+                           transition={{duration: 0.5}} onClick={() => {
                 handleClick("dislike");
                 onSetDislike();
             }} className={classes.buttonContainer}>
@@ -104,7 +109,7 @@ function MainButtons({
                 }}>
                     <MemoCloseIcon/>
                 </div>
-            </motion.div>
+            </motion.button>
             <div className={classes.buttonContainer}>
                 <div onClick={() => {
                     onLogo();
@@ -125,9 +130,9 @@ function MainButtons({
                 </div>
             </div>
 
-            {userType && <motion.div initial={{opacity: 1, scale: 1}}
-                                     animate={isClicked["coin"] ? {opacity: .5, scale: .5} : {opacity: 1, scale: 1}}
-                                     transition={{duration: 0.5}} onClick={() => {
+            {userType && <motion.button initial={{opacity: 1, scale: 1}}
+                                        animate={isClicked["coin"] ? {opacity: .5, scale: .5} : {opacity: 1, scale: 1}}
+                                        transition={{duration: 0.5}} onClick={() => {
                 handleClick("coin");
                 onCoin();
             }} className={classes.buttonContainer}>
@@ -162,10 +167,10 @@ function MainButtons({
                 }}>
                     <MemoCoinIcon/>
                 </div>
-            </motion.div>}
-            <motion.div initial={{opacity: 1, scale: 1}}
-                        animate={isClicked["heart"] ? {opacity: .5, scale: .5} : {opacity: 1, scale: 1}}
-                        transition={{duration: 0.5}} onClick={() => {
+            </motion.button>}
+            <motion.button disabled={disabled} initial={{opacity: 1, scale: 1}}
+                           animate={isClicked["heart"] ? {opacity: .5, scale: .5} : {opacity: 1, scale: 1}}
+                           transition={{duration: 0.5}} onClick={() => {
                 handleClick("heart");
                 onSetLike();
             }} className={classes.buttonContainer} style={{width: !userType ? "42.5%" : "20%"}}>
@@ -173,9 +178,9 @@ function MainButtons({
                     flex: !userType ? 1 : undefined,
                     backgroundColor: isClicked["heart"] ? "#0062FF" : "#272727"
                 }}>
-                    <MemoHeartIcon/>
+                    <MemoHeartIcon fill={"#0062FF"}/>
                 </div>
-            </motion.div>
+            </motion.button>
 
         </div>
     );

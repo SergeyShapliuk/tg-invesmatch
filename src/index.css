@@ -89,6 +89,7 @@ button {
     background-color: #286EF2;
     cursor: pointer;
     transition: border-color 0.25s;
+    -webkit-tap-highlight-color: transparent;
 }
 
 
@@ -104,6 +105,7 @@ button {
     background-color: #FFFFFF1F;
     color: #EFEFEF;
     padding: 10px 16px;
+    -webkit-tap-highlight-color: transparent;
 }
 
 /*@media (prefers-color-scheme: light) {*/
