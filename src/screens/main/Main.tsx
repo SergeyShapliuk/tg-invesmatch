@@ -34,6 +34,7 @@ import Match from "../match/Match";
 
 function Main() {
     const initData = initInitData();
+    // const utils = initUtils();
     // const {responseFontSize} = useScreenSize();
     const {usersRelevance, mutateRelevance, currentIndex, setCurrentIndex} = useUserData();
     // const pointerEventsRef = useRef<boolean>(false);
@@ -57,12 +58,14 @@ function Main() {
     const [direction, setDirection] = useState(1);
     const [buttonName, setButtonName] = useState<"heart" | "dislike">();
     const [match, setMatch] = useState<boolean>(false);
+    const [url, setUrl] = useState<any>();
 
     const {data: form} = useFetchForms();
 
     const currentItem: { relevance: number; user: User } | undefined = usersRelevance?.[currentIndex];
 
     console.log("setLike", data);
+    console.log("url", url && JSON.parse(decodeURIComponent(url)));
     // useEffect(() => {
     //     mutateRelevance({tg_id: initData?.user?.id.toString() ?? "test"});
     // }, [isSuccessLike, isSuccessDisLike]);
@@ -365,6 +368,8 @@ function Main() {
                                                         className={classes.scrollContainer}>
                                 <div className={classes.filterContainer}>
                                     <button onClick={() => {
+                                        setUrl(encodeURIComponent(JSON.stringify(currentItem)));
+                                        // utils.shareURL('dfskjhkj')
                                     }}
                                             className="icon-style">
                                         <MemoShareIcon style={{marginTop: 3}}/>

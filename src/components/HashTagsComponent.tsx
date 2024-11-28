@@ -26,7 +26,7 @@ function HashTagsComponent({label, hashTags, value, onChange}: HashTagsComponent
     return (
         <div style={{display: "flex", flexDirection: "column"}}>
             <label style={{
-                color: "#FFFFFF",
+                color: "#EFEFEF",
                 fontSize: responseFontSize(24),
                 fontWeight: "600",
                 lineHeight: responseFontSize(32)

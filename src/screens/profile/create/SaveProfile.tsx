@@ -88,6 +88,10 @@ function SaveProfile() {
     // console.log("checkWithoutWallet", checkWithoutWallet);
     // console.log("checkCurrentField", checkCurrentField);
     const onSubmit: SubmitHandler<{ user_types: string[]; description: string; project_stages: string[]; geography: string[]; industries: string[]; name: string; business_models: string[]; donuts?: { purpose_amount: string; currency: string }; wallet?: string; }> = (data) => {
+        if (checkFounder && !checkAllFields && checkCurrentField || !checkWithoutWallet && checkCurrentField) {
+            return;
+        }
+
         const body: RegisterVariables = {
             tg_id: initData?.user?.id.toString() ?? "",
             tg_nick: initData?.user?.username ?? "",

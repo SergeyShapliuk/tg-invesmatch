@@ -28,16 +28,24 @@ function MenuMatches() {
     // const {responseFontSize} = useScreenSize();
 
     const {
+        data: likes,
+        refetch: refetchLikes,
+        isFetching: isFetchingLikes,
+        isFetched: isFetchedLikes
+    } = useFetchLikes(initData?.user?.id.toString() ?? "test", "always");
+
+    const {
         data: matches,
+        refetch: refetchMatches,
+        isFetching: isFetchingMatches,
         isFetched: isFetchedMatches
     } = useFetchMatches(initData?.user?.id.toString() ?? "test", "always");
-    const {data: likes, isFetched: isFetchedLikes} = useFetchLikes(initData?.user?.id.toString() ?? "test", "always");
 
     const [cardData, setCardData] = useState<User & { disabled?: boolean } | undefined>();
     // console.log("matches", matches);
     console.log("likes", likes);
 
-    if (!isFetchedMatches && !isFetchedLikes) {
+    if (!isFetchedMatches || !isFetchedLikes) {
         return (
             <div className={classes.container}>
                 <FadeLoader color={"rgb(49,125,148)"} cssOverride={override} loading/>
@@ -48,6 +56,8 @@ function MenuMatches() {
     return (
         <>
             {!cardData ? (<div className={classes.container}>
+                <FadeLoader color={"rgb(49,125,148)"} cssOverride={override}
+                            loading={isFetchingLikes || isFetchingMatches}/>
                 <div className={classes.likesContainer}>
                     {likes && likes?.users?.length > 0 ? (<NavLink to={"/chat/likes"} className={classes.likesLink}>
                         <div className={classes.title}>
@@ -152,7 +162,8 @@ function MenuMatches() {
                     )}
                 </div>
             </div>) : (
-                <ProfileCard onClose={() => setCardData(undefined)} cardData={cardData} disabled={cardData.disabled}/>)}
+                <ProfileCard onClose={() => setCardData(undefined)} cardData={cardData} disabled={cardData.disabled}
+                             refetchLikes={refetchLikes} refetchMatches={refetchMatches}/>)}
         </>
     );
 }

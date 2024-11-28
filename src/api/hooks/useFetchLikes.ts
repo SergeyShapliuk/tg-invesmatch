@@ -11,6 +11,6 @@ export const useFetchLikes = (tg_id: string, refetchOnMount: boolean | "always" 
         },
         queryKey: ["get-likes"],
         retry: 2,
-        refetchOnMount: refetchOnMount
+        refetchOnMount: refetchOnMount,
     });
 };
