@@ -375,7 +375,7 @@ function Main() {
                                     {/*   target="_blank"*/}
                                     {/*   rel="noopener noreferrer">Send QR Code</a>*/}
                                     <button onClick={() => {
-                                        const shareId = encodeURIComponent(JSON.stringify(currentItem?.user?.tg_id));
+                                        const shareId = encodeURIComponent(currentItem?.user?.tg_id ?? "");
                                         utils.shareURL(`https://t.me/InvestmatchBot?startapp=${shareId}`);
                                     }}
                                             className="icon-style">
