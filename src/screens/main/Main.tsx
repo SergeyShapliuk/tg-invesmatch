@@ -370,6 +370,10 @@ function Main() {
                                                         }}
                                                         className={classes.scrollContainer}>
                                 <div className={classes.filterContainer}>
+                                    {/*<a  className="icon-style"*/}
+                                    {/*   href={`https://t.me/share/url?url=${encodeURIComponent(JSON.stringify(currentItem?.user?.tg_id))}`}*/}
+                                    {/*   target="_blank"*/}
+                                    {/*   rel="noopener noreferrer">Send QR Code</a>*/}
                                     <button onClick={() => {
                                         // const shareId = encodeURIComponent(JSON.stringify(currentItem?.user?.tg_id));
                                         // utils.shareURL(`https://t.me/InvestmatchBot?startapp=${shareId}`);

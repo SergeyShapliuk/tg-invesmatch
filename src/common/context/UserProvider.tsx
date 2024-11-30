@@ -70,7 +70,7 @@ export const UserProvider = ({children}: { children: ReactNode }) => {
 
     useEffect(() => {
         const share = sessionStorage.getItem("share");
-        const shareId = decodeURIComponent(JSON.parse(initData?.startParam ?? ""));
+        const shareId = initData?.startParam && decodeURIComponent(JSON.parse(initData?.startParam));
         if (shareId && !share) {
             refetchUserDataShare().then(res => {
                 if (res.data?.success && res.data.user) {
