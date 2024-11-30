@@ -5,7 +5,7 @@ import MainButtons from "../../components/MainButtons";
 import Tooltip from "../../components/ui/tooltip/Tooltip";
 import {useUserData} from "../../common/context/UserProvider";
 import {useFetchForms} from "../../api/hooks/useFetchForms";
-import {initInitData} from "@telegram-apps/sdk-react";
+import {initInitData, initUtils} from "@telegram-apps/sdk-react";
 import {User} from "../../types/types";
 import {useSetLike} from "../../api/hooks/useSetLike";
 import {useSetDislike} from "../../api/hooks/useSetDislike";
@@ -24,6 +24,7 @@ import ProfilesAreOver from "./ProfilesAreOver";
 import MemoShareIcon from "../../components/svg/ShareIcon";
 import MemoFilterIcon from "../../components/svg/FilterIcon";
 import Match from "../match/Match";
+import ModalShare from "../../components/ui/modal/ModalShare";
 
 // const entities: { companyName: string, description: string, hashTags?: string[] } = {
 //     companyName: "Company name",
@@ -34,9 +35,9 @@ import Match from "../match/Match";
 
 function Main() {
     const initData = initInitData();
-    // const utils = initUtils();
+    const utils = initUtils();
     // const {responseFontSize} = useScreenSize();
-    const {usersRelevance, mutateRelevance, currentIndex, setCurrentIndex} = useUserData();
+    const {usersRelevance, mutateRelevance, currentIndex, setCurrentIndex, userShareData} = useUserData();
     // const pointerEventsRef = useRef<boolean>(false);
 
 
@@ -58,19 +59,21 @@ function Main() {
     const [direction, setDirection] = useState(1);
     const [buttonName, setButtonName] = useState<"heart" | "dislike">();
     const [match, setMatch] = useState<boolean>(false);
-    const [url, setUrl] = useState<any>();
+    const [openShare, setOpenShare] = useState<boolean>(false);
 
     const {data: form} = useFetchForms();
 
     const currentItem: { relevance: number; user: User } | undefined = usersRelevance?.[currentIndex];
 
     console.log("setLike", data);
-    console.log("url", url && JSON.parse(decodeURIComponent(url)));
     // useEffect(() => {
     //     mutateRelevance({tg_id: initData?.user?.id.toString() ?? "test"});
     // }, [isSuccessLike, isSuccessDisLike]);
 
     useEffect(() => {
+        if (userShareData) {
+            setOpenShare(true);
+        }
         return onCloseTooltip();
     }, []);
 
@@ -368,8 +371,8 @@ function Main() {
                                                         className={classes.scrollContainer}>
                                 <div className={classes.filterContainer}>
                                     <button onClick={() => {
-                                        setUrl(encodeURIComponent(JSON.stringify(currentItem)));
-                                        // utils.shareURL('dfskjhkj')
+                                        const shareId = encodeURIComponent(JSON.stringify(currentItem?.user?.tg_id));
+                                        utils.shareURL(`https://t.me/InvestmatchBot?startapp=${shareId}`);
                                     }}
                                             className="icon-style">
                                         <MemoShareIcon style={{marginTop: 3}}/>
@@ -451,6 +454,7 @@ function Main() {
                     )}
                 </div>
             )}
+            <ModalShare isOpen={openShare} onClose={() => setOpenShare(false)} user={userShareData}/>
         </>
 
     );

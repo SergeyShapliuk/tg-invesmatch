@@ -4,6 +4,7 @@ import {initInitData} from "@telegram-apps/sdk-react";
 import {UpdateVariables, User} from "../../types/types";
 import {useNavigate} from "react-router-dom";
 import {useFetchUserRelevance} from "../../api/hooks/useFetchUserRelevance";
+import {useFetchUserShare} from "../../api/hooks/useFetchUserShare";
 
 
 interface UserProviderProps {
@@ -11,6 +12,7 @@ interface UserProviderProps {
     isLoggedIn: boolean;
     // setInitialized: (value: boolean) => void;
     userData: User | undefined;
+    userShareData: User | undefined;
     usersRelevance: { relevance: number, user: User }[];
     mutateRelevance: (variables: UpdateVariables) => void;
     refetchUserData: () => void;
@@ -30,6 +32,7 @@ export const UserProvider = ({children}: { children: ReactNode }) => {
     const [isInitialized, setInitialized] = useState<boolean>(false);
     const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
     const [userData, setUserData] = useState<User>();
+    const [userShareData, setUserShareData] = useState<User>();
     const [usersRelevance, setUsersRelevance] = useState<{ relevance: number, user: User }[]>([]);
     const [currentIndex, setCurrentIndex] = useState<number>(0);
 
@@ -39,14 +42,18 @@ export const UserProvider = ({children}: { children: ReactNode }) => {
         isFetched,
         isFetching
     } = useFetchUser(initData?.user?.id.toString() ?? "test");
+    const {
+        refetch: refetchUserDataShare
+    } = useFetchUserShare(initData?.startParam?.toString() ?? "test");
     const {mutate: mutateRelevance, data: userRelevance} = useFetchUserRelevance();
     // console.log("isSuccess", isSuccess);
     // console.log("isError", isError);
     // console.log("isInitialized", isInitialized);
     // console.log("isLoggedIn", isLoggedIn);
-    console.log("isFetched", isFetched);
-    // console.log("user", user);
-    console.log("isFetching", isFetching);
+    // console.log("isFetched", isFetched);
+    // // console.log("user", user);
+    // console.log("isFetching", isFetching);
+    console.log("userShareData", userShareData);
 
     useEffect(() => {
         refetchUserData().then(res => {
@@ -60,6 +67,20 @@ export const UserProvider = ({children}: { children: ReactNode }) => {
         console.log("navi");
         navigate("/");
     }, []);
+
+    useEffect(() => {
+        const share = sessionStorage.getItem("share");
+        const shareId = decodeURIComponent(JSON.parse(initData?.startParam ?? ""));
+        if (shareId && !share) {
+            refetchUserDataShare().then(res => {
+                if (res.data?.success && res.data.user) {
+                    setUserShareData(res.data.user);
+                    sessionStorage.setItem("share", "true");
+                }
+            }).catch(() => console.log("Error share data"));
+        }
+    }, []);
+
 
     useEffect(() => {
         if (!isFetching && isFetched) {
@@ -79,11 +100,6 @@ export const UserProvider = ({children}: { children: ReactNode }) => {
     //     }
     // }, [isFetched]);
 
-    // useEffect(() => {
-    //     if (userData) {
-    //
-    //     }
-    // }, [userData]);
 
     useEffect(() => {
         if (!isInitialized && userRelevance) {
@@ -108,6 +124,7 @@ export const UserProvider = ({children}: { children: ReactNode }) => {
             isInitialized,
             isLoggedIn,
             userData,
+            userShareData,
             usersRelevance,
             mutateRelevance,
             refetchUserData,

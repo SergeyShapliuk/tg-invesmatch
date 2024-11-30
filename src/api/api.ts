@@ -44,6 +44,14 @@ export const api = {
         });
         return response;
     },
+    async getUserDataShare(telegram_id: string) {
+        const response = await axiosInstanceApi.get<AxiosResponse<UserData>>(`getUserData/${telegram_id}`, {
+            headers: {
+                "Content-Type": "application/json"
+            }
+        });
+        return response;
+    },
     async updateUser(body: UpdateVariables) {
         const response = await axiosInstanceApi.post<AxiosResponse<UserData>>("updateUser", body, {
             headers: {
