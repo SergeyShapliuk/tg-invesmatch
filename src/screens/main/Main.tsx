@@ -5,7 +5,7 @@ import MainButtons from "../../components/MainButtons";
 import Tooltip from "../../components/ui/tooltip/Tooltip";
 import {useUserData} from "../../common/context/UserProvider";
 import {useFetchForms} from "../../api/hooks/useFetchForms";
-import {initInitData} from "@telegram-apps/sdk-react";
+import {initInitData, initUtils} from "@telegram-apps/sdk-react";
 import {User} from "../../types/types";
 import {useSetLike} from "../../api/hooks/useSetLike";
 import {useSetDislike} from "../../api/hooks/useSetDislike";
@@ -35,7 +35,7 @@ import ModalShare from "../../components/ui/modal/ModalShare";
 
 function Main() {
     const initData = initInitData();
-    // const utils = initUtils();
+    const utils = initUtils();
     // const {responseFontSize} = useScreenSize();
     const {usersRelevance, mutateRelevance, currentIndex, setCurrentIndex, userShareData} = useUserData();
     // const pointerEventsRef = useRef<boolean>(false);
@@ -375,8 +375,8 @@ function Main() {
                                     {/*   target="_blank"*/}
                                     {/*   rel="noopener noreferrer">Send QR Code</a>*/}
                                     <button onClick={() => {
-                                        // const shareId = encodeURIComponent(JSON.stringify(currentItem?.user?.tg_id));
-                                        // utils.shareURL(`https://t.me/InvestmatchBot?startapp=${shareId}`);
+                                        const shareId = encodeURIComponent(JSON.stringify(currentItem?.user?.tg_id));
+                                        utils.shareURL(`https://t.me/InvestmatchBot?startapp=${shareId}`);
                                     }}
                                             className="icon-style">
                                         <MemoShareIcon style={{marginTop: 3}}/>
