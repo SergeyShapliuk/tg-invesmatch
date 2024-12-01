@@ -15,7 +15,6 @@ import {override} from "../App";
 import {useKeyboardStatus} from "../common/hooks/useKeyboardStatus";
 import Wallet from "../screens/wallet/Wallet";
 import MemoBellIcon from "../components/svg/BellIcon";
-import MemoWalletIcon from "../components/svg/WalletIcon";
 import UpdateProfile from "../screens/profile/update/UpdateProfile";
 
 
@@ -131,11 +130,11 @@ function NavBar() {
                               opacity={location.pathname.startsWith("/profile") ? 1 : 0.51}/>
                 {/*{location.pathname === "/friends" && <span style={textStyle}>Friends</span>}*/}
             </NavLink>
-            <NavLink to="/wallet">
-                <MemoWalletIcon stroke={location.pathname.startsWith("/wallet") ? "#000000" : "#00000082"}
-                                opacity={location.pathname.startsWith("/wallet") ? 1 : 0.51}/>
-                {/*{location.pathname === "/friends" && <span style={textStyle}>Friends</span>}*/}
-            </NavLink>
+            {/*<NavLink to="/wallet">*/}
+            {/*    <MemoWalletIcon stroke={location.pathname.startsWith("/wallet") ? "#000000" : "#00000082"}*/}
+            {/*                    opacity={location.pathname.startsWith("/wallet") ? 1 : 0.51}/>*/}
+            {/*    /!*{location.pathname === "/friends" && <span style={textStyle}>Friends</span>}*!/*/}
+            {/*</NavLink>*/}
         </nav>
     );
 }

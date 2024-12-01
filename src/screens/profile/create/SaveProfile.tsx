@@ -39,7 +39,7 @@ function SaveProfile() {
     // console.log("isSuccess", isSuccess);
     // console.log("isSuccess", form?.data);
     // console.log("register", register);
-    // console.log("watch()", watch());
+    console.log("watch()", watch());
     // console.log("errors", errors);
     // console.log("form", form);
     // console.log("currency", currency);
