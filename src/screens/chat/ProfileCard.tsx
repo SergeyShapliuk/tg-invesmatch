@@ -12,6 +12,7 @@ import MemoCloseIcon from "../../components/svg/CloseIcon";
 import Match from "../match/Match";
 import {FadeLoader} from "react-spinners";
 import {override} from "../../App";
+import {useRelevance} from "../../api/hooks/useRelevance";
 
 
 function ProfileCard({
@@ -27,6 +28,7 @@ function ProfileCard({
 
     const {mutate: setLike, data, status: statusSetLike} = useSetLike();
     const {mutate: setDislike, status: statusSetDisLike} = useSetDislike();
+    const {mutate: getRelevance, data: relevance} = useRelevance();
 
     // const [hashTags, setHashTags] = useState<string[]>([]);
     const [open, setOpen] = useState<{ title: string, text: string, percent: string, width: string | undefined, bottom: string, color: string, isActive: boolean }>({
@@ -42,10 +44,14 @@ function ProfileCard({
     const [match, setMatch] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
 
-    console.log("ProfileCardsetLike", statusSetLike);
+    // console.log("ProfileCardsetLike", relevance);
 
     useEffect(() => {
         return onCloseTooltip();
+    }, []);
+
+    useEffect(() => {
+        getRelevance({tg_id: initData?.user?.id.toString() ?? "test", user_tg_id: cardData?.tg_id.toString() ?? ""});
     }, []);
 
     useEffect(() => {
@@ -173,7 +179,7 @@ function ProfileCard({
                                          color: "#286EF2",
                                          isActive: true
                                      })}
-                                     logoPercent={"хуй%"}
+                                     logoPercent={relevance?.data?.toString() ?? "0"}
                                      onCoin={() => setOpen({
                                          title: "Wallet:",
                                          text: cardData?.wallet ?? "No wallet",

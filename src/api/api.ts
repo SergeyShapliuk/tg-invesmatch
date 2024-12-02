@@ -52,6 +52,14 @@ export const api = {
         });
         return response;
     },
+    async getRelevance(body: { tg_id: string, user_tg_id: string }) {
+        const response = await axiosInstanceApi.post<any, AxiosResponse<{ success: boolean, message: string, data: number }>>("getUserRelevance", body, {
+            headers: {
+                "Content-Type": "multipart/form-data"
+            }
+        });
+        return response;
+    },
     async updateUser(body: UpdateVariables) {
         const response = await axiosInstanceApi.post<AxiosResponse<UserData>>("updateUser", body, {
             headers: {

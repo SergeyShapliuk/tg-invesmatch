@@ -10,6 +10,7 @@ import {initInitData} from "@telegram-apps/sdk-react";
 import MemoCloseIcon from "../../svg/CloseIcon";
 import {FadeLoader} from "react-spinners";
 import {override} from "../../../App";
+import {useRelevance} from "../../../api/hooks/useRelevance";
 
 
 function ModalShare({
@@ -24,6 +25,9 @@ function ModalShare({
     // const {userData} = useUserData();
     const {mutate: setLike, status: statusLike} = useSetLike();
     const {mutate: setDislike, status: statusDislike} = useSetDislike();
+    const {mutate: getRelevance, data: relevance} = useRelevance();
+
+    // console.log("getRelevance", relevance);
 
     const [open, setOpen] = useState<{ title: string, text: string, percent: string, width: string | undefined, bottom: string, color: string, isActive: boolean }>({
         title: "",
@@ -36,6 +40,10 @@ function ModalShare({
     });
     const [buttonName, setButtonName] = useState<"heart" | "dislike">();
     const [loading, setLoading] = useState<boolean>(false);
+
+    useEffect(() => {
+        getRelevance({tg_id: initData?.user?.id.toString() ?? "test", user_tg_id: user?.tg_id.toString() ?? ""});
+    }, []);
 
     useEffect(() => {
         if ((statusLike !== "idle" && statusLike !== "pending") || (statusDislike !== "idle" && statusDislike !== "pending")) {
@@ -147,7 +155,7 @@ function ModalShare({
                                          color: "#286EF2",
                                          isActive: true
                                      })}
-                                     logoPercent={"1000%"}
+                                     logoPercent={relevance?.data?.toString() ?? "0"}
                                      onCoin={() => setOpen({
                                          title: "Wallet:",
                                          text: user?.wallet ?? "No wallet",
