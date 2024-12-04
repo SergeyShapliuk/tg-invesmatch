@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import classes from "./Main.module.css";
 // import {useScreenSize} from "../../common/context/ScreenSizeProvider";
 import MainButtons from "../../components/MainButtons";
@@ -36,6 +36,8 @@ import ModalShare from "../../components/ui/modal/ModalShare";
 function Main() {
     const initData = initInitData();
     const utils = initUtils();
+
+    const offsetRef = useRef<boolean>(false);
     // const {responseFontSize} = useScreenSize();
     const {usersRelevance, mutateRelevance, currentIndex, setCurrentIndex, userShareData} = useUserData();
     // const pointerEventsRef = useRef<boolean>(false);
@@ -65,7 +67,7 @@ function Main() {
 
     const currentItem: { relevance: number; user: User } | undefined = usersRelevance?.[currentIndex];
 
-    console.log("setLike", data);
+    console.log("setLike", offsetRef.current);
     // useEffect(() => {
     //     mutateRelevance({tg_id: initData?.user?.id.toString() ?? "test"});
     // }, [isSuccessLike, isSuccessDisLike]);
@@ -110,6 +112,7 @@ function Main() {
         }
         // handleNext();
         setButtonName("dislike");
+        offsetRef.current = false;
     };
 
     const handleSetLike = () => {
@@ -123,6 +126,7 @@ function Main() {
         }
         // handleNext();
         setButtonName("heart");
+        offsetRef.current = false;
     };
 
     const handleOpenFilter = () => {
@@ -324,12 +328,15 @@ function Main() {
                                                         animate="center"
                                                         exit="exit"
                                                         transition={{
-                                                            x: {type: "spring", stiffness: 300, damping: 30},
+                                                            x: {type: "spring", stiffness: 200, damping: 50, mass: 1},
                                                             opacity: {duration: 0.5}
                                                         }}
                                                         drag="x"
-                                                        dragConstraints={{left: 0, right: 0}}
-                                                        dragElastic={1}
+                                // dragConstraints={{
+                                //     left: 0,
+                                //     right: 0
+                                // }}
+                                                        dragElastic={5}
                                 // onDrag={(event, {offset, velocity}) => {
                                 //     const swipe = swipePower(offset.y, velocity.y);
                                 //     console.log("Vertical swipe detected, ignoring.",swipe);
@@ -348,25 +355,32 @@ function Main() {
                                                         onDragEnd={(_, {offset, velocity}) => {
                                                             const swipe = swipePower(offset.x, velocity.x);
                                                             console.log("sdsdsd", swipe);
+                                                            console.log("offset.x", offset.x);
+
                                                             // pointerEventsRef.current = false;
                                                             // sePointerEvents(false)
                                                             // pointerEventsRef.current?.style.pointerEvents = 'none';
-                                                            if (swipe < -swipeConfidenceThreshold) {
+                                                            // if (Math.abs(offset.x) < 50) {  // Если карточка слишком близка к центру, не делаем резких движений
+                                                            //     setDirection(0);  // Останавливаем движение карточки
+                                                            // }
+                                                            if (swipe < -swipeConfidenceThreshold || offset.x < -0) {
+                                                                // offsetRef.current = true;
                                                                 handleSetDislike();
 
                                                                 // console.log("handleSetDislike");
-                                                            } else if (swipe > swipeConfidenceThreshold) {
+                                                            } else if (swipe > swipeConfidenceThreshold || offset.x > 0) {
                                                                 // setDislike({
                                                                 //     tg_id: initData?.user?.id.toString() ?? "test",
                                                                 //     tg_id_what_i_liked: currentItem?.user?.tg_id ?? "test"
                                                                 // });
                                                                 // console.log("handleSetDislike");
-
+                                                                // offsetRef.current = true;
                                                                 handleSetLike();
 
                                                                 // setDirection(-1);
                                                                 // setCurrentIndex((prevIndex) => prevIndex + 1);
                                                             }
+                                                            // offsetRef.current = false;
                                                         }}
                                                         className={classes.scrollContainer}>
                                 <div className={classes.filterContainer}>
