@@ -39,7 +39,13 @@ function Tooltip({title, text, close, percent, width, bottom, color}: any) {
 
     return (
         <div ref={tooltipRef} className={classes.tooltip}>
-            <div>
+            <div style={{
+                whiteSpace: "normal",
+                wordWrap: "break-word",
+                overflow: "hidden",
+                overflowWrap: "break-word",
+                textOverflow: "ellipsis"
+            }}>
                 <div style={{
                     color: "#EFEFEF",
                     fontSize: responseFontSize(16),
@@ -47,7 +53,11 @@ function Tooltip({title, text, close, percent, width, bottom, color}: any) {
                     lineHeight: responseFontSize(22),
                     textAlign: text ? "left" : "center"
                 }}>{title}</div>
-                <div style={{fontSize: responseFontSize(16), lineHeight: responseFontSize(22)}}>{text}</div>
+                <div style={{
+                    fontSize: responseFontSize(16),
+                    lineHeight: responseFontSize(22)
+
+                }}>{text}</div>
             </div>
             {title === "Wallet:" && <motion.div onClick={copyClicked} whileTap={{scale: 0.95}} className={classes.copy}>
                 <MemoCopyIcon/>
