@@ -33,8 +33,8 @@ function App() {
 
     const [error, setError] = useState<{ isOpen: boolean, message: string }>({isOpen: false, message: ""});
 
-    console.log("errorApp", error);
-    console.log("network", network);
+    // console.log("errorApp", error);
+    // console.log("network", network);
     // console.log("miniApp", miniApp);
 
 
