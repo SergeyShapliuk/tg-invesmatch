@@ -53,7 +53,7 @@ export const UserProvider = ({children}: { children: ReactNode }) => {
     // console.log("isFetched", isFetched);
     // // console.log("user", user);
     // console.log("isFetching", isFetching);
-    console.log("userShareData", userShareData);
+    // console.log("userShareData", userShareData);
 
     useEffect(() => {
         refetchUserData().then(res => {

@@ -18,7 +18,7 @@ function Profile() {
 
 
 
-    console.log("userData", userData);
+    // console.log("userData", userData);
 
     // useEffect(() => {
     //     if (userData) {

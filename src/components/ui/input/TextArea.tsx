@@ -44,6 +44,13 @@ const TextArea = forwardRef<HTMLTextAreaElement, TextInputProps>(({
                 onChange={onChange}    // Передается через Controller
                 onBlur={onBlur}
                 onFocus={handleFocus}
+                // autoComplete="off"
+                // autoCorrect="off"
+                onKeyDown={event => {
+                    if (event.key === "Enter") {
+                        event.currentTarget.blur();
+                    }
+                }}
                 style={{
                     // width: "100%",
                     minWidth: "100%",
