@@ -97,7 +97,7 @@ function ItemProfile({item, blur, onCloseToolTip}: ItemMainProps) {
                 }
                              onOpening={handleToggle}
                              onClosing={handleToggle}>
-                    <div style={{marginTop: 6, userSelect: "text"}}>
+                    <div className={classes.description}>
                         {item?.description}
                     </div>
                 </Collapsible>

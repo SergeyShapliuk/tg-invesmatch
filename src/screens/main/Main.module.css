@@ -127,6 +127,13 @@
     padding-top: 1rem;
 }
 
+.description {
+    margin-top: 6px;
+    user-select: text;
+    -webkit-user-select: text;
+    -moz-user-select: text;
+}
+
 .buttonContainer {
     margin-top: auto;
     display: flex;
