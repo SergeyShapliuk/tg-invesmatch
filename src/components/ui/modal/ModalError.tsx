@@ -2,7 +2,7 @@ import ReactModal from "react-modal";
 import MemoAlertIcon from "../../svg/AlertIcon";
 
 
-ReactModal.setAppElement("#root");
+// ReactModal.setAppElement("#root");
 
 type ModalErrorProps = {
     error: { isOpen: boolean, message: string }
