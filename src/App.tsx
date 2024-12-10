@@ -6,7 +6,9 @@ import {UserProvider} from "./common/context/UserProvider";
 // import {setupMockTelegramEnv} from "../telegramEnvConfig";
 import {initMiniApp, initSwipeBehavior, initViewport} from "@telegram-apps/sdk-react";
 import useNetworkStatus from "./common/hooks/useNetworkStatus";
-import ModalError from "./components/ui/modal/ModalError";
+// import ModalError from "./components/ui/modal/ModalError";
+import ReactModal from "react-modal";
+import MemoAlertIcon from "./components/svg/AlertIcon";
 
 
 // setupMockTelegramEnv();
@@ -104,11 +106,37 @@ function App() {
                 </UserProvider>
             </QueryClientProvider>
 
-            <ModalError error={network.isOnline ? error : {
-                isOpen: true,
-                message: "Connection problem. Check your internet and refresh the mini-app"
-            }}
-                        close={() => setError({isOpen: false, message: ""})}/>
+            <ReactModal isOpen={network.isOnline ? error.isOpen : true} onRequestClose={close} style={{
+                overlay: {background: "rgba(0,0,0,0.7)", zIndex: 999}, content: {
+                    width: "95%",
+                    top: 0,
+                    left: "50%",
+                    right: "auto",
+                    bottom: "auto",
+                    marginRight: "-50%",
+                    transform: "translate(-50%, 10px)",
+                    border: "none",
+                    borderRadius: 12,
+                    background: "#272727"
+                }
+            }}>
+                <div style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    alignItems: "center"
+                }}>
+                    <div>
+                        <MemoAlertIcon/>
+                    </div>
+                    <div
+                        style={{marginLeft: 12}}>{network.isOnline ? error.message : "Connection problem. Check your internet and refresh the mini-app"}</div>
+                </div>
+            </ReactModal>
+            {/*<ModalError error={network.isOnline ? error : {*/}
+            {/*    isOpen: true,*/}
+            {/*    message: "Connection problem. Check your internet and refresh the mini-app"*/}
+            {/*}}*/}
+            {/*            close={() => setError({isOpen: false, message: ""})}/>*/}
         </>
     );
 }
