@@ -1,18 +1,18 @@
-import Modal from "react-modal";
+import ReactModal from "react-modal";
 import MemoAlertIcon from "../../svg/AlertIcon";
 
 
-Modal.setAppElement("#root");
+ReactModal.setAppElement("#root");
 
-type ModalProps = {
+type ModalErrorProps = {
     error: { isOpen: boolean, message: string }
     close: () => void
 }
 
-function ModalError({error, close}: ModalProps) {
+function ModalError({error, close}: ModalErrorProps) {
     return (
         <>
-            <Modal isOpen={error.isOpen} onRequestClose={close} style={{
+            <ReactModal isOpen={error.isOpen} onRequestClose={close} style={{
                 overlay: {background: "rgba(0,0,0,0.7)", zIndex: 999}, content: {
                     width: "95%",
                     top: 0,
@@ -36,7 +36,7 @@ function ModalError({error, close}: ModalProps) {
                     </div>
                     <div style={{marginLeft: 12}}>{error.message}</div>
                 </div>
-            </Modal>
+            </ReactModal>
         </>
     );
 }
