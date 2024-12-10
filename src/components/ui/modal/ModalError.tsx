@@ -35,20 +35,6 @@ function ModalError({error, close}: ModalProps) {
                 </div>
                 <div style={{marginLeft: 12}}>{error.message}</div>
             </div>
-
-            {/*{error.message !== "" ?*/}
-            {/*    <>*/}
-            {/*        <h3> An error has occurred:</h3>*/}
-
-            {/*        <p>Try again later</p>*/}
-            {/*    </>*/}
-            {/*    :*/}
-            {/*    <>*/}
-            {/*        <h3>Something went wrong.</h3>*/}
-            {/*        <p>Try again later</p>*/}
-            {/*    </>*/}
-            {/*}*/}
-
         </Modal>
     );
 }
