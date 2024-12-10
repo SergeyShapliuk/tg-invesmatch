@@ -54,7 +54,7 @@ function MainButtons({
             if (buttonName) {
                 timeout = setTimeout(() => {
                     handleClick(buttonName);
-                }, 100);
+                }, 500);
             }
             return () => clearTimeout(timeout);
         }, [buttonName]

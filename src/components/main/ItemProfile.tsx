@@ -82,7 +82,7 @@ function ItemProfile({item, blur, onCloseToolTip}: ItemMainProps) {
                     <div style={{
                         display: "flex",
                         justifyContent: "space-between",
-                        alignItems: "center",
+                        alignItems: "center"
                         // cursor: "pointer"
                     }}>
                                                     <span style={{
@@ -97,7 +97,7 @@ function ItemProfile({item, blur, onCloseToolTip}: ItemMainProps) {
                 }
                              onOpening={handleToggle}
                              onClosing={handleToggle}>
-                    <div style={{marginTop: 6}}>
+                    <div style={{marginTop: 6, userSelect: "text"}}>
                         {item?.description}
                     </div>
                 </Collapsible>

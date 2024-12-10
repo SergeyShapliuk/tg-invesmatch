@@ -163,7 +163,8 @@ function Main() {
             return {
                 zIndex: 0,
                 x: direction < 0 ? 1000 : -1000,
-                opacity: 0
+                opacity: 0,
+                transition: {type: "spring", stiffness: 70, damping: 50, mass: 2}
             };
         }
     };
