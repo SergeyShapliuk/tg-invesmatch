@@ -142,17 +142,20 @@ function MenuMatches() {
                                              style={{backgroundColor: "#FFFFFF1F"}}>{item}</div>
                                     ))}
                                 </div>
-                                <a href={`https://t.me/${item.tg_nick}`} target="_blank"
-                                   rel="noopener noreferrer" className="footerButton"
-                                   style={{
-                                       display: "flex",
-                                       justifyContent: "center",
-                                       alignItems: "center",
-                                       marginTop: 10,
-                                       textDecoration: "none",
-                                       gap: 8
-                                   }}>Start
-                                    conversation <MemoTelegramIcon/></a>
+                                <button onClick={e => {
+                                    e.stopPropagation();
+                                    window.open(`https://t.me/${item.tg_nick}`, "_blank", "noopener,noreferrer");
+                                }}
+                                        className="footerButton"
+                                        style={{
+                                            display: "flex",
+                                            justifyContent: "center",
+                                            alignItems: "center",
+                                            marginTop: 10,
+                                            textDecoration: "none",
+                                            gap: 8
+                                        }}>Start
+                                    conversation <MemoTelegramIcon/></button>
                             </motion.div>
                         ))}
                     </div>) : (
