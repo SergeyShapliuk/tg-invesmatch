@@ -1,9 +1,8 @@
-import {QueryObserverResult, useQuery} from "@tanstack/react-query";
+import {useQuery} from "@tanstack/react-query";
 import {api} from "../api";
-import {GetCurrencyData} from "../../types/types";
 
 
-export const useHealthCheck = (): QueryObserverResult<void, any> => {
+export const useHealthCheck = () => {
     return useQuery({
         queryFn: async () => {
             const {data} = await api.getHealth();
