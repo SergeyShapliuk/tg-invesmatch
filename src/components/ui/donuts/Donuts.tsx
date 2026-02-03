@@ -24,13 +24,13 @@ const Donuts = forwardRef<HTMLInputElement, CurrencyProps>(({
     const {responseFontSize} = useScreenSize();
     const [amount, setAmount] = useState<string | undefined>(purposeValue);
     const [onCurrency, setOnCurrency] = useState<string | undefined>(currencyValue);
-
+    console.log("currencyy", currencyValue);
     useEffect(() => {
         if (!currencyValue && currency && currency?.length > 0) {
-            // setOnCurrency(currency[1].id.toString());
+            setOnCurrency(currency[0]?.currency);
             onChange({purpose_amount: undefined, currency: currency[0]?.currency});
         }
-    }, [currency]);
+    }, [currencyValue, currency]);
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const inputValue = e.target.value.replace(/\D/g, "");

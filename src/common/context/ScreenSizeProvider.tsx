@@ -37,7 +37,24 @@ export const ScreenSizeProvider = ({children}: { children: ReactNode }) => {
     }, []);
 
     const responseFontSize = (size: number) => {
-        return `${screenSize.width * size / 390}px`;
+        const { width } = screenSize;
+        const baseWidth = 390;
+
+        // Для мобильных устройств - пропорционально
+        if (width <= 768) {
+            return `${(width / baseWidth) * size}px`;
+        }
+
+        // Для планшетов и десктопов - ограниченное увеличение
+        // Используем формулу: размер + (ширина экрана - базовая ширина) * коэффициент
+        const scaleFactor = 0.02; // Коэффициент увеличения
+        const scaledSize = size + (width - baseWidth) * scaleFactor;
+
+        // Ограничиваем максимальный размер
+        const maxSize = size * 1.5;
+        const finalSize = Math.min(scaledSize, maxSize);
+
+        return `${finalSize}px`;
     };
 
     return (

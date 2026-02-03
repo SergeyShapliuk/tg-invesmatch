@@ -1,7 +1,9 @@
 import axios from "axios";
 // import axiosRetry from 'axios-retry';
 
-const baseURL = "https://tgbotgame.eu/api/";
+const baseURL = import.meta.env.VITE_BASE_URL;
+// const baseURL = "https://tgbotgame.eu/api/";
+// const baseURL = "http://localhost:5001";
 
 
 export const axiosInstanceApi = axios.create({
@@ -23,7 +25,7 @@ export const axiosInstanceApi = axios.create({
 //   config => {
 //     // Тут можно модифицировать конфиг перед отправкой запроса
 //     console.log('interceptors', config);
-//     return config;
+//     return config; в
 //   },
 //   error => {
 //     // Обработка ошибок перед отправкой запроса
@@ -55,4 +57,4 @@ export const axiosInstanceApi = axios.create({
 //     // Возвращаем ошибку, если код ошибки не 5xx или 429
 //     return Promise.reject(error);
 //   },
-// );
+//

@@ -66,7 +66,7 @@ function Main() {
 
     const currentItem: { relevance: number; user: User } | undefined = usersRelevance?.[currentIndex];
 
-    // console.log("setLike", offsetRef.current);
+    console.log("setLike", userShareData);
     // useEffect(() => {
     //     mutateRelevance({tg_id: initData?.user?.id.toString() ?? "test"});
     // }, [isSuccessLike, isSuccessDisLike]);

@@ -5,6 +5,7 @@ import {UpdateVariables, User} from "../../types/types";
 import {useNavigate} from "react-router-dom";
 import {useFetchUserRelevance} from "../../api/hooks/useFetchUserRelevance";
 import {useFetchUserShare} from "../../api/hooks/useFetchUserShare";
+import {useHealthCheck} from "../../api/hooks/useHealthCheck";
 
 
 interface UserProviderProps {
@@ -46,6 +47,7 @@ export const UserProvider = ({children}: { children: ReactNode }) => {
         refetch: refetchUserDataShare
     } = useFetchUserShare(initData?.startParam?.toString() ?? "test");
     const {mutate: mutateRelevance, data: userRelevance} = useFetchUserRelevance();
+    const {refetch: healthCheck} = useHealthCheck();
     // console.log("isSuccess", isSuccess);
     // console.log("isError", isError);
     // console.log("isInitialized", isInitialized);
@@ -56,6 +58,7 @@ export const UserProvider = ({children}: { children: ReactNode }) => {
     // console.log("userShareData", userShareData);
 
     useEffect(() => {
+        healthCheck();
         refetchUserData().then(res => {
             if (res.data?.success && res.data.user) {
                 setUserData(res.data.user);

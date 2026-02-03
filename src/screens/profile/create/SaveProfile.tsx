@@ -16,7 +16,7 @@ import {useFetchCurrency} from "../../../api/hooks/useFetchCurrency";
 import {useScreenSize} from "../../../common/context/ScreenSizeProvider";
 
 
-const entities: string[] = ["user_types", "name", "industries", "business_models", "description", "wallet", "geography"];
+const baseEntities: string[] = ["user_types", "name", "industries", "business_models", "description", "geography"];
 
 
 function SaveProfile() {
@@ -39,7 +39,7 @@ function SaveProfile() {
     // console.log("isSuccess", isSuccess);
     // console.log("isSuccess", form?.data);
     // console.log("register", register);
-    // console.log("watch()", watch());
+    console.log("watch()", watch());
     // console.log("errors", errors);
     // console.log("form", form);
     // console.log("currency", currency);
@@ -66,13 +66,53 @@ function SaveProfile() {
 
     // console.log("fieldsError", fieldsError);
     // console.log("entitiesCurrent", entities[currentIndex]);
+
+    // Добавляем donuts ТОЛЬКО для founder
+    const entities = Object.keys(watch())?.length && watch()?.user_types && watch().user_types[0].toLowerCase() === "founder"
+        ? [...baseEntities, "donuts"]
+        : baseEntities;
+    // Проверка, заполнено ли текущее поле
+    const currentFieldValue = watch(entities[currentIndex] as any);
+    // console.log("watch().user_types[0]", Object.keys(watch()).length);
+    // console.log("entities", entities);
+    // console.log("fsdfsdfsdfsdf", currentFieldValue);
+    const checkCurrentField = (() => {
+        if (!currentFieldValue) return false; // null или undefined
+        if (typeof currentFieldValue === "string") return currentFieldValue.trim() !== "";
+        // if (Array.isArray(currentFieldValue)) return currentFieldValue.length > 0;
+        if (entities[currentIndex] === "business_models") {
+
+            return watch()?.business_models?.length && watch()?.project_stages?.length;
+        }
+        if (entities[currentIndex] === "donuts") {
+            return currentFieldValue?.purpose_amount && currentFieldValue.purpose_amount.trim() !== "";
+        }
+        if (typeof currentFieldValue === "object") return Object.keys(currentFieldValue).length > 0;
+        // Спец-проверка для donuts
+        return true;
+    })();
+
+// Проверка всех полей
     const checkAllFields = entities.every(key => key in watch());
-    const checkWithoutWallet = entities.filter(key => key !== "wallet").every(key => key in watch());
-    const checkFounder = watch("user_types" as any)?.length > 0 && (watch("user_types" as any) as string[]).some(tag => tag.toLowerCase() === "founder");
-    const currentFieldValue = watch(entities[currentIndex] as any) as any;
-    const checkCurrentField = currentIndex === 3 ? (Array.isArray(currentFieldValue) && currentFieldValue.length > 0 && (Array.isArray(watch("project_stages" as any)) && watch("project_stages" as any).length > 0)) :
-        (typeof currentFieldValue === "string" && currentFieldValue.trim() !== "") || // Проверка на непустую строку
-        (Array.isArray(currentFieldValue) && currentFieldValue.length > 0); // Проверка на непустой массив
+    console.log("checkAllFields", checkAllFields);
+
+// Проверка всех полей кроме wallet
+    const checkWithoutWallet = entities
+        .filter(key => key !== "wallet")
+        .every(key => {
+            const value = watch(key as any);
+            if (value == null) return false;
+            if (typeof value === "string") return (value as string).trim() !== "";
+            if (Array.isArray(value)) return value.length > 0;
+            if (typeof value === "object") return Object.keys(value).length > 0;
+            return true;
+        });
+
+// Проверка Founder
+    const checkFounder = watch("user_types" as any)?.some(
+        (tag: string) => tag.toLowerCase() === "founder"
+    );
+
 
     const placeholder = () => {
         if (entities[currentIndex] === "name") {
@@ -87,6 +127,7 @@ function SaveProfile() {
     // console.log("checkAllFields", checkAllFields);
     // console.log("checkWithoutWallet", checkWithoutWallet);
     // console.log("checkCurrentField", checkCurrentField);
+    // console.log("currentFieldValue", currentFieldValue);
     const onSubmit: SubmitHandler<{ user_types: string[]; description: string; project_stages: string[]; geography: string[]; industries: string[]; name: string; business_models: string[]; donuts?: { purpose_amount: string; currency: string }; wallet?: string; }> = (data) => {
         if (checkFounder && !checkAllFields && checkCurrentField || !checkWithoutWallet && checkCurrentField) {
             return;
@@ -186,7 +227,7 @@ function SaveProfile() {
                                     );
                                 case "donuts":
                                     return (
-                                        checkFounder && entities[currentIndex] === "wallet" ?
+                                        checkFounder && entities[currentIndex] === "donuts" ?
                                             <Controller key={index} name={entity.type_value} control={control}
                                                         render={({field: {name, ...restField}}) => <Donuts
                                                             name={name}
@@ -201,25 +242,31 @@ function SaveProfile() {
                         }
 
                         <div className={classes.buttonContainer}>
-                            {/*{isSubmitted && fieldsError.length > 0 &&*/}
-                            {/*<div style={{color: "#E12E2E", textAlign: "center"}}>You have to fill in all the*/}
-                            {/*    fields</div>}*/}
-                            {(checkFounder ? !checkAllFields : !checkWithoutWallet) && checkCurrentField ? (
-                                <button type={"button"}
+                            {/* Кнопка "Continue" */}
+                            {checkCurrentField && (
+                                ((!checkFounder && !checkWithoutWallet) || (checkFounder && !checkAllFields)) && (
+                                    <button
+                                        type="button"
                                         onClick={() => {
-                                            if (!checkFounder && currentIndex === 4) {
-                                                setCurrentIndex(prevState => prevState + 2);
-                                            } else {
-                                                setCurrentIndex(prevState => prevState + 1);
-                                            }
+                                            setCurrentIndex(prev => prev + 1);
                                         }}
-                                        className="footerButton">Continue</button>) : null}
-                            {(checkFounder && checkAllFields && checkCurrentField) || (checkWithoutWallet && checkCurrentField) ? (
-                                <button type={"submit"}
-                                        name={"submit"}
-                                        className="footerButton">Create account
-                                </button>) : null}
+                                        className="footerButton"
+                                    >
+                                        Continue
+                                    </button>
+                                )
+                            )}
+
+                            {/* Кнопка "Create account" */}
+                            {checkCurrentField && (
+                                (checkFounder ? checkAllFields : checkWithoutWallet) && (
+                                    <button type="submit" name="submit" className="footerButton">
+                                        Create account
+                                    </button>
+                                )
+                            )}
                         </div>
+
                     </form>
                 </>}
         </div>

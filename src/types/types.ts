@@ -76,7 +76,7 @@ export type UserData = {
 }
 
 export type User = {
-    id: number;
+    id: string;
     tg_id: string;
     tg_firstname: string;
     tg_lastname: string;

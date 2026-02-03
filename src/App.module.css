@@ -1,0 +1,23 @@
+.telegramBackground {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--tg-theme-bg-color, #000000);
+    z-index: -1;
+}
+
+.appContent {
+    position: relative;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+    min-height: 100vh;
+    padding: 0 16px;
+    box-sizing: border-box;
+
+    /* Используем Telegram переменные если доступны */
+    background-color: var(--tg-theme-bg-color, #000000);
+    color: var(--tg-theme-text-color, #FFFFFF);
+}
